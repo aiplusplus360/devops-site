@@ -1,0 +1,100 @@
+{
+  "id": "edge-cdn",
+  "tagline": "Assets and APIs served from the edge, with cache rules that expire exactly when they should.",
+  "overview": [
+    "Caching is easy until it is wrong. We start by classifying your content: static assets that never change under a hashed name, pages that can be stale for a minute, and responses that must never be cached at all. Each class gets its own rule, TTL and cache key, so the CDN stops guessing and starts behaving predictably.",
+    "Most of the work then sits with deployment: a new build publishes hashed filenames and purges only the small set of unhashed entry points, so releases take effect immediately without flushing an entire distribution. We also configure origin shielding, compression, TLS settings and edge functions where the logic genuinely belongs closer to the user."
+  ],
+  "problems": [
+    "Users clear their cache because they see last week's page",
+    "Every deployment purges the whole distribution just in case",
+    "Assets load slowly for customers far from your origin region",
+    "Cache headers are inconsistent between services and teams"
+  ],
+  "includes": [
+    {
+      "icon": "network",
+      "title": "Cache strategy",
+      "text": "A written rule set mapping each content type to a TTL, cache key and invalidation method, including the responses that should bypass the cache entirely."
+    },
+    {
+      "icon": "globe",
+      "title": "Multi-region delivery",
+      "text": "Distributions sized for where your users actually are, with origin shielding and regional failover so a distant origin does not slow every request."
+    },
+    {
+      "icon": "refresh",
+      "title": "Deployment invalidation",
+      "text": "Pipeline steps that purge exactly what changed, using hashed asset names so most releases need no invalidation at all and the few that do finish in seconds."
+    },
+    {
+      "icon": "zap",
+      "title": "Edge functions",
+      "text": "Redirects, A/B routing, header rewrites and lightweight auth moved to the edge where they belong, with the latency and debugging trade-offs stated plainly."
+    },
+    {
+      "icon": "chart",
+      "title": "Performance measurement",
+      "text": "Cache hit ratio, time to first byte and origin load tracked per route, so tuning decisions are based on data rather than on how the site feels."
+    },
+    {
+      "icon": "shield",
+      "title": "TLS and security headers",
+      "text": "Certificates, modern cipher suites and security headers configured at the edge, with WAF rules and bot controls where they add value without blocking real traffic."
+    }
+  ],
+  "deliverables": [
+    "Cache rule matrix per content type and route",
+    "Invalidation steps wired into the deploy pipeline",
+    "Distribution configuration held in version control",
+    "Edge function code with tests and rollback notes",
+    "Before and after performance report by region"
+  ],
+  "stack": ["cloudflare", "aws", "kubernetes", "terraform", "nginx", "github", "prometheus"],
+  "outcomes": [
+    { "value": "95%", "label": "Typical cache hit ratio" },
+    { "value": "1 purge", "label": "Invalidation per release" },
+    { "value": "35%", "label": "Lower origin request load" }
+  ],
+  "process": [
+    {
+      "title": "Audit current caching",
+      "text": "We capture real responses across the site, read the headers your origin sends and work out which routes are being cached by accident and which are never cached at all."
+    },
+    {
+      "title": "Design the rule set",
+      "text": "A table of content types, cache keys, TTLs and purge behaviour, reviewed with the teams who own the pages before anything is changed in production."
+    },
+    {
+      "title": "Configure and deploy",
+      "text": "Distributions, edge functions and headers are defined in code, applied to staging first, and validated with a script that checks the behaviour of each rule."
+    },
+    {
+      "title": "Tune against real traffic",
+      "text": "After launch we watch hit ratio, origin load and error rates, adjusting TTLs and keys where the initial assumptions were too conservative or too aggressive."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will caching break our logged-in pages?",
+      "a": "It should not, because personalised responses belong outside the shared cache. We mark authenticated routes as private or bypass, and key anything cacheable on the headers that genuinely change the response rather than on the session."
+    },
+    {
+      "q": "Do we need to change our origin servers?",
+      "a": "Usually only slightly. The main requirement is honest, consistent cache headers. Where an origin cannot set them well, edge rules can override, but fixing the headers at the source is simpler to reason about and easier to debug."
+    },
+    {
+      "q": "Which CDN should we use?",
+      "a": "It depends on where your traffic is, what you already pay for and how much you need programmable edge logic. CloudFront, Cloudflare and Fastly all work well; we are more interested in using one properly than in switching you for a marginal gain."
+    },
+    {
+      "q": "How quickly does a purge take effect?",
+      "a": "Most providers propagate invalidation in a few seconds, but global consistency is not instant and some regions lag briefly. That is why hashed filenames matter: if the name changes, there is nothing to purge and no window of inconsistency."
+    }
+  ],
+  "related": ["dns-tls", "networking", "observability"],
+  "seo": {
+    "title": "Edge & CDN Configuration — Caching, Invalidation, Edge Logic",
+    "description": "Content classified into cache rules with TTLs, keys and deployment purges, plus edge functions and origin shielding to cut latency and origin load."
+  }
+}

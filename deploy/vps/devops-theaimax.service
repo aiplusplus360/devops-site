@@ -1,0 +1,74 @@
+# ---------------------------------------------------------------------------
+# devops-theaimax.service — runs the Node/Express site.
+#
+# Installed at /etc/systemd/system/devops-theaimax.service
+#
+# Why a systemd unit rather than the pm2 that the rest of the machine uses:
+# this host already runs twelve pm2 applications under a shared daemon. pm2
+# keeps one dump file describing all of them, and `pm2 save` rewrites it for
+# every app at once - a single shared piece of state that a deploy of this site
+# has no business touching. A dedicated unit is completely independent: it
+# cannot restart, stop or orphan any other application on the machine.
+#
+# Why it binds to 127.0.0.1: the application port is then not reachable from the
+# internet at all, needs no firewall rule, and cannot be found by scanning. All
+# traffic arrives through nginx.
+#
+# To apply a change to this file:
+#   systemctl daemon-reload && systemctl restart devops-theaimax
+# ---------------------------------------------------------------------------
+
+[Unit]
+Description=DevOps marketing site (React SSR + Express) for devops.theaimax.com
+Documentation=https://github.com/khawajasafiullah18/devops
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/devops.theaimax.com/app
+
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=4310
+
+# Submissions are written outside the application directory so that a deploy,
+# which replaces that directory wholesale, can never remove them.
+Environment=SUBMISSIONS_DIR=/var/www/devops.theaimax.com/data
+
+# Optional: set this to a Slack / Zapier / Make / n8n webhook URL to have each
+# contact-form submission forwarded there as JSON. Uncomment and fill in, then
+# `systemctl daemon-reload && systemctl restart devops-theaimax`.
+# Submissions are always written to disk whether or not this is set.
+#Environment=CONTACT_WEBHOOK_URL=
+
+ExecStart=/usr/bin/node server/index.mjs
+
+Restart=always
+RestartSec=3
+
+# A plain `systemctl stop` should give in-flight requests a moment to finish.
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=devops-theaimax
+
+# --- Hardening -------------------------------------------------------------
+# The app only needs to read its own directory and write its submissions
+# directory, so most of the filesystem is hidden from it.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/devops.theaimax.com/data
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

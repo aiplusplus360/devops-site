@@ -1,0 +1,100 @@
+{
+  "id": "advisory",
+  "tagline": "A clear read on where delivery hurts, a costed 90-day plan, and skills to run it.",
+  "overview": [
+    "Most teams already know something is slow; what they lack is agreement on which problem to fix first and what it will cost. We assess delivery, reliability and security against a fixed model, pull the evidence from your repositories, pipelines, incident history and cloud accounts, and write down what is genuinely working versus what only looks fine on a status slide.",
+    "The assessment ends with a prioritised 90-day roadmap: each item carries an owner, an effort estimate and the outcome it is meant to move. Then we stay to help deliver the first slice, pairing with your engineers so the plan does not become another document that ages in a shared drive."
+  ],
+  "problems": [
+    "Every review produces a deck and no decisions",
+    "Nobody agrees which of the twenty problems matters most",
+    "Platform knowledge sits with one person who is leaving",
+    "Improvements stall because the team was never taught how"
+  ],
+  "includes": [
+    {
+      "icon": "book",
+      "title": "Maturity assessment",
+      "text": "Delivery, reliability and security scored against a fixed model, with the evidence cited for each rating so the result can be argued with, not just accepted."
+    },
+    {
+      "icon": "compass",
+      "title": "Prioritised roadmap",
+      "text": "A 90-day plan ordered by impact against effort, with each item carrying a named owner, a rough cost and the metric it should move."
+    },
+    {
+      "icon": "graduation",
+      "title": "Hands-on pairing",
+      "text": "We work in your repositories alongside your engineers on real tickets, so new practices are learned on the codebase rather than demonstrated on a sample project."
+    },
+    {
+      "icon": "chart",
+      "title": "Baseline metrics",
+      "text": "Lead time, deployment frequency, change failure rate and time to restore measured before and after, so improvement is a number rather than a feeling."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Written findings",
+      "text": "A short report that separates blockers from annoyances, states what we would do first with your constraints, and lists what we would deliberately leave alone."
+    },
+    {
+      "icon": "headset",
+      "title": "Enablement sessions",
+      "text": "Workshops, code reviews and walkthroughs scheduled around delivery, covering the specific tools your team already runs instead of a generic curriculum."
+    }
+  ],
+  "deliverables": [
+    "Assessment report with evidence and scored maturity levels",
+    "Prioritised 90-day roadmap with owners and effort estimates",
+    "Baseline delivery and reliability metrics dashboard",
+    "Runbook and handover pack for the first improvements",
+    "Enablement plan covering workshops, pairing and review"
+  ],
+  "stack": ["terraform", "kubernetes", "github", "argocd", "grafana", "prometheus"],
+  "outcomes": [
+    { "value": "90 days", "label": "Prioritised roadmap horizon" },
+    { "value": "4 metrics", "label": "Baseline DORA measures" },
+    { "value": "1 team", "label": "Fully enabled to run it" }
+  ],
+  "process": [
+    {
+      "title": "Run the assessment",
+      "text": "Interviews, repository and pipeline review, incident history and a look at the cloud accounts, gathered over one to two weeks depending on estate size."
+    },
+    {
+      "title": "Present the findings",
+      "text": "We walk your leads through what we found, name the trade-offs, and agree which problems are worth solving this quarter and which can wait."
+    },
+    {
+      "title": "Deliver the first slice",
+      "text": "We pair with your engineers on the top roadmap items, writing the changes together so the approach is absorbed rather than documented and handed over."
+    },
+    {
+      "title": "Hand over and review",
+      "text": "We step back once the team is running the cadence, returning at 30 and 90 days to check the metrics have held rather than quietly slipped."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is this just a report we will never use?",
+      "a": "The report is deliberately short and each recommendation is scoped, costed and tied to a metric. Most teams start the first item in the same fortnight, and we stay on to help with it rather than leaving a PDF behind."
+    },
+    {
+      "q": "How do you avoid telling us what we already know?",
+      "a": "We test our assumptions against your own evidence: pipelines, incident tickets, pull request history and cloud bills. When something is already well run, we say so and move on. The value is in the ordering and the costed plan, not in discovering that deploys are manual."
+    },
+    {
+      "q": "Will our engineers actually have time for this?",
+      "a": "It is a real cost and we plan for it. Assessment interviews are short and scheduled around delivery, and pairing happens on tickets your team already has. If the calendar cannot absorb it, the roadmap will not survive either, so we would rather find that out early."
+    },
+    {
+      "q": "Do you work alongside our existing vendors?",
+      "a": "Yes, when that makes sense. We will join your change process and review forums, and we are comfortable handing specific workstreams to other suppliers. The roadmap names interfaces and owners so responsibility does not fall between two contracts."
+    }
+  ],
+  "related": ["finops", "support-247", "training"],
+  "seo": {
+    "title": "DevOps Assessment & Enablement — Maturity Audit to Roadmap",
+    "description": "A maturity audit across delivery, reliability and security, a prioritised 90-day roadmap with owners, and hands-on pairing to deliver it with you."
+  }
+}

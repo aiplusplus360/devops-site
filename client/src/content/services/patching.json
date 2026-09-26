@@ -1,0 +1,100 @@
+{
+  "id": "patching",
+  "tagline": "A patching cadence you can keep, aimed at the vulnerabilities that are actually being exploited.",
+  "overview": [
+    "Raw CVE counts tell you very little. A host with two hundred medium findings and no exposed service is usually a lower priority than one internet-facing appliance with a single flaw that has a working exploit. We start by building an exposure picture from your asset inventory, network reach and threat intelligence, then patch against that.",
+    "The mechanics differ by estate. Virtual machines get rolling patch windows with drain and health checks; container hosts get replaced rather than patched in place; language dependencies get version bumps through the same pipeline as the code. We automate what is safe to automate and keep a human approval on the changes that can take a service down."
+  ],
+  "problems": [
+    "The vulnerability report has twelve thousand rows and no priorities",
+    "Patch windows get cancelled whenever a release is close",
+    "Rebooting a host still needs a person watching it at midnight",
+    "Nobody knows which servers missed last quarter's patches"
+  ],
+  "includes": [
+    {
+      "icon": "chart",
+      "title": "Exposure-based prioritisation",
+      "text": "Findings ranked by reachability, exploit availability and asset criticality, so the list your team works from is short enough to finish this month."
+    },
+    {
+      "icon": "refresh",
+      "title": "Automated patch pipelines",
+      "text": "Scheduled jobs that apply OS and package updates through Ansible or your existing automation, with pre-checks, health gates and an automatic stop on failure."
+    },
+    {
+      "icon": "wave",
+      "title": "Rolling patching without downtime",
+      "text": "Hosts drained, patched and returned to the load balancer one at a time, with capacity checks so the remaining nodes can carry the traffic."
+    },
+    {
+      "icon": "box",
+      "title": "Immutable image rebuilds",
+      "text": "Where hosts should not be patched in place, we rebuild from a fresh base with the same configuration and replace the node instead."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Patch status reporting",
+      "text": "Which assets are current, which are overdue and which are deliberately excluded, refreshed after every run and readable by people outside the platform team."
+    },
+    {
+      "icon": "database",
+      "title": "Stateful service windows",
+      "text": "Databases and stateful clusters get planned maintenance windows with replica failover first, since those are the patches that cannot be automated away."
+    }
+  ],
+  "deliverables": [
+    "Risk-ranked patch list refreshed from live exposure data",
+    "Automation playbooks for each operating system family",
+    "Maintenance calendar agreed with service owners",
+    "Patch compliance dashboard by environment and owner",
+    "Exception register with compensating controls recorded"
+  ],
+  "stack": ["ansible", "aws", "azure", "gcp", "kubernetes", "terraform", "prometheus", "docker"],
+  "outcomes": [
+    { "value": "7 days", "label": "Critical patch target" },
+    { "value": "95%", "label": "Assets within patch window" },
+    { "value": "0", "label": "Manual reboots overnight" }
+  ],
+  "process": [
+    {
+      "title": "Build the exposure picture",
+      "text": "We combine your asset list, network exposure and known exploited vulnerability feeds to rank what genuinely needs attention first, rather than sorting by score alone."
+    },
+    {
+      "title": "Define the patch cadence",
+      "text": "Severity bands get a target window each, agreed with the teams who own the services, so everyone knows what happens and when without asking."
+    },
+    {
+      "title": "Automate the routine cases",
+      "text": "Playbooks and pipeline jobs handle the predictable work, with health checks that halt a rollout when an instance fails to come back cleanly."
+    },
+    {
+      "title": "Report and tighten",
+      "text": "Monthly reporting shows what slipped and why, and the cadence is adjusted when a target is consistently missed rather than quietly ignored."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How fast do we have to patch critical issues?",
+      "a": "There is no universal answer, and anyone quoting one number is guessing. For internet-facing systems we typically work to days, for internal services weeks. What matters is that the target is written down, measured and achievable with the staff you have."
+    },
+    {
+      "q": "Can you patch everything automatically?",
+      "a": "No. Databases, appliances and anything without redundancy need a human decision and often a window. We automate the rest, and the parts that cannot be automated get recorded as exceptions with an owner rather than quietly left out."
+    },
+    {
+      "q": "What about vulnerabilities with no patch available?",
+      "a": "Those are the hardest, and a scanner will keep flagging them. We handle them with compensating controls such as network restrictions, feature disablement or extra monitoring, and set a review date so the decision is revisited when a fix ships."
+    },
+    {
+      "q": "Does this replace our existing vulnerability scanner?",
+      "a": "No, it usually consumes it. Keep the scanner you have for discovery and asset coverage, and let this work deal with prioritisation, scheduling and the evidence trail. Where a scanner misses whole platforms, we will say so and suggest something better."
+    }
+  ],
+  "related": ["image-scanning", "config-management", "compliance"],
+  "seo": {
+    "title": "Vulnerability & Patch Management — Risk-Based Patching",
+    "description": "A patch cadence driven by real exposure data, with automated OS and dependency updates, rolling no-downtime patching and clear status reporting."
+  }
+}

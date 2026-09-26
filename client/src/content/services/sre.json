@@ -1,0 +1,100 @@
+{
+  "id": "sre",
+  "tagline": "Error budgets, runbooks and a page rotation your engineers can live with.",
+  "overview": [
+    "Reliability becomes manageable when it is defined. We help you name the few journeys that matter, agree what good service looks like in numbers, and set an error budget that decides how fast you can ship. That turns reliability from an argument about feelings into a policy the whole team can read.",
+    "Day to day, the work is incident response. We review the incidents you have had, tighten the escalation path, write runbooks for the pages that recur, and run a blameless postmortem process that produces dated actions with owners rather than a document nobody opens again. The measure of success is fewer pages and shorter ones."
+  ],
+  "problems": [
+    "Every incident turns into the same arguments afterwards",
+    "We cannot say whether last month was better or worse",
+    "The same failures happen again with no recorded fix",
+    "One engineer carries the whole on-call burden"
+  ],
+  "includes": [
+    {
+      "icon": "pulse",
+      "title": "Service-level indicators",
+      "text": "We define good and bad events for each critical journey — successful checkout, fast search — so reliability can be measured rather than described."
+    },
+    {
+      "icon": "scale",
+      "title": "Error budget policy",
+      "text": "A written agreement on what happens when the budget runs out: which releases pause, who decides, and how the decision is reversed once reliability recovers."
+    },
+    {
+      "icon": "book",
+      "title": "Runbooks and playbooks",
+      "text": "Each repeating alert gets a numbered procedure with the exact commands, the expected result, and the point at which the responder should escalate instead of persisting."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Blameless postmortems",
+      "text": "We facilitate the review, capture the timeline from real telemetry, and turn findings into owned actions tracked in the same backlog as feature work."
+    },
+    {
+      "icon": "headset",
+      "title": "On-call rotation design",
+      "text": "Schedules are sized to the real page volume, with a secondary responder, documented swaps and a rule that nobody is on call alone forever."
+    },
+    {
+      "icon": "chart",
+      "title": "Reliability reporting",
+      "text": "A monthly view of incidents, budget burn and open actions, written for both engineers and the people who fund the platform."
+    }
+  ],
+  "deliverables": [
+    "Written service-level indicators and objectives per journey",
+    "Error budget policy signed off by engineering",
+    "Runbook template and a first set of runbooks",
+    "Postmortem template with tracked action items",
+    "On-call rotation plan with escalation responsibilities"
+  ],
+  "stack": ["prometheus", "grafana", "pagerduty", "datadog", "kubernetes", "aws"],
+  "outcomes": [
+    { "value": "15 min", "label": "Median incident response" },
+    { "value": "1 page", "label": "Error budget policy" },
+    { "value": "monthly", "label": "Reliability review cadence" }
+  ],
+  "process": [
+    {
+      "title": "Agree what reliability means",
+      "text": "We interview the teams and the business to find the journeys that actually matter, then propose indicators that can be measured from data you already have."
+    },
+    {
+      "title": "Set budgets and policy",
+      "text": "Targets are agreed in writing, including the consequences of breaching them, because a budget with no policy behind it changes nothing."
+    },
+    {
+      "title": "Rebuild the incident path",
+      "text": "Escalation, communication and handover are documented and rehearsed, so an incident has a known shape rather than being improvised each time."
+    },
+    {
+      "title": "Run the review cycle",
+      "text": "We chair the first postmortems and the first monthly reliability review, then hand the format to your team once the habit has formed."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is an error budget just a way to stop releases?",
+      "a": "It is a way to make the trade-off explicit rather than accidental. When the budget is healthy you ship faster with less ceremony; when it is spent, the policy says what pauses. Most teams find it removes arguments rather than causing them."
+    },
+    {
+      "q": "Do small teams need formal SRE practice?",
+      "a": "Smaller teams get the most from it, because there is less slack to absorb a bad night. You can run the whole thing on a page of markdown and one review a month; the ceremony is optional, the clarity is not."
+    },
+    {
+      "q": "How does this fit with existing ITIL processes?",
+      "a": "They can coexist. We map incident severities and change records onto the process you already run, so the new practice produces the evidence your change board needs instead of competing with it."
+    },
+    {
+      "q": "What if we do not have the telemetry to measure SLOs?",
+      "a": "Then that is the first piece of work. We start with what your load balancer and application already record, which is often enough for availability and latency, and add instrumentation only where a gap genuinely blocks a decision."
+    }
+  ],
+  "related": ["alerting", "observability", "support-247"],
+  "seo": {
+    "title": "SRE & Incident Response — Error Budgets, Runbooks, On-Call",
+    "description": "Service-level objectives, error budgets and a blameless postmortem process that keep pages rare, escalation paths clear and every fix tracked."
+  }
+}

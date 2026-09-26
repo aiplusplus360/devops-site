@@ -1,0 +1,100 @@
+{
+  "id": "networking",
+  "tagline": "Traffic routed to the right service, encrypted in transit and shifted without dropping connections.",
+  "overview": [
+    "Network problems in a modern stack rarely come from cables. They come from an ingress rule that sends a request to the wrong service, a certificate that is not trusted between two workloads, or a load balancer draining a node while requests are still in flight. We map how traffic actually flows today — client to edge, edge to ingress, service to service — before proposing anything new.",
+    "From there the work is configuration with intent: ingress controllers and gateways that express routes as code, health checks that match reality, timeouts and retries that do not amplify failure, and mTLS between services where it is worth the operational cost. We are equally happy to say a mesh is unnecessary at your size."
+  ],
+  "problems": [
+    "An ingress rule points at the old service after a rename",
+    "One slow dependency causes retries that cascade into an outage",
+    "Service-to-service traffic is unencrypted inside the cluster",
+    "Announcing a canary means editing the load balancer by hand"
+  ],
+  "includes": [
+    {
+      "icon": "network",
+      "title": "Ingress and gateways",
+      "text": "Routes, TLS termination and host rules declared as code, with an API gateway where you need authentication, rate limits and request shaping at the edge of the cluster."
+    },
+    {
+      "icon": "route",
+      "title": "Traffic management",
+      "text": "Weighted routing and traffic shifting for canary and blue/green releases, so a new version takes a controlled share of live requests before it takes all of them."
+    },
+    {
+      "icon": "shield",
+      "title": "Service mesh and mTLS",
+      "text": "Istio or Cilium configured for mutual TLS between workloads, with clear policies about which service may call which, and a plan for what happens when a sidecar misbehaves."
+    },
+    {
+      "icon": "gauge",
+      "title": "Resilience settings",
+      "text": "Timeouts, retries, circuit breaking and connection draining tuned together, because a retry policy set without a timeout budget turns a small blip into a queue."
+    },
+    {
+      "icon": "eye",
+      "title": "Observability of traffic",
+      "text": "Request rates, error rates and latency per route and per service pair, so you can see which hop is slow instead of inferring it from a user complaint."
+    },
+    {
+      "icon": "sliders",
+      "title": "Network policy",
+      "text": "Default-deny rules between namespaces with explicit allowances for the traffic that is genuinely needed, which shrinks the blast radius of a compromised workload."
+    }
+  ],
+  "deliverables": [
+    "Traffic flow diagram from client to service",
+    "Ingress and gateway configuration in version control",
+    "Mesh or policy configuration with mTLS enabled",
+    "Timeout, retry and drain settings documented per route",
+    "Failover test results and rollback procedure"
+  ],
+  "stack": ["kubernetes", "istio", "nginx", "cloudflare", "terraform", "prometheus", "argocd"],
+  "outcomes": [
+    { "value": "0", "label": "Unencrypted service hops" },
+    { "value": "5%", "label": "Canary traffic share to start" },
+    { "value": "1 min", "label": "Median failover time" }
+  ],
+  "process": [
+    {
+      "title": "Trace the traffic",
+      "text": "We follow requests from the client through every proxy, gateway and service, documenting the path and the hops that are not doing anything useful."
+    },
+    {
+      "title": "Agree the target topology",
+      "text": "A design covering ingress, routing, encryption and failure behaviour, sized to your team rather than to a conference talk about service mesh."
+    },
+    {
+      "title": "Configure and test failure",
+      "text": "Configuration lands as reviewed code, then we break things deliberately: kill a pod, drain a node, blackhole a dependency and watch how the routing responds."
+    },
+    {
+      "title": "Hand over the runbook",
+      "text": "Route changes, certificate rotation and traffic shifting documented as repeatable steps, with the commands your on-call engineer needs at three in the morning."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do we need a service mesh?",
+      "a": "Usually not at first. A mesh pays off when you have many services, a requirement for mTLS everywhere, or a need for fine-grained traffic control. Below that, ingress plus network policies and good observability cover most needs with far less to operate."
+    },
+    {
+      "q": "Will mTLS slow our application down?",
+      "a": "The overhead is small in practice, and connection reuse keeps it off the hot path for most traffic. The real cost is operational: certificate rotation, sidecar upgrades and debugging a mesh that silently drops traffic. We plan for those before enabling it broadly."
+    },
+    {
+      "q": "How do you test failover without an outage?",
+      "a": "We rehearse in a non-production environment first, then run controlled drills in production during low traffic: draining one node, forcing a zone failure or injecting latency. Each drill has a rollback step and an observer watching the error rate."
+    },
+    {
+      "q": "Can you work with the load balancers we already have?",
+      "a": "Yes. Cloud load balancers, nginx, HAProxy and hardware appliances are all workable. If a device is genuinely limiting you we will show the evidence, but most networking problems are configuration rather than hardware."
+    }
+  ],
+  "related": ["kubernetes", "dns-tls", "observability"],
+  "seo": {
+    "title": "Networking, Ingress & Service Mesh — Traffic You Can Trust",
+    "description": "Ingress, gateway and mesh configuration with mTLS, traffic shifting and tuned retries, so requests reach the right service and fail over cleanly."
+  }
+}

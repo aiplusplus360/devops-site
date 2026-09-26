@@ -1,0 +1,100 @@
+{
+  "id": "iam",
+  "tagline": "Least-privilege access that is provable, reviewed, and revoked the day someone changes teams.",
+  "overview": [
+    "Standing access accumulates. Roles are granted for one project and never removed, service accounts outlive the service, and a decade later an intern can read the customer database. We design roles around what a workload or person actually needs, then prove it with data from your cloud provider rather than from a spreadsheet.",
+    "On the human side we wire single sign-on, enforce multi-factor authentication and federate identity into cloud accounts so there are no separate local users to forget about. Reviews run on a schedule, and a leaver or a team move triggers removal automatically instead of waiting for someone to notice."
+  ],
+  "problems": [
+    "A contractor who left last year still has production access",
+    "Every service account has the permissions it was given in 2019",
+    "Access reviews are an annual spreadsheet exercise nobody finishes",
+    "We cannot show an auditor who could read customer data"
+  ],
+  "includes": [
+    {
+      "icon": "badge",
+      "title": "Role and policy design",
+      "text": "Roles scoped to the tasks a service performs, written as code, with wildcard permissions removed and the reasoning recorded alongside each decision."
+    },
+    {
+      "icon": "key",
+      "title": "Federated identity, no static keys",
+      "text": "OIDC federation between your identity provider, cloud accounts and CI systems, so workloads assume short-lived roles instead of holding access keys."
+    },
+    {
+      "icon": "shield",
+      "title": "Single sign-on and MFA",
+      "text": "Central authentication with phishing-resistant factors where available, conditional access for risky sessions, and group membership driving permissions rather than manual assignment."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Scheduled access reviews",
+      "text": "Recurring review cycles with the evidence attached: what each identity can do, when it was last used, and who is accountable for confirming it is still needed."
+    },
+    {
+      "icon": "refresh",
+      "title": "Automatic revocation",
+      "text": "Joiner, mover and leaver events from your identity provider remove or adjust access within minutes, closing the gap between someone leaving and their permissions disappearing."
+    },
+    {
+      "icon": "sitemap",
+      "title": "Permission reporting",
+      "text": "A view of who can reach what, generated from the cloud APIs and refreshed on a schedule, so access questions get answered from data rather than recollection."
+    }
+  ],
+  "deliverables": [
+    "Least-privilege role definitions committed as code",
+    "Identity provider and cloud federation configuration",
+    "Access review calendar with named accountable owners",
+    "Revocation runbook for leavers and team moves",
+    "Permission report showing who can reach what"
+  ],
+  "stack": ["aws", "azure", "gcp", "kubernetes", "terraform", "vault", "github"],
+  "outcomes": [
+    { "value": "0", "label": "Standing cloud access keys" },
+    { "value": "24h", "label": "Target for leaver revocation" },
+    { "value": "100%", "label": "Identities reviewed quarterly" }
+  ],
+  "process": [
+    {
+      "title": "Map identity and access",
+      "text": "We pull the real permission data from every cloud account and identity provider, then compare it against what the workload or person is supposed to do."
+    },
+    {
+      "title": "Design least-privilege roles",
+      "text": "Roles are rebuilt from usage evidence, and anything that cannot be scoped safely yet gets a documented temporary exception with an expiry date."
+    },
+    {
+      "title": "Roll out federation and SSO",
+      "text": "Identity providers are connected, local users are retired and break-glass accounts are separated, tested and stored somewhere a person cannot casually use them."
+    },
+    {
+      "title": "Review and automate revocation",
+      "text": "The review cycle starts with a named owner per application, and joiner-mover-leaver automation is tested with real leaver events before anyone relies on it."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will least privilege break our applications?",
+      "a": "It can if a role was quietly covering for something undocumented, which is exactly why we build roles from observed usage rather than from the existing policy. Changes ship with monitoring first, so an application that loses a permission it actually uses shows up quickly."
+    },
+    {
+      "q": "Do we have to move everything behind SSO at once?",
+      "a": "No, and moving in one step is usually a mistake for a large estate. We connect the highest-value systems first, leave local accounts alive with a documented expiry date, and migrate the rest in waves."
+    },
+    {
+      "q": "How is this different from a secrets management project?",
+      "a": "Secrets work is about what an application holds. This is about what an identity is allowed to do and for how long. They meet at federation, where a workload proves who it is and receives a short-lived credential, but the reviews and the deliverables are different."
+    },
+    {
+      "q": "Who owns access reviews after you leave?",
+      "a": "The application owners do, and that is deliberate. We set up the process, the tooling and the first two cycles with you, and the reporting is designed so a team lead can complete a review in a few minutes rather than an afternoon."
+    }
+  ],
+  "related": ["secrets", "compliance", "cloud-migration"],
+  "seo": {
+    "title": "IAM, Zero Trust & Access Reviews — Least Privilege",
+    "description": "Least-privilege roles, SSO and MFA, federated identity and scheduled access reviews, with revocation automated when people move or change teams."
+  }
+}

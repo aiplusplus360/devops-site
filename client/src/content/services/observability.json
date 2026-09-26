@@ -1,0 +1,100 @@
+{
+  "id": "observability",
+  "tagline": "See what is broken, who it affects and how bad it is before anyone complains.",
+  "overview": [
+    "Our work starts with a single question: if this service gets slow or dies right now, would you know before a customer emails. Most teams have dashboards nobody trusts and alerts nobody reads. We instrument the system so health, latency and error rate are visible on one screen, with the numbers tied to real user journeys rather than host CPU.",
+    "We are deliberately tool-agnostic. If Prometheus and Grafana already run, we build on them; if Datadog is paid for, we make it earn its licence. The deliverable is not a new tool but a working picture of the estate: metric coverage, service-level objectives, and dashboards your on-call engineer opens first because they answer rather than decorate."
+  ],
+  "problems": [
+    "The first sign of trouble is a customer support ticket",
+    "Nobody can say whether the platform is healthy right now",
+    "Dashboards were built once and never looked at again",
+    "We cannot tell a real outage from a noisy graph"
+  ],
+  "includes": [
+    {
+      "icon": "chart",
+      "title": "Metrics you can trust",
+      "text": "Prometheus, Datadog or CloudWatch collecting the signals that matter — latency, errors, saturation, throughput — with retention and scrape intervals sized to your budget."
+    },
+    {
+      "icon": "pulse",
+      "title": "Service-level objectives",
+      "text": "Each critical journey gets an explicit target and an error budget, so the argument about whether a release is safe becomes a calculation instead of an opinion."
+    },
+    {
+      "icon": "gears",
+      "title": "Dashboards and views",
+      "text": "A small set of screens organised by user journey: one for the platform at a glance, one per critical service, and a drill-down that starts from the symptom."
+    },
+    {
+      "icon": "search",
+      "title": "Coverage gap analysis",
+      "text": "We inventory the services that report nothing at all, then close the gaps first, because a blind service is more dangerous than a noisy one."
+    },
+    {
+      "icon": "terminal",
+      "title": "Instrumentation as code",
+      "text": "Dashboards, recording rules and alert definitions live in Git alongside the application, so they are reviewed, versioned and deployed by the same pipeline."
+    },
+    {
+      "icon": "book",
+      "title": "Onboarding for responders",
+      "text": "A short guide that tells a new on-call engineer which dashboard to open first, what a normal graph looks like, and when to escalate."
+    }
+  ],
+  "deliverables": [
+    "Metric and dashboard definitions committed to version control",
+    "Documented service-level objectives with error budgets",
+    "Instrumentation guide for every critical service",
+    "Coverage report listing services that report no metrics",
+    "Runbook for reading the dashboards during an incident"
+  ],
+  "stack": ["prometheus", "grafana", "datadog", "aws", "kubernetes", "terraform", "opentelemetry"],
+  "outcomes": [
+    { "value": "1 screen", "label": "Platform health at a glance" },
+    { "value": "99.95%", "label": "Average platform uptime" },
+    { "value": "0", "label": "Unmonitored critical services" }
+  ],
+  "process": [
+    {
+      "title": "Inventory what exists",
+      "text": "We list every service, the telemetry it emits today, and the questions your team currently cannot answer. That gap list drives everything after it."
+    },
+    {
+      "title": "Agree the signals that matter",
+      "text": "Together we pick the few metrics and journeys worth alerting on, and write down what healthy looks like for each one before any dashboard is built."
+    },
+    {
+      "title": "Instrument and deploy",
+      "text": "Exporters, agents and dashboards go in through pull requests, so your engineers see each change and can object before it becomes permanent."
+    },
+    {
+      "title": "Review after two weeks",
+      "text": "We come back once real traffic has flowed through, remove the panels nobody opened, and tune targets that turned out to be unrealistic."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "We already have Grafana. Is there anything to do?",
+      "a": "Usually yes, but less than you fear. Most estates have one well-built dashboard and a long tail of services nobody instrumented. We keep the good parts and finish the coverage, rather than starting over."
+    },
+    {
+      "q": "Does this mean replacing Datadog with open source?",
+      "a": "Not automatically. Vendor platforms are genuinely faster to run and carry fewer moving parts. We compare cost, retention and lock-in against a self-hosted stack and recommend whichever fits, including staying put."
+    },
+    {
+      "q": "How much overhead does instrumentation add?",
+      "a": "Sampling and scrape intervals keep the cost modest, usually low single-digit percent of CPU for application metrics. Tracing is the heavier one, which is why we set sample rates deliberately rather than tracing everything at full fidelity."
+    },
+    {
+      "q": "Can you monitor infrastructure we do not own?",
+      "a": "Partly. Managed services expose their own metrics, which we can pull in, but some platforms limit what you can see. Where a black box remains, we set an external synthetic check as the honest alternative to pretending we have visibility."
+    }
+  ],
+  "related": ["logging", "tracing", "sre"],
+  "seo": {
+    "title": "Monitoring & Observability — Metrics, SLOs and Dashboards",
+    "description": "Metrics, dashboards and service-level objectives that show what is broken, how badly and who is affected before the first support tickets arrive."
+  }
+}

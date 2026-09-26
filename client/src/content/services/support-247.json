@@ -1,0 +1,100 @@
+{
+  "id": "support-247",
+  "tagline": "An on-call rotation behind your pager, with agreed response windows and monthly incident reporting.",
+  "overview": [
+    "Covering 24/7 is not the same as promising an instant fix. We take the pager for the alerts you define, triage them against agreed runbooks, and escalate to your engineers when the incident genuinely needs application knowledge we do not hold. Response targets are written into the contract and reported against every month.",
+    "Our median response to a new page is around fifteen minutes, and we are honest that some incidents take hours to resolve because the root cause sits in code we have never seen. The value is in steady triage, clean handovers and a written record of what changed, so your team starts the next morning with facts rather than a thread of guesses."
+  ],
+  "problems": [
+    "One engineer is quietly carrying every out-of-hours page",
+    "Alert fatigue means real incidents get dismissed as noise",
+    "Incidents are resolved but nothing is written down",
+    "Nobody knows who to escalate to at 3 a.m."
+  ],
+  "includes": [
+    {
+      "icon": "headset",
+      "title": "On-call rotation",
+      "text": "A named rota with primary and secondary engineers covering the hours you need, backed by escalation paths if the first responder cannot reach the system."
+    },
+    {
+      "icon": "bell",
+      "title": "Alert triage",
+      "text": "We review the alerts your monitoring emits, cut the ones that cannot be acted on, and route the rest to a person with the runbook attached."
+    },
+    {
+      "icon": "pulse",
+      "title": "Incident response",
+      "text": "Agreed response targets by severity, a single incident channel per event, and clear criteria for when we hand the problem back to your team."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Escalation and handover",
+      "text": "Every incident ends with a written handover: what we saw, what we changed, what is still open and which engineer should pick it up in the morning."
+    },
+    {
+      "icon": "chart",
+      "title": "Monthly reporting",
+      "text": "Incident volume, response times, recurring causes and the cloud cost of the systems we cover, reviewed with you each month against the targets we agreed."
+    },
+    {
+      "icon": "gears",
+      "title": "Routine maintenance",
+      "text": "Planned work like patching, certificate renewal and backup verification sits inside the same agreement, so small chores stop being the reason nothing else gets done."
+    }
+  ],
+  "deliverables": [
+    "Runbook pack covering every alert we take",
+    "On-call rota and escalation contact matrix",
+    "Signed response and resolution targets by severity",
+    "Monthly incident, reliability and cost report",
+    "Quarterly review with remediation actions agreed"
+  ],
+  "stack": ["pagerduty", "grafana", "prometheus", "datadog", "kubernetes", "terraform", "aws"],
+  "outcomes": [
+    { "value": "15 min", "label": "Median incident response" },
+    { "value": "24/7", "label": "Named on-call coverage" },
+    { "value": "12", "label": "Reported reviews per year" }
+  ],
+  "process": [
+    {
+      "title": "Scope what we cover",
+      "text": "We list the services, environments and hours in scope, agree severity definitions, and write the response targets that the rest of the work is measured against."
+    },
+    {
+      "title": "Take over the pager",
+      "text": "Alerts are migrated in batches, tested against the runbooks, and only handed across once we have seen each one fire at least once in a controlled way."
+    },
+    {
+      "title": "Run and document",
+      "text": "During each shift we triage, resolve what is within scope and write the handover. Anything outside scope is documented and routed, not silently parked."
+    },
+    {
+      "title": "Review and improve",
+      "text": "The monthly report drives specific actions: an alert tuned, a runbook corrected, a recurring fault added to your engineering backlog with the evidence attached."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can you guarantee a fix within the response window?",
+      "a": "No, and any provider who does is describing a target rather than an outcome. We commit to response and update times by severity, and we keep working an incident until it is either resolved or handed back with a clear owner."
+    },
+    {
+      "q": "How quickly will someone respond at 3 a.m.?",
+      "a": "Our median is around fifteen minutes for a new page, but that is a median across all incidents, not a fixed promise for every one. Severity and complexity vary, and a genuine platform outage will pull in more engineers than a single failed job."
+    },
+    {
+      "q": "Do you need full admin access to our cloud?",
+      "a": "We ask for the least privilege that lets us do the job, which usually means a scoped role with break-glass access logged and reviewed. Where you would rather hold the keys, we can work from read-only access plus an escalation path to your on-call."
+    },
+    {
+      "q": "What happens when our own team goes on holiday?",
+      "a": "The rota is ours, so your leave does not create a coverage gap. We agree in advance who your escalation contact is during that period, and if there is nobody available we escalate to a named engineering lead on our side instead."
+    }
+  ],
+  "related": ["sre", "observability", "alerting"],
+  "seo": {
+    "title": "24/7 Managed DevOps Support — On-Call & Incident Response",
+    "description": "An on-call team covering your alerts 24/7, with agreed response targets by severity, documented handovers and monthly incident and reliability reporting."
+  }
+}

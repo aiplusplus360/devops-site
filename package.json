@@ -1,0 +1,33 @@
+{
+  "name": "devops-site",
+  "version": "2.0.0",
+  "private": true,
+  "description": "DevOps & cloud engineering marketing site — React + Express, server-rendered.",
+  "scripts": {
+    "dev": "node server/dev.mjs",
+    "build": "vite build && vite build --ssr",
+    "start": "node server/index.mjs",
+    "preview": "npm run build && npm start",
+    "content:data": "node deploy/extract-brief-data.js",
+    "content:check": "node deploy/verify-service-content.js",
+    "check:content": "node deploy/check-content.js",
+    "check:render": "node deploy/check-render.js",
+    "check:routes": "node deploy/check-routes.mjs",
+    "check": "npm run content:check && npm run check:content && npm run check:render && npm run check:routes"
+  },
+  "dependencies": {
+    "compression": "^1.7.5",
+    "express": "^4.21.2",
+    "multer": "^2.4.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "vite": "^6.3.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

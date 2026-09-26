@@ -1,0 +1,100 @@
+{
+  "id": "self-service",
+  "tagline": "New services start from a template that already has the boring parts done.",
+  "overview": [
+    "The first week of a new service should not be spent copying a repository, wiring a pipeline and guessing at the monitoring conventions. We build a small number of golden paths — a template plus the automation around it — so a team can scaffold a production-ready service in an afternoon and spend the rest of the week on the actual problem.",
+    "Golden paths are opinions, not mandates. A team that needs to deviate can, and the template records why the exception was made so the next person understands it. The catalogue shows what exists, who owns it and how healthy it is, which quietly removes the biggest source of duplicated work in most organisations."
+  ],
+  "problems": [
+    "Every new service starts with a week of copy-paste",
+    "Repositories diverge until no two services deploy the same way",
+    "New joiners spend their first sprint asking where things live",
+    "Provisioning a database means a ticket and a two-day wait"
+  ],
+  "includes": [
+    {
+      "icon": "branch",
+      "title": "Service scaffolding CLI",
+      "text": "A single command creates the repository, folder layout, pipeline, Dockerfile and starter tests from a template, with the service name and owner filled in."
+    },
+    {
+      "icon": "compass",
+      "title": "Golden path templates",
+      "text": "Two or three reference architectures covering the common shapes, an HTTP service, a batch job, a queue consumer, each with logging and metrics wired in."
+    },
+    {
+      "icon": "layers",
+      "title": "Infrastructure defaults",
+      "text": "Terraform modules for database, bucket and queue provisioning already parameterised in the template, so infrastructure follows the same conventions as the service."
+    },
+    {
+      "icon": "shield",
+      "title": "Guardrails and quotas",
+      "text": "Self-service provisioning is bounded by budget, region and naming policies, so a developer gets a resource in minutes without creating something finance discovers later."
+    },
+    {
+      "icon": "book",
+      "title": "Service catalogue entry",
+      "text": "Every scaffolded service registers itself with an owner, a tier and a runbook link, giving you a current inventory without chasing teams by email."
+    },
+    {
+      "icon": "graduation",
+      "title": "Onboarding documentation",
+      "text": "Templates ship with a README that explains the layout, the local setup and the deploy steps, so a newcomer can ship on their first day instead of their third week."
+    }
+  ],
+  "deliverables": [
+    "Scaffolding CLI and template repository you own",
+    "Two to three standardised golden path templates",
+    "Provisioning guardrails with budget and region limits",
+    "Populated service catalogue with owners and tiers",
+    "Contribution guide for adding new templates"
+  ],
+  "stack": ["github", "gitlab", "terraform", "kubernetes", "helm", "docker", "ansible"],
+  "outcomes": [
+    { "value": "15 min", "label": "New service scaffolded" },
+    { "value": "1 day", "label": "New joiner to first deploy" },
+    { "value": "3", "label": "Golden paths maintained" }
+  ],
+  "process": [
+    {
+      "title": "Survey what teams build",
+      "text": "We ask your engineers what they create most often and where the repeated setup hurts, then pick the two or three templates worth maintaining."
+    },
+    {
+      "title": "Write the first template",
+      "text": "One complete service built end to end, from repository creation to a running deployment, so the template is proven before it is published."
+    },
+    {
+      "title": "Add guardrails and catalogue",
+      "text": "Provisioning policies, budget limits and the catalogue entry go in next, so the path is safe to open up rather than limited to one pilot team."
+    },
+    {
+      "title": "Hand over the maintenance",
+      "text": "Your platform team learns how to add and version templates, and we agree a review cadence so the paths do not rot as your stack changes."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Does a golden path force everyone onto one stack?",
+      "a": "No, but it does make the default obvious, which is the point. Teams with a genuine reason to differ keep their own setup and we help them document it. A path nobody is required to follow only survives if using it is simply easier."
+    },
+    {
+      "q": "How many templates should we maintain?",
+      "a": "Fewer than you think. Two or three well-kept templates cover most service shapes; every extra template is another thing to upgrade when a base image or library changes. We would rather have three that are current than nine that are stale."
+    },
+    {
+      "q": "Do we need a developer portal to do this?",
+      "a": "Not to start. A CLI and a well-structured repository get most of the benefit, and we have seen teams run that way for a year. A portal such as Backstage adds search and discovery once the catalogue is large enough that people cannot remember it."
+    },
+    {
+      "q": "Who owns the templates after you leave?",
+      "a": "Your platform or enablement team, and we hand over the maintenance with a written contribution guide plus a paired walkthrough of a template upgrade. We stay reachable for questions, but the aim is that you never need us to add a service."
+    }
+  ],
+  "related": ["platform-eng", "cicd", "iac"],
+  "seo": {
+    "title": "Developer Self-Service & Golden Paths — Service Templates",
+    "description": "New services scaffolded in minutes from blessed templates, with CI, monitoring and infrastructure as code baked in and guardrails on provisioning."
+  }
+}

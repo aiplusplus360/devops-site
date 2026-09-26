@@ -1,0 +1,100 @@
+{
+  "id": "load-testing",
+  "tagline": "Prove where your system breaks, at a load level you chose in advance.",
+  "overview": [
+    "Performance problems are cheapest to find before customers do. We design load tests that reproduce realistic traffic — login, browse, checkout, background jobs — and run them against a production-like environment until something saturates. The output is not a pass mark but a curve: request rate against latency, with the knee visible.",
+    "Tests are written in code and kept in the repository, so they run on demand and in the pipeline rather than as a one-off exercise before a launch. Where a test needs production data to be realistic, we work from anonymised or synthetic sets, and we are honest about the parts of the system a synthetic load cannot faithfully reproduce."
+  ],
+  "problems": [
+    "We discover our limit during the busiest hour",
+    "Performance testing happens once, then never again",
+    "Nobody knows how many users we can actually serve",
+    "A small change quietly doubles response time"
+  ],
+  "includes": [
+    {
+      "icon": "gauge",
+      "title": "Test scenario design",
+      "text": "Journeys modelled from real traffic patterns and usage logs, with think times and data variation, so the load resembles users rather than a hammer."
+    },
+    {
+      "icon": "terminal",
+      "title": "Scripts as code",
+      "text": "k6, JMeter or Locust scenarios live beside the application and run in CI, so performance regressions are caught on a pull request instead of in production."
+    },
+    {
+      "icon": "chart",
+      "title": "Bottleneck analysis",
+      "text": "We correlate load generator output with application, database and network metrics to find which tier saturates first and what limits it."
+    },
+    {
+      "icon": "wave",
+      "title": "Spike and soak tests",
+      "text": "Short bursts test how the system handles sudden traffic, while long soak runs expose memory leaks, connection exhaustion and slow degradation over hours."
+    },
+    {
+      "icon": "check",
+      "title": "Acceptance thresholds",
+      "text": "Each scenario gets an explicit target for latency and error rate, so the test either passes or fails rather than producing a chart for someone to interpret."
+    },
+    {
+      "icon": "book",
+      "title": "Findings and fixes",
+      "text": "A prioritised list of the changes that would raise the ceiling most, ranked by effort, so the report leads to work rather than a folder."
+    }
+  ],
+  "deliverables": [
+    "Versioned load test scripts for critical journeys",
+    "Baseline performance report with latency curves",
+    "Bottleneck analysis covering app, database and network",
+    "Pass or fail thresholds wired into the pipeline",
+    "Prioritised remediation list with effort estimates"
+  ],
+  "stack": ["grafana", "kubernetes", "aws", "postgresql", "redis", "kafka", "opentelemetry"],
+  "outcomes": [
+    { "value": "1 curve", "label": "Request rate against latency" },
+    { "value": "2x peak", "label": "Load tested before launch" },
+    { "value": "hours", "label": "Longest soak run" }
+  ],
+  "process": [
+    {
+      "title": "Agree what to prove",
+      "text": "We start from a question you actually have — can we survive the campaign, will the migration hold — and design the test around answering it."
+    },
+    {
+      "title": "Build realistic scenarios",
+      "text": "From access logs and product analytics we build journey mixes and data sets that reflect your real traffic, including the boring parts that cause problems."
+    },
+    {
+      "title": "Run and observe",
+      "text": "Tests run against an isolated, production-like environment while we watch application, database and network metrics together, increasing load until the knee appears."
+    },
+    {
+      "title": "Report and re-run in CI",
+      "text": "Findings are written up with evidence, then the useful scenarios are moved into the pipeline so the ceiling is checked on every release."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can you test against production?",
+      "a": "Sometimes, carefully, and usually not. Most organisations get a better answer from a scaled, production-like environment with real data volumes. If production is the only realistic option, we run low-volume tests in a defined window with a rollback plan agreed first."
+    },
+    {
+      "q": "How many users should we test for?",
+      "a": "The honest answer is that concurrent users is a weak unit, because one user on a heavy report is worth fifty on a landing page. We size tests around request rates and journey mixes, then translate the result back into a user number for the business."
+    },
+    {
+      "q": "Our test environment is much smaller than production. Is it still worth it?",
+      "a": "Yes, if you scale the conclusion as well as the load. A smaller environment finds the shape of the curve and the first bottleneck; we mark clearly which findings will move at production scale and which might not."
+    },
+    {
+      "q": "Will you fix the bottlenecks you find?",
+      "a": "Where they are configuration or infrastructure problems, yes, that is often part of the engagement. Where the fix is application redesign, we document the options and the trade-offs, and your engineers make the change."
+    }
+  ],
+  "related": ["autoscaling", "chaos", "tracing"],
+  "seo": {
+    "title": "Load & Performance Testing — k6, JMeter and Locust",
+    "description": "Realistic load tests that find your breaking point in a controlled environment and turn bottlenecks into a prioritised list of fixes with evidence."
+  }
+}

@@ -1,0 +1,97 @@
+# =============================================================================
+# Apache / cPanel configuration
+# =============================================================================
+# For cPanel or any shared Apache host:
+#
+#   1. Upload every file to public_html/ (keep the assets/ folder structure).
+#   2. Rename this file to exactly:  .htaccess
+#      (cPanel's File Manager hides dotfiles — enable "Show Hidden Files".)
+#   3. Edit the ErrorDocument line if your site lives in a subfolder.
+#   4. Replace YOURDOMAIN.COM in the redirect block if you want www → non-www.
+#
+# Delete the parts you don't need — nothing here is required for the site to work.
+# =============================================================================
+
+# ---------------------------------------------------------------- 404 page ----
+ErrorDocument 404 /404.html
+
+# --------------------------------------------------------- force HTTPS ---------
+# Enable once your SSL certificate is issued and working.
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ------------------------------------------------- www → non-www (optional) ----
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTP_HOST} ^www\.YOURDOMAIN\.COM [NC]
+#   RewriteRule ^(.*)$ https://YOURDOMAIN.COM/$1 [L,R=301]
+# </IfModule>
+
+# ------------------------------------------------- clean URLs (optional) -------
+# Lets /services work as well as /services.html.
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{REQUEST_FILENAME}.html -f
+#   RewriteRule ^([^\.]+)$ $1.html [NC,L]
+# </IfModule>
+
+# ------------------------------------------------------------- compression -----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+# ---------------------------------------------------------------- caching ------
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Assets are versioned by filename — cache them hard.
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript     "access plus 1 year"
+  ExpiresByType image/svg+xml              "access plus 1 year"
+  ExpiresByType image/png                  "access plus 1 year"
+  ExpiresByType image/jpeg                 "access plus 1 year"
+  ExpiresByType image/webp                 "access plus 1 year"
+  ExpiresByType font/woff2                 "access plus 1 year"
+
+  # HTML must revalidate so edits go live immediately.
+  ExpiresByType text/html                  "access plus 0 seconds"
+  ExpiresByType application/xml            "access plus 1 day"
+  ExpiresByType text/plain                 "access plus 1 day"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Basic hardening
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # Enable once HTTPS is confirmed and permanent:
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ------------------------------------------------------------ MIME types ------
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+  AddType font/woff2   .woff2
+  AddType application/json .json
+</IfModule>
+
+# ------------------------------------------------- block dotfiles & clutter ---
+<FilesMatch "^\.|\.(md|example|log)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

@@ -1,0 +1,100 @@
+{
+  "id": "multi-cloud",
+  "tagline": "A costed answer on multi-cloud, including the answer that you do not need it.",
+  "overview": [
+    "Multi-cloud is a strategy question before it is a technical one. We start by asking which specific outcomes you need — regulatory separation, negotiating position, a genuine capability only one provider has, or simply avoiding a single point of failure — and then cost each of them honestly against the operational overhead of running two estates.",
+    "When the case holds, we design the smallest amount of duplication that delivers it: shared identity, consistent networking and a deployment model that does not require rewriting every service. When it does not, you get a written recommendation to stay on one provider, with the triggers that would change that advice later."
+  ],
+  "problems": [
+    "Two clouds are running and nobody can say what the second one bought",
+    "Engineers maintain parallel tooling and neither side is well supported",
+    "Data residency commitments cannot be met with the current region layout",
+    "Failover to the second provider has never actually been tested"
+  ],
+  "includes": [
+    {
+      "icon": "globe",
+      "title": "Outcome and driver mapping",
+      "text": "A short document naming the real drivers behind the multi-cloud ambition, separating regulatory or commercial requirements from preferences that would not survive a cost review."
+    },
+    {
+      "icon": "scale",
+      "title": "Placement assessment",
+      "text": "Each workload scored for where it belongs, based on data gravity, latency, licence portability and the cost of running it twice, with a recommended home for each one."
+    },
+    {
+      "icon": "badge",
+      "title": "Cross-cloud identity",
+      "text": "One directory driving access in both providers, with federated roles and no second set of long-lived credentials to rotate, review or lose track of."
+    },
+    {
+      "icon": "network",
+      "title": "Interconnect and DNS",
+      "text": "Private connectivity, routing and DNS designed so the two estates can talk without the public internet, including the failure modes when a link degrades rather than drops cleanly."
+    },
+    {
+      "icon": "gears",
+      "title": "Portability and abstraction",
+      "text": "Where portability is worth its cost we use Kubernetes, Terraform and open formats; where it is not, we use managed services deliberately and record the exit cost rather than pretending none exists."
+    },
+    {
+      "icon": "book",
+      "title": "Operating model",
+      "text": "Who owns which cloud, how on-call works across both, how incidents escalate when the problem spans providers, and what the escalation looks like with two vendor support contracts."
+    }
+  ],
+  "deliverables": [
+    "Written recommendation on whether to go multi-cloud",
+    "Workload placement map with cost and latency notes",
+    "Cross-cloud identity and network design document",
+    "Portability assessment listing abstraction and exit costs",
+    "Hybrid connectivity runbook covering degraded links"
+  ],
+  "stack": ["aws", "azure", "gcp", "kubernetes", "terraform", "istio", "vault", "cloudflare"],
+  "outcomes": [
+    { "value": "1 decision", "label": "Written and costed" },
+    { "value": "2", "label": "Clouds only where justified" },
+    { "value": "1 directory", "label": "Identity across providers" }
+  ],
+  "process": [
+    {
+      "title": "Interview the stakeholders",
+      "text": "We talk to the people who asked for multi-cloud and the people who will operate it, because the gap between those two answers is usually the whole problem."
+    },
+    {
+      "title": "Cost the options",
+      "text": "Three or four plausible end states are priced over three years, including egress, support duplication, tooling and the engineering time that never appears on a cloud bill."
+    },
+    {
+      "title": "Design the minimum viable version",
+      "text": "For a go decision we scope the smallest footprint that satisfies the driver, rather than starting with two full estates and a shared control plane."
+    },
+    {
+      "title": "Prove it on one workload",
+      "text": "One service runs in both places for a month, including a real failover exercise, so the operating cost and the on-call reality are measured rather than estimated."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Are you going to tell us multi-cloud is a bad idea?",
+      "a": "If that is what the numbers say, yes. Plenty of multi-cloud programmes are driven by a fear of lock-in that a documented exit plan would address at a fraction of the cost. We would rather keep one provider well run."
+    },
+    {
+      "q": "What does active-active really cost?",
+      "a": "More than most estimates. Two regions means duplication in networking, monitoring, security tooling and the people who understand both, plus a data strategy that survives the link between them failing. We price that explicitly before anyone commits."
+    },
+    {
+      "q": "Can we keep our on-premises data centre in the mix?",
+      "a": "Yes. Hybrid is often the practical answer, especially where latency, data volume or regulation keeps a workload on site. We design the connectivity and identity so on-premises looks like another region rather than a separate world."
+    },
+    {
+      "q": "How long before we see any benefit?",
+      "a": "If the driver is regulatory or contractual, the benefit is compliance, and design work can take six to twelve weeks. If the driver is resilience, expect several months before failover is genuinely trustworthy and regularly exercised."
+    }
+  ],
+  "related": ["cloud-migration", "networking", "finops"],
+  "seo": {
+    "title": "Multi-Cloud & Hybrid Strategy — Placement and Costing",
+    "description": "A deliberate, costed answer to multi-cloud or hybrid, covering workload placement, cross-cloud identity, connectivity and honest exit costs."
+  }
+}

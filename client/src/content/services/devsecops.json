@@ -1,0 +1,100 @@
+{
+  "id": "devsecops",
+  "tagline": "Security checks that run on every pull request, not in a panic before launch.",
+  "overview": [
+    "We embed security tooling into the pipeline your engineers already use, so a finding arrives as a pull request comment minutes after the commit rather than as a blocker two days before launch. Static analysis, dependency checks, container scans and dynamic tests run where they are cheap to act on, with clear ownership of every result.",
+    "The goal is fewer, better findings rather than a wall of noise nobody triages. We tune rulesets to your codebase, agree which severities actually block a merge, and route each category to a named owner. Where a scan is not worth its runtime, we say so and leave it out."
+  ],
+  "problems": [
+    "Security review happens the week before release, when it is too late",
+    "The scanner reports four hundred findings and nobody knows which matter",
+    "Nobody owns the vulnerability backlog, so it keeps growing",
+    "Developers see security as a team that blocks their work"
+  ],
+  "includes": [
+    {
+      "icon": "shield",
+      "title": "Static and dependency scanning",
+      "text": "SAST, secret detection and software composition analysis on every pull request, with results posted as review comments on the changed lines."
+    },
+    {
+      "icon": "search",
+      "title": "Dynamic and container tests",
+      "text": "DAST against a running preview environment and image scanning at build time, so exploitable runtime issues surface before the change reaches production."
+    },
+    {
+      "icon": "scale",
+      "title": "Severity and blocking rules",
+      "text": "An agreed policy for what fails a build, what opens a ticket and what is tracked quietly, written down so the rule survives staff changes."
+    },
+    {
+      "icon": "key",
+      "title": "Credential handling in CI",
+      "text": "Pipeline tokens replaced with short-lived federated credentials, so a compromised build agent cannot walk away with long-lived cloud keys."
+    },
+    {
+      "icon": "book",
+      "title": "Threat model workshops",
+      "text": "Short sessions with the engineers who own each service, mapping what an attacker would target and turning that into checks the pipeline can actually run."
+    },
+    {
+      "icon": "chart",
+      "title": "Findings and trend reporting",
+      "text": "A single view of open findings by severity, age and owning team, plus a monthly trend so you can see whether the backlog is shrinking."
+    }
+  ],
+  "deliverables": [
+    "Pipeline configuration with security stages committed and reviewed",
+    "Tuned rulesets and a documented severity policy",
+    "Named owners and escalation path for each finding category",
+    "Remediation backlog with risk-ranked, assignable tickets",
+    "Engineer-facing guide to running and extending the checks"
+  ],
+  "stack": ["github", "gitlab", "snyk", "sonarqube", "trivy", "vault", "kubernetes", "terraform"],
+  "outcomes": [
+    { "value": "12 min", "label": "Median security feedback" },
+    { "value": "1 week", "label": "Typical triage target" },
+    { "value": "0", "label": "Long-lived CI credentials" }
+  ],
+  "process": [
+    {
+      "title": "Inventory what you run",
+      "text": "We read your pipelines, review checklists and incident history to find where security decisions are actually made today, and where they get skipped."
+    },
+    {
+      "title": "Pick the checks that matter",
+      "text": "Each candidate scan is judged on signal quality and runtime, and the ones that survive become stages in a draft pipeline we can measure."
+    },
+    {
+      "title": "Roll out and tune",
+      "text": "Checks land as pull requests behind feature flags where possible, then we tune thresholds against real history instead of guessing at a comfortable default."
+    },
+    {
+      "title": "Hand over ownership",
+      "text": "We document who fixes what, train the owning teams on triage, and leave a monthly review rhythm that keeps the findings from piling up."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will security scans slow our pipeline down?",
+      "a": "Some of them will, and we are upfront about the cost. Fast checks run on every commit, while slower dynamic tests run nightly or on a schedule. In most cases the total adds a couple of minutes to a pull request, and caching keeps repeat scans cheap."
+    },
+    {
+      "q": "Do we need to replace our existing security tools?",
+      "a": "Rarely. Most teams already own a scanner or two and the problem is where they run, not which ones they bought. We wire what you have into the pipeline first, then recommend replacements only when a tool genuinely cannot fit the workflow."
+    },
+    {
+      "q": "How do you handle false positives?",
+      "a": "Every new check is tuned against your existing code before it blocks anything, so you can see the false positive rate on real history. Rules that stay noisy get suppressed, rewritten or dropped, and the decision is recorded so it is not relitigated later."
+    },
+    {
+      "q": "Does this make us compliant?",
+      "a": "No. Pipeline checks produce useful evidence, but compliance depends on policies, access control and record keeping well beyond the build. Treat this as one control among several, and speak to your auditor about what else they expect to see."
+    }
+  ],
+  "related": ["secrets", "image-scanning", "policy-as-code"],
+  "seo": {
+    "title": "DevSecOps & Compliance — Security Checks in Your Pipeline",
+    "description": "Security scanning, threat modelling and credential handling wired into CI/CD so vulnerabilities are caught during code review rather than in production."
+  }
+}

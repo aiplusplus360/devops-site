@@ -1,0 +1,100 @@
+{
+  "id": "modernisation",
+  "tagline": "Untangle the monolith and the hand-built VM estate one piece at a time.",
+  "overview": [
+    "Big-bang rewrites fail often enough that we do not propose them. Instead we find the seams in the existing system — the module with the clearest boundary, the feature with the least tangled data — and move one thing at a time, keeping the old path working until the new one is proven under real traffic.",
+    "The awkward parts are usually the database and the batch jobs. We plan schema changes that work for both old and new code, run the two side by side where necessary, and only decommission the legacy component once its traffic has been at zero for a period you agree. Some systems should be stabilised and left alone, and we will say so."
+  ],
+  "problems": [
+    "Every change requires a release train and a weekend outage",
+    "The original authors have left and the code has no tests",
+    "A single database is shared by six applications nobody can separate",
+    "The rewrite has been eighteen months in and still is not live"
+  ],
+  "includes": [
+    {
+      "icon": "refresh",
+      "title": "Strangler-fig sequencing",
+      "text": "A written order of work that routes traffic gradually to new components while the old ones keep serving, so every step is reversible and no step needs a downtime window."
+    },
+    {
+      "icon": "database",
+      "title": "Data and schema strategy",
+      "text": "Expand-contract schema changes planned so old and new code can run against the same database, with backfill jobs and a defined point where the legacy columns are dropped."
+    },
+    {
+      "icon": "box",
+      "title": "Containerising existing workloads",
+      "text": "Applications packaged into images without rewriting them first, which usually removes the hand-built host drift and makes the estate deployable by a pipeline rather than a person."
+    },
+    {
+      "icon": "route",
+      "title": "Interface and API extraction",
+      "text": "Stable interfaces placed in front of legacy code so the internals can be replaced later without every consumer noticing, which is what makes incremental work actually incremental."
+    },
+    {
+      "icon": "scale",
+      "title": "Risk and freeze control",
+      "text": "Each migration step has a go and no-go check, a rollback and a named owner, and we agree in advance which components are too risky to touch this year."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Decommissioning plan",
+      "text": "A dated list of what is switched off, in what order, and what evidence is needed first, because the savings only appear when the old servers are actually gone."
+    }
+  ],
+  "deliverables": [
+    "Component inventory with dependencies and risk ratings",
+    "Sequenced migration plan showing reversible steps",
+    "Schema change and backfill scripts with rollback",
+    "Container build pipeline for the replatformed apps",
+    "Decommissioning checklist with dates and owners"
+  ],
+  "stack": ["docker", "kubernetes", "terraform", "java", "dotnet", "postgresql", "gitlab"],
+  "outcomes": [
+    { "value": "1 seam", "label": "Opened per migration step" },
+    { "value": "0", "label": "Big-bang cutover weekends" },
+    { "value": "6 months", "label": "Typical first decommission" }
+  ],
+  "process": [
+    {
+      "title": "Map the tangle",
+      "text": "We trace calls, database tables and batch schedules across the estate, which produces the dependency picture most teams have never had written down."
+    },
+    {
+      "title": "Choose the first seam",
+      "text": "The first component is picked for low coupling and visible value, not for architectural elegance, because the point is to prove the approach before the difficult work starts."
+    },
+    {
+      "title": "Run both paths",
+      "text": "Old and new coexist behind routing or a feature flag, with metrics comparing them, until you are confident enough to send all the traffic to the new version."
+    },
+    {
+      "title": "Retire the old estate",
+      "text": "Once a component has been quiet for the agreed period we remove it, cancel its infrastructure and update the runbooks, so the saving shows on the bill."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Why not just rewrite it properly?",
+      "a": "Because rewrites run long, deliver value late and lose the operational knowledge embedded in the current system. We will support a rewrite when the existing code genuinely cannot be extended, but that is a smaller set of cases than most estimates assume."
+    },
+    {
+      "q": "How do you handle a shared database?",
+      "a": "Carefully. Shared schemas are usually the hardest constraint, so we introduce an interface or an API in front of the data before splitting anything, and the split itself is planned as a separate piece of work with its own rollback."
+    },
+    {
+      "q": "Will this slow down feature delivery?",
+      "a": "Some quarters, yes, because the same engineers are moving components and shipping features. We sequence the work so a visible improvement lands early, and we keep the migration backlog small enough that it does not become a second full-time job."
+    },
+    {
+      "q": "What if the application cannot be containerised?",
+      "a": "Some cannot, particularly anything with a hardware dependency or an unsupported runtime. For those we stabilise, isolate and document rather than force a migration, and we revisit the decision when the vendor releases a supported path."
+    }
+  ],
+  "related": ["cloud-migration", "docker", "database-devops"],
+  "seo": {
+    "title": "Legacy Application Modernisation — Strangler-Fig Migration",
+    "description": "Incremental modernisation of monoliths and hand-built VM estates, using strangler-fig sequencing, containerisation and a dated decommissioning plan."
+  }
+}

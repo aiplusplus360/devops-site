@@ -1,0 +1,100 @@
+{
+  "id": "tracing",
+  "tagline": "Follow one request through every service and see which hop added the delay.",
+  "overview": [
+    "A request entering your gateway might cross eight services before it returns. When it takes two seconds, average latency charts tell you the system is slow but not where. Tracing records the path a single request took, timing each span, so the slow hop is named instead of hunted.",
+    "We use OpenTelemetry because it keeps instrumentation portable: the same spans can go to Jaeger, Tempo or a commercial backend, so the choice of vendor stays reversible. Context is propagated through HTTP headers, queues and scheduled jobs, which is where most tracing efforts quietly fall apart, and we make sure traces link back to the log lines from the same request."
+  ],
+  "problems": [
+    "We know a request is slow but not which service",
+    "Every team blames the service downstream of them",
+    "Timeouts are guessed at rather than measured from data",
+    "Async work disappears once it leaves the request thread"
+  ],
+  "includes": [
+    {
+      "icon": "route",
+      "title": "Span instrumentation",
+      "text": "Libraries and SDKs added at service boundaries record keys, database calls and outbound requests, so each hop contributes its own timing without rewriting business logic."
+    },
+    {
+      "icon": "network",
+      "title": "Context propagation",
+      "text": "Trace identifiers travel through headers, message queues and background workers, which is what keeps one logical request connected when it is spread across asynchronous steps."
+    },
+    {
+      "icon": "chart",
+      "title": "Latency breakdowns",
+      "text": "Service maps and span waterfalls show where time is spent, separating slow databases from slow serialisation and network waits from genuine application work."
+    },
+    {
+      "icon": "eye",
+      "title": "Trace and log correlation",
+      "text": "Every trace carries an identifier that also appears in your log lines and error reports, so one click moves from a slow span to the exact failure message."
+    },
+    {
+      "icon": "sliders",
+      "title": "Sampling strategy",
+      "text": "Head and tail sampling rules keep the interesting traces — errors and outliers — while dropping the routine ones, which controls both cost and storage volume."
+    },
+    {
+      "icon": "gauge",
+      "title": "Performance budgets",
+      "text": "Once hops are measured, we set latency budgets per service so a regression from a new release shows up in a graph rather than in a complaint."
+    }
+  ],
+  "deliverables": [
+    "OpenTelemetry instrumentation library for your main runtime",
+    "Collector configuration with sampling rules in Git",
+    "Service map showing call paths and dependencies",
+    "Trace-to-log correlation setup and query examples",
+    "Latency baseline report per critical endpoint"
+  ],
+  "stack": ["opentelemetry", "jaeger", "grafana", "elastic", "kubernetes", "aws", "istio"],
+  "outcomes": [
+    { "value": "1 trace", "label": "Full path of a request" },
+    { "value": "800 ms", "label": "Typical slow hop found" },
+    { "value": "top 20", "label": "Endpoints traced first" }
+  ],
+  "process": [
+    {
+      "title": "Pick the critical journeys",
+      "text": "We start from the transactions that matter to the business and the incidents your team remembers, rather than tracing an arbitrary service because it was easy."
+    },
+    {
+      "title": "Instrument the first service",
+      "text": "One service gets traced end to end and reviewed with its team, so the pattern is proven before it is rolled out across the estate."
+    },
+    {
+      "title": "Roll out across services",
+      "text": "Instrumentation lands service by service through pull requests, with the collector and sampling configuration versioned centrally so consistency is not left to chance."
+    },
+    {
+      "title": "Use it on a real incident",
+      "text": "We sit with your engineers during a live investigation and show how the traces shorten the search, which is what makes the tooling stick."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will tracing slow down our production traffic?",
+      "a": "With sensible sampling the overhead is small, typically low single-digit percent. The cost is real, so we measure it in staging before enabling collection in production, and we never trace every request at full fidelity by default."
+    },
+    {
+      "q": "We use a vendor agent already. Is that enough?",
+      "a": "It covers whatever the vendor instruments automatically, which is usually HTTP and a few databases. The gaps tend to be internal calls, queue consumers and custom code, and those are exactly the places incidents happen."
+    },
+    {
+      "q": "Do we need to standardise on one language?",
+      "a": "No. OpenTelemetry has stable support for the mainstream runtimes, so a mixed Java, Go and Python estate is fine. The work is in the conventions for naming spans consistently across them."
+    },
+    {
+      "q": "How is this different from just better logging?",
+      "a": "Logs are events from one service; a trace is the causal chain across all of them. You can reconstruct a trace from logs with correlation ids, but it is slow and manual, which is the difference between answering an incident in minutes and in hours."
+    }
+  ],
+  "related": ["logging", "observability", "load-testing"],
+  "seo": {
+    "title": "Distributed Tracing — OpenTelemetry, Jaeger and Tempo",
+    "description": "Distributed tracing that follows a single request across every service, pointing at the hop that added the delay and linking traces to logs."
+  }
+}

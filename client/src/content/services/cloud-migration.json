@@ -1,0 +1,100 @@
+{
+  "id": "cloud-migration",
+  "tagline": "Moving workloads to the cloud without moving your risk profile.",
+  "overview": [
+    "Migration is a sequence of small decisions, not a single cutover. We start with a written assessment of what you run today: dependencies, traffic patterns, data volumes, licensing and the handful of systems nobody wants to touch. The output is a landing zone design and a migration order that puts the easy, high-value workloads first.",
+    "Account structure, network topology and identity get designed before anything moves, because retrofitting them afterwards is what turns a migration into a two-year programme. Each workload is then placed on the path that fits it: lift-and-shift where speed wins, replatform where a managed service removes real operational load, re-architect only where the business case holds."
+  ],
+  "problems": [
+    "The migration plan is a spreadsheet nobody has updated since last year",
+    "Costs after go-live are double the estimate that justified the move",
+    "Security review blocks the cutover because IAM was designed last",
+    "Two business-critical systems have no owner and no documentation"
+  ],
+  "includes": [
+    {
+      "icon": "cloud",
+      "title": "Landing zone design",
+      "text": "A multi-account structure with baseline networking, logging, backup and identity wired in from the start, delivered as code so every new account looks the same as the first."
+    },
+    {
+      "icon": "route",
+      "title": "Workload assessment",
+      "text": "Every application scored on dependencies, criticality, data sensitivity and change frequency, which produces the migration order and the business case for each path rather than a generic lift-and-shift mandate."
+    },
+    {
+      "icon": "network",
+      "title": "Connectivity and identity",
+      "text": "Hybrid links, DNS, firewall rules and federated access built and tested before the first production workload lands, so cutover night is not also network troubleshooting night."
+    },
+    {
+      "icon": "database",
+      "title": "Data migration planning",
+      "text": "Replication, cutover windows and rollback for the databases, including a rehearsal against a full-size copy so you know the real duration before the real night."
+    },
+    {
+      "icon": "gears",
+      "title": "Cost and sizing model",
+      "text": "A forecast built from your own utilisation data, with the commitments, storage tiers and egress charges that usually get missed, plus a comparison against staying where you are."
+    },
+    {
+      "icon": "check",
+      "title": "Cutover and validation",
+      "text": "A runbook with named owners, go and no-go checks, and a rollback that has been rehearsed on a copy of the workload, not written on the night."
+    }
+  ],
+  "deliverables": [
+    "Written assessment covering every application, dependency and owner",
+    "Landing zone defined as reviewed infrastructure code",
+    "Migration wave plan with sequencing and go-live windows",
+    "Cost model comparing migration options against staying put",
+    "Cutover runbooks with rollback steps and named owners"
+  ],
+  "stack": ["aws", "azure", "gcp", "terraform", "kubernetes", "postgresql", "vault"],
+  "outcomes": [
+    { "value": "3 waves", "label": "Typical migration sequence" },
+    { "value": "1 baseline", "label": "Landing zone for all accounts" },
+    { "value": "0", "label": "Workloads without an owner" }
+  ],
+  "process": [
+    {
+      "title": "Assess the estate",
+      "text": "Two to four weeks of read-only discovery covering applications, data flows, licences and the informal knowledge held by whoever runs each system today."
+    },
+    {
+      "title": "Design the landing zone",
+      "text": "Accounts, network, identity, logging and guardrails agreed with your security team and built as code, because a landing zone designed after the first workload never quite fits."
+    },
+    {
+      "title": "Pilot one workload",
+      "text": "We migrate a single representative application end to end, which exposes the real gaps in tooling, access and runbooks while the blast radius is still small."
+    },
+    {
+      "title": "Migrate in waves",
+      "text": "Workloads move in batches with rehearsed cutovers and a rollback available at every step, and each wave ends with the previous footprint trimmed or switched off."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will this cost more than we run today?",
+      "a": "Not automatically. Lifting a badly-sized estate unchanged often costs the same or slightly more once egress and support are counted. The savings usually come from the second pass: rightsizing, commitments and removing the machines nobody uses."
+    },
+    {
+      "q": "Do we have to re-architect to get any benefit?",
+      "a": "No, and we will say so if the business case is thin. Most workloads gain enough from a clean landing zone and managed databases. Re-architecting into microservices is a separate project with its own costs and should not be smuggled into a migration."
+    },
+    {
+      "q": "How do you handle the systems nobody understands?",
+      "a": "Carefully and late. We document what can be discovered from traffic and configuration, then migrate them with a longer rollback window, or recommend that they stay put until the team that built them is available."
+    },
+    {
+      "q": "Can you work with our existing cloud footprint?",
+      "a": "Yes. Brownfield landing zones are the common case. We will adopt or refactor what exists rather than demanding a greenfield rebuild, and we will flag the decisions that are expensive to reverse if you keep them."
+    }
+  ],
+  "related": ["iac", "multi-cloud", "modernisation"],
+  "seo": {
+    "title": "Cloud Architecture & Migration — Landing Zones and Cutovers",
+    "description": "Well-architected landing zones and phased workload migrations, with cost models, rehearsed cutover runbooks and rollback options at every wave."
+  }
+}

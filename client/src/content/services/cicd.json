@@ -1,0 +1,100 @@
+{
+  "id": "cicd",
+  "tagline": "Every commit builds, tests and ships itself, with a rollback you can trust.",
+  "overview": [
+    "A pipeline is only useful if engineers trust it. We build CI/CD that runs on every push, fails loudly when something is genuinely wrong, and takes minutes rather than the better part of an afternoon to say so. Build and test stages are parallelised and cached so the feedback loop stays short as the codebase grows.",
+    "We work inside your existing CI provider rather than moving you to ours, and we treat the pipeline as production code: reviewed in pull requests, versioned, and covered by its own tests. Where a tool is genuinely the bottleneck we will say so plainly, but most teams get further by fixing the pipeline they already have than by replacing it."
+  ],
+  "problems": [
+    "A release needs a release manager and a freeze window",
+    "The build has been red for weeks, so nobody reads it",
+    "Nobody can say which commit is actually running in production",
+    "Rolling back means re-running the deploy and hoping"
+  ],
+  "includes": [
+    {
+      "icon": "pipeline",
+      "title": "Build and test stages",
+      "text": "Parallelised jobs with dependency and layer caching, so a ten-minute build stays a ten-minute build as the test suite grows."
+    },
+    {
+      "icon": "check",
+      "title": "Merge-blocking quality gates",
+      "text": "Coverage thresholds, lint and security scans that stop a bad change at the pull request rather than in production."
+    },
+    {
+      "icon": "rocket",
+      "title": "Artifact promotion",
+      "text": "Build once, then promote the same immutable artifact through staging and production. No rebuilds, so no build-to-build drift."
+    },
+    {
+      "icon": "key",
+      "title": "Secrets and environments",
+      "text": "Credentials scoped per environment and injected at deploy time, never baked into an image or printed into a log line."
+    },
+    {
+      "icon": "refresh",
+      "title": "Tested rollback paths",
+      "text": "Every deploy gets a documented reversal that has actually been exercised, so the answer at 2am is a command and not a discussion."
+    },
+    {
+      "icon": "chart",
+      "title": "Pipeline metrics",
+      "text": "Duration, failure rate and lead time tracked over time, so you can tell whether the pipeline is getting better or quietly decaying."
+    }
+  ],
+  "deliverables": [
+    "Reviewed pipeline configuration committed to your repositories",
+    "Reusable workflow templates for new services",
+    "Environment and secrets configuration guide for every stage",
+    "Tested rollback and incident response runbook",
+    "Baseline metrics for build duration and failure rate"
+  ],
+  "stack": ["github", "gitlab", "jenkins", "docker", "kubernetes", "terraform", "snyk"],
+  "outcomes": [
+    { "value": "8 min", "label": "Median commit-to-feedback" },
+    { "value": "1 click", "label": "Standard rollback" },
+    { "value": "0", "label": "Manual deploy steps" }
+  ],
+  "process": [
+    {
+      "title": "Map the current flow",
+      "text": "We follow one commit from push to production and time every stage, so the bottleneck gets named rather than guessed at."
+    },
+    {
+      "title": "Design the target pipeline",
+      "text": "A written plan covering stages, caching strategy, quality gates and rollback, with the trade-offs of each choice spelled out."
+    },
+    {
+      "title": "Build behind pull requests",
+      "text": "Every change lands as a reviewable PR, so your engineers read and absorb the pipeline while it is being built."
+    },
+    {
+      "title": "Tune and hand over",
+      "text": "We watch the first weeks of real traffic, tune the slow stages, then walk your team through the runbook and hand over."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do we have to move to a different CI provider?",
+      "a": "No. We work in whatever you already run — GitHub Actions, GitLab CI, Jenkins or Azure Pipelines. Changing providers is a separate decision, and it is rarely the one that fixes a slow pipeline."
+    },
+    {
+      "q": "How long does this take?",
+      "a": "One service is typically two to three weeks. A multi-repo rollout with shared templates runs six to ten weeks, delivered incrementally so useful changes land in the first fortnight."
+    },
+    {
+      "q": "Can you work with our monorepo?",
+      "a": "Yes. Monorepos need path-based change detection and selective builds, otherwise every commit rebuilds everything and the pipeline collapses under its own weight. We set that up as part of the design."
+    },
+    {
+      "q": "What happens to the pipeline scripts we already have?",
+      "a": "We keep what works. Most pipelines are largely sound with a layer of accumulated workarounds on top; we remove the workarounds and leave the rest alone wherever we can."
+    }
+  ],
+  "related": ["gitops", "testing", "release-management"],
+  "seo": {
+    "title": "CI/CD Pipeline Engineering — Build, Test & Deploy Automation",
+    "description": "Automated build, test and deploy pipelines that turn every commit into a repeatable, auditable release, with quality gates and tested rollback."
+  }
+}

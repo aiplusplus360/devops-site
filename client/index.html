@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1b1b30">
+
+<!-- Per-route title, description, canonical, social tags and JSON-LD are
+     injected by the Express server between these two markers, replacing the
+     fallback block below entirely — so the served page never contains duplicate
+     title or description tags. The fallbacks only matter if this template is
+     ever opened without the server. See server/lib/render.mjs. -->
+<!--head-start-->
+<title>DevOps &amp; Cloud Engineering Services</title>
+<meta name="description" content="DevOps and cloud engineering: CI/CD pipelines, Kubernetes platforms, infrastructure as code, observability and DevSecOps — designed, automated and operated for you.">
+<!--head-end-->
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23B8E9E6'/><text y='68' x='50' text-anchor='middle' font-size='52' font-family='sans-serif' font-weight='bold' fill='%23131527'>%E2%9A%99</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Served straight from assets/css, untouched by the bundler, so the design and
+     every CSS animation stay byte-identical to the static site. It references
+     images as url("../img/…"), which resolves because it is served at
+     /css/styles.css and the images live at /img/… -->
+<link rel="stylesheet" href="/css/styles.css">
+
+<!-- Hero photo is the largest contentful paint; fetch it early rather than
+     waiting for CSS to discover it. -->
+<link rel="preload" as="image" href="/img/hero-desk.jpg">
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Everything below is rendered by React, the same on the server and in the
+     browser. Keeping the site chrome inside the app (rather than in this file)
+     is what lets the header, footer and to-top control render identically in
+     both places. -->
+<div id="root"><!--app-html--></div>
+
+<script type="module" src="/src/entry-client.jsx"></script>
+</body>
+</html>

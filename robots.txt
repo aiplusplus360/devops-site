@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Block nothing for now. If you add a /staging or /admin path, disallow it here.

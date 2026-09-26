@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------------------
+# Dependencies — restored on the CI runner and on the server with `npm ci`.
+# ---------------------------------------------------------------------------
+node_modules/
+
+# ---------------------------------------------------------------------------
+# Build output — produced by `npm run build` in CI and shipped from there.
+# Committing it would mean reviewing generated files and would let the deployed
+# bundle drift from its source.
+# ---------------------------------------------------------------------------
+dist/
+
+# ---------------------------------------------------------------------------
+# Runtime data. submissions.jsonl holds visitor names, email addresses and
+# messages, so it must never enter version control.
+# ---------------------------------------------------------------------------
+server/data/
+*.jsonl
+
+# ---------------------------------------------------------------------------
+# Secrets and local configuration.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# Logs and editor/OS noise.
+# ---------------------------------------------------------------------------
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

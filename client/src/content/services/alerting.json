@@ -1,0 +1,100 @@
+{
+  "id": "alerting",
+  "tagline": "Fewer pages, sent to the right person, and silence when nothing is wrong.",
+  "overview": [
+    "An on-call rota is only sustainable when the pager means something. Teams usually arrive with hundreds of rules, most of them firing on symptoms nobody can act on, and a rotation that has learned to ignore the noise. We rebuild the alert set around user-visible conditions, then make sure each one reaches a named person who can do something about it.",
+    "The plumbing matters as much as the rules: schedules, escalation policies, notification channels and quiet hours all need to reflect how your team actually works, including holidays and handovers. We configure PagerDuty, Opsgenie or Grafana OnCall and test it with a real page during the working day, so the first time it fires is not at three in the morning."
+  ],
+  "problems": [
+    "The pager fires all night for things nobody fixes",
+    "Real incidents get lost in a stream of noise",
+    "Nobody knows who is on call this weekend",
+    "Every alert routes to the same shared inbox"
+  ],
+  "includes": [
+    {
+      "icon": "bell",
+      "title": "Alert rule review",
+      "text": "We go through every existing rule, ask what action the responder should take, and either rewrite it around a clear signal or delete it."
+    },
+    {
+      "icon": "route",
+      "title": "Routing and escalation",
+      "text": "Alerts are mapped to the owning team with escalation paths, so an unanswered page moves on after a defined interval instead of sitting unread over a weekend."
+    },
+    {
+      "icon": "sliders",
+      "title": "Noise reduction",
+      "text": "Grouping, inhibition and dependency rules collapse a cascade of related failures into one page, which is usually the single largest reduction in volume."
+    },
+    {
+      "icon": "book",
+      "title": "On-call handover process",
+      "text": "A written routine covers what the outgoing engineer hands over, how schedule swaps work, and where the current state of open incidents is recorded."
+    },
+    {
+      "icon": "chart",
+      "title": "Responder feedback loop",
+      "text": "After each shift we log which pages were useful and which were not, then adjust the rules, so the rota keeps improving rather than calcifying."
+    },
+    {
+      "icon": "pulse",
+      "title": "Health checks that matter",
+      "text": "Synthetic probes from outside your network test the journeys customers actually use, catching failures that internal metrics miss entirely."
+    }
+  ],
+  "deliverables": [
+    "Reviewed alert inventory with owners and severity",
+    "Escalation policies mapped to owning teams",
+    "Notification channel and quiet hours setup",
+    "Runbook link attached to every alert page",
+    "Alert volume baseline with monthly review notes"
+  ],
+  "stack": ["pagerduty", "prometheus", "grafana", "datadog", "kubernetes", "aws"],
+  "outcomes": [
+    { "value": "60%", "label": "Typical cut in page volume" },
+    { "value": "1 owner", "label": "Named per alert" },
+    { "value": "24/7", "label": "Escalation coverage configured" }
+  ],
+  "process": [
+    {
+      "title": "Measure the current noise",
+      "text": "We pull the last month of pages and rank them by volume and by how often they were resolved with no action at all."
+    },
+    {
+      "title": "Rewrite around symptoms",
+      "text": "Rules are rebuilt around user-visible conditions and clear thresholds, with the noisy infrastructure checks demoted to dashboards where they belong."
+    },
+    {
+      "title": "Configure routing and policy",
+      "text": "Schedules, escalation steps and notification preferences are set up and written down, including who is accountable when a page is not acknowledged."
+    },
+    {
+      "title": "Test with a live page",
+      "text": "We trigger each critical alert during working hours, watch it arrive on every channel, and fix the gaps while everyone is awake."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can you reduce noise without missing real outages?",
+      "a": "That is the whole point, and it needs judgement rather than a blanket threshold. We look at what each page was supposed to detect, keep coverage for genuine failure, and remove only the rules that have demonstrably never led to action."
+    },
+    {
+      "q": "Do we have to change paging vendor?",
+      "a": "No. We work with PagerDuty, Opsgenie, Grafana OnCall or whatever you run today. The vendor is rarely the problem; unowned alerts and missing escalation paths are, and those travel with you either way."
+    },
+    {
+      "q": "What if engineers disagree about an alert being useful?",
+      "a": "That disagreement is useful evidence. We default to a written owner and an explicit action for each rule, and if neither can be produced, the alert is removed. Removing a page is reversible; burnout is not."
+    },
+    {
+      "q": "How do you handle alerts outside working hours?",
+      "a": "We separate what genuinely cannot wait until morning from what can, and only the former pages anyone. Everything else waits in a queue with the same owner and severity, reviewed at the start of the next working day."
+    }
+  ],
+  "related": ["sre", "observability", "documentation"],
+  "seo": {
+    "title": "Alerting & On-Call — Fewer Pages and Sensible Routing",
+    "description": "Alert tuning, escalation policies and rotation schedules that cut excess pager noise and route each page to the engineer who can actually fix it."
+  }
+}

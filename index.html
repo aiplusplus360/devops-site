@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DevOps &amp; Cloud Engineering Services</title>
+<meta name="description" content="DevOps and cloud engineering: CI/CD pipelines, Kubernetes platforms, infrastructure as code, observability and DevSecOps — designed, automated and operated for you.">
+<meta name="theme-color" content="#1b1b30">
+<link rel="canonical" href="https://example.com/">
+
+<!-- Social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="DevOps &amp; Cloud Engineering Services">
+<meta property="og:description" content="CI/CD, Kubernetes, infrastructure as code, observability and security — designed, automated and operated for you.">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A developer workspace with a laptop and monitor running a deployment pipeline.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://example.com/assets/img/og-image.jpg">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23B8E9E6'/><text y='68' x='50' text-anchor='middle' font-size='52' font-family='sans-serif' font-weight='bold' fill='%23131527'>%E2%9A%99</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Hero photo is the largest contentful paint; fetch it early rather than
+     waiting for CSS to discover it. -->
+<link rel="preload" as="image" href="assets/img/hero-desk.jpg">
+<link rel="stylesheet" href="assets/css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Your Company",
+  "description": "DevOps and cloud engineering services: CI/CD, infrastructure as code, Kubernetes, observability and DevSecOps.",
+  "url": "https://example.com",
+  "areaServed": "Worldwide",
+  "serviceType": [
+    "DevOps Consulting",
+    "CI/CD Automation",
+    "Cloud Infrastructure",
+    "Kubernetes",
+    "Site Reliability Engineering",
+    "DevSecOps"
+  ]
+}
+</script>
+</head>
+
+<body data-page="home">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="announcement" data-announcement></div>
+<header class="header" data-header></header>
+
+<main id="main">
+
+  <!-- ============================================================== HERO -->
+  <section class="hero">
+    <div class="hero__media" aria-hidden="true">
+      <img src="assets/img/hero-desk.jpg" alt="" width="1920" height="1180"
+           fetchpriority="high" decoding="async">
+    </div>
+    <div class="container hero__grid">
+
+      <div class="hero__copy">
+        <p class="eyebrow">DevOps &amp; Cloud Engineering</p>
+
+        <h1 class="display hero__title">
+          Ship software <span class="gradient-text">faster</span>,<br>
+          break things <em>less</em>.
+        </h1>
+
+        <p class="lead">
+          We build and operate the pipelines, platforms and guardrails behind your
+          product — so your engineers spend their time writing features instead of
+          babysitting deployments.
+        </p>
+
+        <div class="btn-row hero__actions">
+          <a class="btn btn--primary btn--lg" href="contact.html">Book a free audit</a>
+          <a class="btn btn--ghost btn--lg" href="services.html">Explore services</a>
+        </div>
+
+        <ul class="hero__trust">
+          <li class="hero__trust-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+            Fixed-fee assessment
+          </li>
+          <li class="hero__trust-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+            You own every account &amp; repo
+          </li>
+          <li class="hero__trust-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+            24/7 on-call available
+          </li>
+        </ul>
+      </div>
+
+      <div class="hero__panel">
+        <div class="terminal">
+          <div class="terminal__bar">
+            <span class="terminal__dot terminal__dot--a"></span>
+            <span class="terminal__dot terminal__dot--b"></span>
+            <span class="terminal__dot terminal__dot--c"></span>
+            <span class="terminal__title">release-pipeline.yml — run #412</span>
+          </div>
+<pre class="terminal__body" aria-label="An example release pipeline running from commit to production"><span class="tline" style="--n:0"><span class="c-dim">$</span> <span class="c-cmd ttype" style="--chars:20ch">git push origin main</span><span class="tcaret" style="animation-delay:1.2s"></span></span>
+<span class="tline" style="--n:1"> </span>
+<span class="tline" style="--n:2"><span class="c-key">▸ build</span>            compiled in 14.2s</span>
+<span class="tline" style="--n:3"><span class="c-key">▸ test</span>             <span class="c-ok">328 passed</span>, 0 failed</span>
+<span class="tline" style="--n:4"><span class="c-key">▸ scan</span>             <span class="c-ok">0 critical CVEs</span></span>
+<span class="tline" style="--n:5"><span class="c-key">▸ plan</span>             <span class="c-ok">3 to add</span>, 0 to destroy</span>
+<span class="tline" style="--n:6"><span class="c-key">▸ deploy</span>           rollout canary 10% → 100%</span>
+<span class="tline" style="--n:7"> </span>
+<span class="tline" style="--n:8"><span class="c-ok">✓ released v2.8.0 in 4m 12s</span></span>
+<span class="tline" style="--n:9"><span class="c-dim">  rollback available · </span><span class="c-warn">1 click</span></span></pre>
+        </div>
+
+        <div class="hero__badge">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          <span>
+            <strong>All systems operational</strong>
+            <span class="dim">99.95% uptime this month</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================= STATS -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="stats" data-stats></div>
+    </div>
+  </section>
+
+  <!-- =========================================================== FREE OFFER -->
+  <section class="section section--tight" id="free-offer">
+    <div class="container">
+      <div data-offer></div>
+    </div>
+  </section>
+
+  <!-- ========================================================== SERVICES -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What we do</p>
+        <h2 class="h2">Everything between a commit and production</h2>
+        <p class="lead">
+          Forty services across delivery automation, cloud, platform, reliability,
+          security and cost. Pick a single problem or hand us the whole delivery
+          lifecycle — each engagement is scoped in writing before a line of
+          automation is written.
+        </p>
+      </div>
+
+      <div class="grid grid--auto" data-services-featured></div>
+
+      <div class="btn-row" style="margin-top: 2.5rem">
+        <a class="btn btn--ghost" href="services.html">See all 40 services &amp; capabilities</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== TECHNOLOGIES -->
+  <section class="section section--edge" id="technologies">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Tooling</p>
+        <h2 class="h2">Fluent in the tools you already run</h2>
+        <p class="lead">
+          We work inside your existing stack rather than forcing a rewrite —
+          these are the platforms we touch every week.
+        </p>
+      </div>
+      <div class="marquee-stack" data-tech-marquee></div>
+      <div class="btn-row" style="justify-content: center; margin-top: 2.5rem">
+        <a class="btn btn--ghost" href="services.html#technologies">See the full stack</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== PHOTO BAND -->
+  <section class="band band--full">
+    <img class="band__img" src="assets/img/band-workspace.jpg" alt=""
+         width="1600" height="900" loading="lazy" decoding="async">
+    <div class="band__body reveal">
+      <p class="eyebrow">Inside an engagement</p>
+      <h2 class="h2">You'll see exactly what we're changing, as we change it</h2>
+      <p class="lead">
+        Every change lands as a reviewed pull request with the reasoning attached,
+        a written update each week, and a recorded walkthrough before we hand over.
+        If you ever want to take it in-house, the exit plan is already written.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--primary btn--lg" href="contact.html?service=advisory">Start with a free audit</a>
+        <a class="btn btn--ghost btn--lg" href="about.html">How we work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== PROCESS -->
+  <section class="section section--alt section--edge" id="process">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How we work</p>
+        <h2 class="h2">Four steps, no surprises</h2>
+        <p class="lead">
+          We start small, prove value quickly, and hand your team the keys at
+          every stage. No black boxes, no vendor lock-in.
+        </p>
+      </div>
+      <ol class="process" data-process></ol>
+    </div>
+  </section>
+
+  <!-- ======================================================= TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Results</p>
+        <h2 class="h2">Teams that stopped firefighting</h2>
+      </div>
+      <div class="grid grid--3" data-testimonials></div>
+    </div>
+  </section>
+
+  <!-- ============================================================= PLANS -->
+  <section class="section section--edge" id="plans">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Engagement models</p>
+        <h2 class="h2">Start where it makes sense</h2>
+        <p class="lead">
+          Most clients begin with a short audit. From there you can run the
+          roadmap yourself or keep us on the hook.
+        </p>
+      </div>
+      <div class="grid grid--3" data-plans></div>
+    </div>
+  </section>
+
+  <!-- =============================================================== FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2 class="h2">Before you get in touch</h2>
+      </div>
+      <div class="faq-list" data-faqs></div>
+    </div>
+  </section>
+
+  <!-- =============================================================== CTA -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 class="h2">Let's find out what's slowing you down</h2>
+        <p class="lead">
+          A 30-minute call, a short review of your setup, and an honest
+          recommendation — whether or not you hire us.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary btn--lg" href="contact.html">Book a free audit</a>
+          <a class="btn btn--ghost btn--lg" data-email href="#">Email us instead</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" data-footer></footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/tech.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

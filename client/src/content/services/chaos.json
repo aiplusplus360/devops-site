@@ -1,0 +1,100 @@
+{
+  "id": "chaos",
+  "tagline": "Break your own system on purpose, while you are watching and in control.",
+  "overview": [
+    "Resilience is a property you either have or you find out you lack. Chaos engineering is the practice of introducing controlled failures — killing a pod, dropping a dependency, adding network latency — to see what the system does before an unplanned event does it for you. It is an experiment with a hypothesis, not a dare.",
+    "We start small: a single dependency in a non-production environment, with a rollback understood by everyone in the room. As confidence grows you move to game days on the real system during working hours, with a stop button and a designated person watching the dashboards. Findings go into the backlog as concrete work."
+  ],
+  "problems": [
+    "We only learn how things fail during real outages",
+    "Nobody has tested what happens when a dependency dies",
+    "Retries and timeouts make an outage worse, not better",
+    "Resilience assumptions were written once and never checked"
+  ],
+  "includes": [
+    {
+      "icon": "wave",
+      "title": "Game day facilitation",
+      "text": "We plan and run a session with a stated hypothesis, a blast radius you approve, an abort condition and someone accountable for watching the system throughout."
+    },
+    {
+      "icon": "zap",
+      "title": "Failure injection",
+      "text": "Pod kills, network partitions, latency and dependency blackholes applied in a controlled way, using tooling that respects your clusters and makes every action reversible."
+    },
+    {
+      "icon": "network",
+      "title": "Dependency failure drills",
+      "text": "We take out the third-party API, the message broker or the identity provider and observe whether your system degrades or collapses, one dependency at a time."
+    },
+    {
+      "icon": "pulse",
+      "title": "Steady-state hypothesis",
+      "text": "Before any experiment we define the normal behaviour in numbers, so we can tell the difference between an expected wobble and a real regression."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Findings into backlog",
+      "text": "Every experiment produces notes, and every finding becomes a sized ticket with an owner, so the exercise ends in fixes rather than anecdotes."
+    },
+    {
+      "icon": "book",
+      "title": "Resilience patterns",
+      "text": "Where drills expose missing timeouts, unbounded retries or absent circuit breakers, we implement the patterns and show your team how they behave under load."
+    }
+  ],
+  "deliverables": [
+    "Game day plan with hypothesis and abort conditions",
+    "Reusable experiment templates for your platform",
+    "Written findings with evidence from each drill",
+    "Backlog items for every resilience gap found",
+    "Circuit breaker and timeout configuration where missing"
+  ],
+  "stack": ["kubernetes", "istio", "aws", "opentelemetry", "prometheus", "grafana", "kafka"],
+  "outcomes": [
+    { "value": "1 hour", "label": "First game day session" },
+    { "value": "0", "label": "Untested critical dependencies" },
+    { "value": "weekly", "label": "Findings reviewed with owners" }
+  ],
+  "process": [
+    {
+      "title": "Map the dependencies",
+      "text": "We inventory what each critical service depends on and rank those dependencies by how much damage their failure would cause."
+    },
+    {
+      "title": "Agree scope and safety",
+      "text": "Blast radius, timing and abort conditions are agreed in writing with the service owners before any experiment touches anything."
+    },
+    {
+      "title": "Run the first drill",
+      "text": "A single, reversible failure in the lowest-risk environment, watched live, with everyone clear on who can stop it and how."
+    },
+    {
+      "title": "Fix and widen the net",
+      "text": "We turn findings into work, retest once fixes land, then increase the scope of later sessions as confidence and coverage grow."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is chaos engineering safe to run on production?",
+      "a": "It can be, once you have practised elsewhere and the blast radius is small. The first experiments belong in a non-production environment. Production game days come later, during working hours, with an abort switch and the affected teams in the room."
+    },
+    {
+      "q": "Do we need special tools to start?",
+      "a": "For the first session, no. A script that deletes a pod or blocks a port is enough to learn something. Dedicated platforms become worthwhile when you run experiments regularly and need scheduling and audit history."
+    },
+    {
+      "q": "What if an experiment causes a real incident?",
+      "a": "That is a genuine risk, which is why scope, timing and abort conditions are agreed up front and why we start small. If it happens, the incident process runs as normal and the experiment becomes the first item in the postmortem."
+    },
+    {
+      "q": "How is this different from a load test?",
+      "a": "Load testing asks how much traffic the system can take; chaos testing asks how it behaves when a component is missing or slow. They complement each other, and we often run the same journeys under both conditions."
+    }
+  ],
+  "related": ["sre", "dr", "load-testing"],
+  "seo": {
+    "title": "Chaos Engineering — Game Days and Failure Injection",
+    "description": "Controlled failure injection and game days that show how your services behave when a dependency dies, while you can still stop it and see the result."
+  }
+}

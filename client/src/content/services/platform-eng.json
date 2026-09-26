@@ -1,0 +1,100 @@
+{
+  "id": "platform-eng",
+  "tagline": "One portal where your developers scaffold services, request environments and find the documentation.",
+  "overview": [
+    "An internal developer platform is worth building when the friction is measurable: new services that take a fortnight to stand up, documentation that nobody can find, and tickets queued behind a platform team. We build a portal around Backstage or an equivalent, backed by a service catalogue that records who owns what and how it is deployed.",
+    "The portal itself is the smaller half. Most of the work is agreeing which golden path a service should take, encoding it as a template with CI, infrastructure, monitoring and alerting already wired in, then making the paved road faster than going around it. Where a team has a legitimate reason to deviate, the platform should allow it and record why."
+  ],
+  "problems": [
+    "New services take two weeks before the first line of code",
+    "Every team reinvents deployment, logging and alerting setup",
+    "Nobody knows who owns a service or where its docs live",
+    "The platform team is a ticket queue rather than a product"
+  ],
+  "includes": [
+    {
+      "icon": "compass",
+      "title": "Developer portal",
+      "text": "A single entry point listing services, ownership, documentation and deploy status, so engineers stop searching chat history to find out how something works."
+    },
+    {
+      "icon": "branch",
+      "title": "Golden path templates",
+      "text": "Scaffolding that produces a working service with pipeline, container, infrastructure, dashboards and alerts on day one, instead of a checklist of manual steps."
+    },
+    {
+      "icon": "layers",
+      "title": "Service catalogue",
+      "text": "A machine-readable register of every service, its owner, tier and dependencies, kept current by the pipelines rather than by a quarterly spreadsheet exercise."
+    },
+    {
+      "icon": "sliders",
+      "title": "Self-service provisioning",
+      "text": "Requests for databases, queues and namespaces fulfilled by automation with guardrails, so a developer waits minutes and the platform team stops being a queue."
+    },
+    {
+      "icon": "book",
+      "title": "Documentation as a product",
+      "text": "Templates for runbooks, decision records and onboarding guides, reviewed with the same rigour as code and linked from the service catalogue entry."
+    },
+    {
+      "icon": "chart",
+      "title": "Adoption measurement",
+      "text": "Time-to-first-deploy, template use and support tickets tracked over time, so you can tell whether the platform is reducing friction or adding a new layer of it."
+    }
+  ],
+  "deliverables": [
+    "Portal deployment with catalogue and ownership data",
+    "Two or three golden path service templates",
+    "Self-service request workflows with automated guardrails",
+    "Documentation and runbook standards for the catalogue",
+    "Adoption metrics dashboard and baseline report"
+  ],
+  "stack": ["kubernetes", "github", "terraform", "argocd", "docker", "prometheus", "postgresql"],
+  "outcomes": [
+    { "value": "1 day", "label": "New service to first deploy" },
+    { "value": "80%", "label": "Services on the golden path" },
+    { "value": "0", "label": "Manual provisioning tickets" }
+  ],
+  "process": [
+    {
+      "title": "Interview the developers",
+      "text": "We talk to the teams who use the platform and the ones who avoid it, collecting the specific tasks that currently cost them the most time."
+    },
+    {
+      "title": "Choose the first golden path",
+      "text": "Rather than boiling the ocean, we pick one common service shape and build the template end to end, including CI, infrastructure and monitoring."
+    },
+    {
+      "title": "Stand up the portal",
+      "text": "The catalogue, ownership records and documentation links go live with a small number of services, so the portal reflects reality on its first day."
+    },
+    {
+      "title": "Grow adoption deliberately",
+      "text": "We help the first few teams migrate, measure the friction they hit, and iterate on the templates before pushing for wider adoption across the organisation."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do we need a full-time platform team to run this?",
+      "a": "The portal needs an owner, but not a large one. One or two engineers can maintain templates and provisioning automation once they exist. The work fails when the portal is launched and then left unowned, so we plan for that explicitly."
+    },
+    {
+      "q": "Is Backstage the only option?",
+      "a": "No. Backstage is common because it is open source and extensible, but a well-documented set of templates and a service catalogue can live in the tools you already pay for. We recommend the smallest thing that solves your problem."
+    },
+    {
+      "q": "How do you stop the golden path becoming a straitjacket?",
+      "a": "Templates are defaults, not mandates. Teams can deviate, but the catalogue should record the deviation and its reason. If many teams route around the same part of the path, that is a signal the template itself is wrong."
+    },
+    {
+      "q": "What if developers simply do not use it?",
+      "a": "That usually means the path is slower than the alternative or the tools are worse than what people already had. We measure adoption by task completion rather than page views, and treat low take-up as a product problem to diagnose, not a compliance one."
+    }
+  ],
+  "related": ["self-service", "preview-envs", "documentation"],
+  "seo": {
+    "title": "Internal Developer Platform — Portal and Golden Paths",
+    "description": "A developer portal with service catalogue, golden path templates and self-service provisioning, so new services ship in a day rather than a fortnight."
+  }
+}

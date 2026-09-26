@@ -1,0 +1,100 @@
+{
+  "id": "preview-envs",
+  "tagline": "A complete environment for every pull request, destroyed the moment the branch merges.",
+  "overview": [
+    "Reviewing a change from a screenshot or a shared staging box hides the bugs that only appear when the whole stack is running. We give each pull request its own namespace or stack: application, database, queues, seeded test data and a URL the reviewer opens in a browser. Nothing is shared with staging, so two branches cannot interfere with each other.",
+    "The engineering is mostly in the lifecycle. Environments are created by the pipeline, seeded from anonymised production-shaped data, labelled with an expiry, and reclaimed automatically so the cloud bill stays flat. We also plan the awkward cases: migrations that must run against the new schema, third-party callbacks that need a stable hostname, and services too expensive to duplicate on every branch."
+  ],
+  "problems": [
+    "Everyone tests on the same staging box and overwrites each other",
+    "Test data is stale, hand-built and looks nothing like production",
+    "Branches stay open for weeks, so environment costs pile up",
+    "Reviewers approve changes they have never actually run"
+  ],
+  "includes": [
+    {
+      "icon": "sparkles",
+      "title": "Per-pull-request stacks",
+      "text": "A namespace or stack created on open and reviewed on a unique URL, with the application, database and dependencies deployed together and no crossover with staging."
+    },
+    {
+      "icon": "database",
+      "title": "Seed data pipeline",
+      "text": "Anonymised subsets of realistic data loaded into each environment, refreshed on a schedule, so tests exercise the volumes and edge cases production actually contains."
+    },
+    {
+      "icon": "refresh",
+      "title": "Automatic teardown",
+      "text": "Environments expire when the branch merges or after a fixed idle period, with a warning first, so nothing is left running because someone forgot."
+    },
+    {
+      "icon": "shield",
+      "title": "Isolation by default",
+      "text": "Separate credentials, separate databases and network rules that prevent a preview environment from reaching production data or a colleague's stack."
+    },
+    {
+      "icon": "route",
+      "title": "Stable routing",
+      "text": "Predictable hostnames and wildcard DNS so webhooks, OAuth callbacks and third-party integrations point somewhere consistent instead of a new address on every push."
+    },
+    {
+      "icon": "chart",
+      "title": "Cost controls",
+      "text": "Resource quotas, small instance types and scheduled shutdown for idle environments, with the running cost of previews reported alongside the rest of your cloud spend."
+    }
+  ],
+  "deliverables": [
+    "Environment template for one service or full stack",
+    "Seed and anonymisation scripts for test data",
+    "Pipeline jobs for create, update and teardown",
+    "Expiry and idle-shutdown policy with alerting",
+    "Preview URL convention and access control rules"
+  ],
+  "stack": ["kubernetes", "helm", "github", "terraform", "docker", "postgresql", "argocd"],
+  "outcomes": [
+    { "value": "1 PR", "label": "Environment per change" },
+    { "value": "10 min", "label": "Environment creation time" },
+    { "value": "0", "label": "Orphaned environments left running" }
+  ],
+  "process": [
+    {
+      "title": "Map the review needs",
+      "text": "We find out which changes actually need a running stack and which dependencies have to be real, rather than assuming every service can be duplicated cheaply."
+    },
+    {
+      "title": "Build the environment template",
+      "text": "Helm charts, Terraform or manifests that stand up the stack from scratch in minutes, parameterised per branch and tested on a throwaway environment."
+    },
+    {
+      "title": "Solve data and routing",
+      "text": "Seed jobs load a realistic dataset, wildcard DNS gives each environment a stable hostname, and secrets are scoped so previews cannot touch production."
+    },
+    {
+      "title": "Automate the lifecycle",
+      "text": "Creation on pull request, updates on each push, teardown on merge and a nightly sweep for anything that outlived its branch."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can every service get a preview environment?",
+      "a": "Not realistically. Stateful services, expensive data warehouses and anything with a licensed dependency often cannot be duplicated per branch. We identify those first and provide a shared alternative, so the environments you do get are trustworthy."
+    },
+    {
+      "q": "How do you keep test data realistic without copying production?",
+      "a": "We take a production-shaped subset, replace direct identifiers with generated values, and keep the statistical distribution intact. Referential integrity is preserved so joins still work, and the transformation runs on a schedule rather than by hand."
+    },
+    {
+      "q": "Will this make our cloud bill go up?",
+      "a": "Per-preview cost is real, and pretending otherwise is dishonest. We offset it with small instance sizes, idle shutdown and expiry rules, and the savings from people no longer keeping a shared staging stack running around the clock."
+    },
+    {
+      "q": "Do reviewers need to know Kubernetes to use them?",
+      "a": "No. The reviewer gets a URL and a login. Everything below that is the platform's problem, and we write the pipeline so engineers can change the environment definition without understanding the whole cluster."
+    }
+  ],
+  "related": ["platform-eng", "cicd", "kubernetes"],
+  "seo": {
+    "title": "Ephemeral & Preview Environments for Every Pull Request",
+    "description": "Isolated per-branch environments with seeded test data, stable URLs and automatic teardown, so reviewers test the real stack before they approve a change."
+  }
+}

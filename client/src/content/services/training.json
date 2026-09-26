@@ -1,0 +1,100 @@
+{
+  "id": "training",
+  "tagline": "Your engineers leave able to run the platform, not just watch someone else do it.",
+  "overview": [
+    "Training that happens away from your codebase rarely survives contact with it. We build the curriculum around the systems you actually run, using your repositories, your cluster and your pipelines as the exercises. Sessions are short and repeated rather than a single intense week, because most platform skills only stick when they are practised on real problems over time.",
+    "Every engagement starts with a skills map: what the team can already do unaided, what it can do with help, and what nobody currently owns. From there we agree the handful of capabilities worth building this quarter, then pair on live tickets to build them. You keep the workshop material, the internal notes and the runbooks your team writes along the way."
+  ],
+  "problems": [
+    "Only one person understands how the cluster is wired",
+    "Training runs are generic and forgotten within a fortnight",
+    "Contractors leave and take the operational knowledge with them",
+    "New joiners spend weeks reverse-engineering the setup"
+  ],
+  "includes": [
+    {
+      "icon": "graduation",
+      "title": "Tailored workshops",
+      "text": "Half-day sessions built around your actual stack and conventions, covering infrastructure as code, Kubernetes and pipelines, with exercises drawn from work your team recognises."
+    },
+    {
+      "icon": "branch",
+      "title": "Pairing on real work",
+      "text": "We sit on your tickets rather than a sandbox, writing the Terraform, manifests and pipeline changes together so the reasoning behind each choice is visible."
+    },
+    {
+      "icon": "check",
+      "title": "Code review coaching",
+      "text": "Review comments on genuine pull requests, explaining what to change and why, so standards spread through the team instead of arriving as a policy document."
+    },
+    {
+      "icon": "book",
+      "title": "Internal knowledge base",
+      "text": "Runbooks, decision notes and troubleshooting guides written by your team with our help, stored in your repository and reviewed like code so they stay current."
+    },
+    {
+      "icon": "compass",
+      "title": "Skills map and plan",
+      "text": "An honest picture of what the team can do unaided, where the gaps are, and a quarterly plan naming who is learning what and by when."
+    },
+    {
+      "icon": "gauge",
+      "title": "Readiness check",
+      "text": "At the end we watch your engineers run a change without us, and report whether they are ready to own it or need another round."
+    }
+  ],
+  "deliverables": [
+    "Workshop material tailored to your stack",
+    "Skills map with gaps and named owners",
+    "Paired changes committed under your engineers' names",
+    "Internal runbooks, decision notes and troubleshooting guides",
+    "Quarterly enablement plan with review checkpoints"
+  ],
+  "stack": ["terraform", "kubernetes", "docker", "github", "gitlab", "argocd", "prometheus"],
+  "outcomes": [
+    { "value": "4", "label": "Engineers enabled per cohort" },
+    { "value": "1 quarter", "label": "Typical enablement cycle" },
+    { "value": "0", "label": "Single-owner critical systems" }
+  ],
+  "process": [
+    {
+      "title": "Map the skills gap",
+      "text": "We watch how the team works today, talk to the people on call, and agree which capabilities matter most for the next quarter rather than listing everything at once."
+    },
+    {
+      "title": "Design the curriculum",
+      "text": "A written plan naming sessions, exercises, who attends and what each person should be able to do unaided when the quarter ends."
+    },
+    {
+      "title": "Teach and pair",
+      "text": "Sessions run in short blocks, with the theory kept brief and most of the time spent on your tickets, your pull requests and your incidents."
+    },
+    {
+      "title": "Hand over ownership",
+      "text": "We deliberately reduce our involvement, letting your engineers lead the change while we review from the side and step in only when asked."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can you train a team with mixed experience levels?",
+      "a": "Yes, and most teams are mixed. Sessions are split by what people can already do rather than by job title, and the pairing lets stronger engineers explain their reasoning while newer ones get their questions answered on real work."
+    },
+    {
+      "q": "What if our tooling changes halfway through?",
+      "a": "We expect it to. The curriculum covers concepts and habits that survive a tool swap, and the workshop material is versioned in your repository so it can be updated when your stack moves on. We would rather teach transferable practice than a fixed tool manual."
+    },
+    {
+      "q": "How do you know the training worked?",
+      "a": "We check whether your engineers can make a change without us: raising the pull request, explaining the trade-offs and handling the follow-up. That readiness check is done at the end of the engagement and repeated at the next quarter review."
+    },
+    {
+      "q": "Is this classroom-style training or hands-on?",
+      "a": "Hands-on, almost entirely. Short theory blocks set context, then we work in your repositories on tickets the team already owns. Nobody learns Kubernetes by watching slides about namespaces; they learn it by breaking a cluster that is not production."
+    }
+  ],
+  "related": ["advisory", "documentation", "platform-eng"],
+  "seo": {
+    "title": "Training & Team Enablement — Workshops, Pairing & Handover",
+    "description": "Tailored workshops, pairing on live tickets and internal runbooks, so your engineers can confidently run the platform without a consultant in the room."
+  }
+}

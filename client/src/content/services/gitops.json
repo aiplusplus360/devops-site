@@ -1,0 +1,100 @@
+{
+  "id": "gitops",
+  "tagline": "Your cluster state lives in Git, and every rollout is a diff you can read.",
+  "overview": [
+    "The cluster should look exactly like the repository says it does, and nothing should change it by accident. We set up a reconciler — ArgoCD or Flux — that watches your manifests and pulls them into the cluster, so a manual kubectl edit is corrected automatically instead of quietly becoming production. Configuration arrives through review, not through someone's terminal history.",
+    "Releases then move in steps rather than all at once: a canary takes a slice of traffic, a blue/green switch holds both versions live for a few minutes, and a feature flag separates deploy from release entirely. Rollback is a revert of the commit that caused the drift, applied by the same reconciler that rolled it out."
+  ],
+  "problems": [
+    "Someone edits a live cluster and nobody knows it happened",
+    "Staging has drifted so far from production that tests mean nothing",
+    "A bad release takes an hour of emergency kubectl to undo",
+    "Environment promotion depends on one engineer's memory and a wiki page"
+  ],
+  "includes": [
+    {
+      "icon": "layers",
+      "title": "Declarative desired state",
+      "text": "Application and environment configuration described as manifests, so what should be running is readable, diffable and reviewable before it ever reaches a cluster."
+    },
+    {
+      "icon": "refresh",
+      "title": "Continuous reconciliation",
+      "text": "ArgoCD or Flux compares live resources against the repository on a loop and corrects drift within minutes, including changes made by hand during an incident."
+    },
+    {
+      "icon": "rocket",
+      "title": "Progressive rollouts",
+      "text": "Canary and blue/green strategies release to a small share of traffic first, with automated promotion or abort driven by error rate and latency measurements."
+    },
+    {
+      "icon": "sliders",
+      "title": "Feature flag control",
+      "text": "Flags let you deploy code dark and release it later per team, tenant or region, so a rollback can be a toggle rather than a deployment."
+    },
+    {
+      "icon": "key",
+      "title": "Secrets out of Git",
+      "text": "Encrypted secrets with SOPS or External Secrets keep credentials out of plain manifests while still letting the reconciler inject them at deploy time."
+    },
+    {
+      "icon": "chart",
+      "title": "Rollout visibility",
+      "text": "Sync status, health and rollout history for every application in one view, so you can see which environments are behind before it becomes an outage."
+    }
+  ],
+  "deliverables": [
+    "ArgoCD or Flux installed across every target cluster",
+    "Application manifests and environment overlays in a repository you own",
+    "Progressive rollout policy for canary and blue/green releases",
+    "Drift alerts wired into your existing on-call rotation",
+    "Runbook for rollback, sync failure and reconciler recovery"
+  ],
+  "stack": ["argocd", "flux", "kubernetes", "helm", "github", "gitlab", "vault"],
+  "outcomes": [
+    { "value": "3 min", "label": "Median drift correction" },
+    { "value": "1 revert", "label": "Production rollback" },
+    { "value": "0", "label": "Unreviewed cluster changes" }
+  ],
+  "process": [
+    {
+      "title": "Audit current deploy paths",
+      "text": "We list every way code and configuration currently reach a cluster, including scripts, consoles and manual steps, and mark which ones cause drift."
+    },
+    {
+      "title": "Model environments as overlays",
+      "text": "Base manifests plus per-environment overlays for staging, production and any short-lived environments, so differences are explicit and reviewable."
+    },
+    {
+      "title": "Wire the reconciler",
+      "text": "Install and harden ArgoCD or Flux, connect it to your repository, and configure sync policies, health checks and notification targets for failed reconciliations."
+    },
+    {
+      "title": "Rehearse rollout and rollback",
+      "text": "We run a real progressive release and a real rollback in front of your team, then hand over the runbook and the alert routing."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is GitOps only for Kubernetes?",
+      "a": "It is most mature there, and that is where ArgoCD and Flux do their best work. You can apply the same pattern to Terraform with Atlantis or to virtual machines with a config manager, but the reconciliation loop is slower and less convincing outside a cluster."
+    },
+    {
+      "q": "What stops a developer from committing straight to production?",
+      "a": "Branch protection plus a sync policy that only reconciles the main branch, with production promoting through an approved pull request. ArgoCD can also require a manual sync for sensitive environments, though most teams find that friction outweighs the safety once the review process is trusted."
+    },
+    {
+      "q": "How does this differ from the CI/CD work you do?",
+      "a": "CI/CD covers the build, test and artifact stage that produces a version. GitOps picks up from there, deciding what that version should look like in each environment and keeping the cluster aligned with that decision. Most teams need both, and they share a repository."
+    },
+    {
+      "q": "Can we keep our existing Helm charts?",
+      "a": "Yes, and we usually start there. Charts are rendered or used directly by the reconciler; we may add Kustomize overlays around them for environment-specific values. The migration is a change of delivery mechanism, not a rewrite of everything you have written."
+    }
+  ],
+  "related": ["cicd", "kubernetes", "release-management"],
+  "seo": {
+    "title": "GitOps & Release Management — ArgoCD, Flux & Rollouts",
+    "description": "Git becomes the single source of truth for what runs where, with ArgoCD or Flux reconciliation, canary rollouts and a rollback that is one commit revert."
+  }
+}

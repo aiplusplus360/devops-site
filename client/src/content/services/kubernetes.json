@@ -1,0 +1,100 @@
+{
+  "id": "kubernetes",
+  "tagline": "Clusters that stay up, scale sensibly and cost less to run than the last set.",
+  "overview": [
+    "Kubernetes rewards teams who get the boring parts right. We build clusters on EKS, AKS or GKE with hardened defaults, sensible namespaces and resource requests and limits set from real usage rather than optimism. Admission policies, network rules and upgrade windows are configured before the first production workload lands, so the platform does not become a shared pet that nobody dares touch.",
+    "We then work through the parts that decide whether the cluster is pleasant to operate: autoscaling that follows load instead of a fixed node count, workload placement that respects disruption budgets, and cost reporting per namespace so spend has an owner. Where a self-managed control plane is the right call we will say so, but most teams are better served by a managed offering with real engineering on top."
+  ],
+  "problems": [
+    "Node pools are sized by guesswork and cost more each month",
+    "Upgrades are postponed because nobody knows what will break",
+    "Developers wait weeks for a namespace and a quota",
+    "One noisy workload starves everything else on the node"
+  ],
+  "includes": [
+    {
+      "icon": "cube",
+      "title": "Cluster provisioning",
+      "text": "Managed clusters built from Terraform or Pulumi modules, with node pools, taints and labels defined up front rather than patched in later."
+    },
+    {
+      "icon": "gears",
+      "title": "Resource tuning",
+      "text": "Requests and limits derived from observed usage, pod disruption budgets on anything stateful, and horizontal autoscaling configured around the metric that actually predicts load."
+    },
+    {
+      "icon": "refresh",
+      "title": "Safe cluster upgrades",
+      "text": "Version upgrades rehearsed in a non-production cluster first, with deprecated API usage found ahead of time and node drains that respect workloads which cannot be interrupted."
+    },
+    {
+      "icon": "shield",
+      "title": "Policy and isolation",
+      "text": "Namespaces with network policies, pod security standards and resource quotas, so one team's runaway job cannot starve a neighbour or reach a service it should not."
+    },
+    {
+      "icon": "chart",
+      "title": "Cost and capacity visibility",
+      "text": "Per-namespace cost reporting, idle-node detection and scale-down schedules, so the monthly bill is explained by workloads that map to something a business owner recognises."
+    },
+    {
+      "icon": "layers",
+      "title": "Operator experience",
+      "text": "A short written guide to deploying, debugging and rolling back on the cluster, plus kubectl conventions and dashboards your on-call rota can use without waking a specialist."
+    }
+  ],
+  "deliverables": [
+    "Cluster modules with node pools, policies and quotas codified",
+    "Upgrade, drain and rollback runbook for the platform team",
+    "Autoscaling configuration benchmarked against production traffic",
+    "Namespace cost and capacity report with named owners",
+    "Operator handbook covering deploy, debug and rollback"
+  ],
+  "stack": ["kubernetes", "helm", "terraform", "aws", "argocd", "prometheus", "docker"],
+  "outcomes": [
+    { "value": "99.95%", "label": "Control plane availability target" },
+    { "value": "30%", "label": "Typical node spend removed" },
+    { "value": "1 command", "label": "Standard node drain" }
+  ],
+  "process": [
+    {
+      "title": "Review the current clusters",
+      "text": "We inspect what you run today — versions, node pools, workloads, policies and the parts held together by manual steps — and write down what is worth keeping."
+    },
+    {
+      "title": "Design the target platform",
+      "text": "A written design for cluster layout, namespaces, autoscaling and upgrade cadence, with the cost and operational trade-offs of each decision made explicit."
+    },
+    {
+      "title": "Build in the open",
+      "text": "Modules, policies and manifests land as reviewable pull requests, so your engineers see the reasoning and can challenge it before it reaches production."
+    },
+    {
+      "title": "Migrate and hand over",
+      "text": "Workloads move across in waves, with rollback at each step, then we pair with your team on the first real upgrade and leave the runbook behind."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Should we run our own control plane or use a managed service?",
+      "a": "Most teams are better off with a managed control plane and engineering effort spent on workloads, policy and cost. Self-managed makes sense when you have a hard regulatory constraint or an existing team that already runs it well."
+    },
+    {
+      "q": "Do we need a service mesh to run Kubernetes properly?",
+      "a": "No. A mesh earns its place when you need mTLS everywhere, fine-grained traffic shifting or consistent telemetry across many services. Below that threshold the extra moving parts cost more than they return."
+    },
+    {
+      "q": "How disruptive is a cluster upgrade?",
+      "a": "With disruption budgets, surge capacity and drained nodes one at a time, a minor version bump is usually invisible to users. We rehearse it in a non-production cluster and schedule the production run for a quiet window."
+    },
+    {
+      "q": "Can you reduce our Kubernetes bill without hurting reliability?",
+      "a": "Usually yes. Oversized requests, idle node pools and workloads running in production that nobody uses are common. We right-size from observed usage, keep headroom for failover, and hold reliability targets constant while the spend comes down."
+    }
+  ],
+  "related": ["docker", "platform-eng", "iac"],
+  "seo": {
+    "title": "Kubernetes & Containers — Cluster Engineering and Ops",
+    "description": "Managed Kubernetes built on EKS, AKS or GKE with hardened defaults, autoscaling and cost controls, plus upgrade runbooks your team can run alone."
+  }
+}

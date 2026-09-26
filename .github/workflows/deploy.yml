@@ -1,0 +1,209 @@
+# =============================================================================
+# Build and deploy to the VPS
+# =============================================================================
+# Runs on every push to main, and on demand from the Actions tab.
+#
+# The shape is deliberately "build once, ship the built artifact":
+#
+#   1. verify   install, build, and run the full check suite. A failing content
+#               or route check stops the deploy here, so a broken page never
+#               reaches production.
+#   2. deploy   rsync the build output to the server and restart the service.
+#
+# Nothing is built on the VPS. The machine runs a dozen unrelated applications
+# and should not be spending CPU on our compile, nor accumulating build caches
+# we then have to clean up.
+#
+# --- What is shipped, and what is deliberately not ---------------------------
+#
+#   dist/           the built client bundle and the SSR bundle
+#   server/         the Express app (not bundled, so its deps are needed)
+#   package*.json   so the server can install its runtime dependencies
+#
+#   Excluded: node_modules (installed on the server, without devDeps),
+#   .git, the top-level assets/ (already copied into dist/client by Vite),
+#   and server/data (kept outside the deploy target entirely, see the workflow
+#   env below).
+# =============================================================================
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# A second push while a deploy is running should supersede the first, not race
+# it. `cancel-in-progress: false` keeps an in-flight deploy from being killed
+# half way through, which is the dangerous moment for a live site.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  # Where the application lives on the VPS. Kept as siblings:
+  #   app/    replaced on every deploy
+  #   data/   never touched by a deploy
+  APP_DIR: /var/www/devops.theaimax.com/app
+  DATA_DIR: /var/www/devops.theaimax.com/data
+  SERVICE: devops-theaimax
+  PORT: "4310"
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # The four suites that guard content and rendering: service copy is
+      # complete, the content model is coherent, the stylesheet's variables and
+      # contrast still hold, and all 44 routes render correctly with unique
+      # metadata and no legacy links.
+      - name: Content checks
+        run: npm run content:check
+
+      - name: Coherence and style checks
+        run: npm run check:content && npm run check:render
+
+      - name: Route and render checks
+        run: npm run check:routes
+
+      # The build output is what deploy consumes, so hand it over directly
+      # rather than rebuilding and getting a different artifact.
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            dist/
+            server/
+            package.json
+            package-lock.json
+          retention-days: 1
+
+  deploy:
+    name: Deploy
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+
+      - name: Set up SSH
+        run: |
+          set -eu
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Pinned rather than `ssh-keyscan`ed: accepting whatever host key the
+          # network offers would make the deploy a target for a man in the
+          # middle. Update this line if the server is ever rebuilt.
+          echo "${{ secrets.VPS_HOST_KEY }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Ensure target directories exist
+        run: |
+          set -eu
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "mkdir -p '$APP_DIR' '$DATA_DIR'"
+
+      # --delete keeps the app directory an exact mirror of the build, so a file
+      # removed from the repo disappears from the server too. The excludes are
+      # load-bearing: node_modules is installed on the server (the runner's copy
+      # is for a different platform), and .git should never be shipped.
+      # `server/data` is excluded as a second line of defence even though the
+      # service now writes to DATA_DIR, outside this tree.
+      - name: Upload application
+        run: |
+          set -eu
+          rsync -az --delete --human-readable \
+            --exclude '.git/' \
+            --exclude 'server/data/' \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            ./dist ./server ./package.json ./package-lock.json \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:$APP_DIR/"
+
+      # scp'd into place rather than edited in-line, and only applied after
+      # `nginx -t` passes, so a bad config can never take the other sites down.
+      - name: Install or update the nginx site and service unit
+        run: |
+          set -eu
+          scp -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            deploy/vps/nginx-devops.theaimax.com.conf \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/etc/nginx/sites-available/devops.theaimax.com"
+          scp -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            deploy/vps/devops-theaimax.service \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/etc/systemd/system/devops-theaimax.service"
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "set -eu
+             ln -sf /etc/nginx/sites-available/devops.theaimax.com /etc/nginx/sites-enabled/devops.theaimax.com
+             systemctl daemon-reload
+             # Enabled, not just started: the site must come back after a reboot.
+             systemctl enable devops-theaimax"
+
+      - name: Install runtime dependencies and restart the service
+        run: |
+          set -eu
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "set -eu
+             cd '$APP_DIR'
+             # --omit=dev because the build already happened on the runner; the
+             # bundler is not needed on a machine serving traffic.
+             npm ci --omit=dev --no-audit --no-fund
+             # Validate before reloading: if the config is broken, nginx keeps
+             # serving the previous one and the other sites are unaffected.
+             nginx -t
+             systemctl reload nginx
+             systemctl restart '$SERVICE'
+             sleep 2
+             systemctl is-active '$SERVICE'"
+
+      # Talks to the public URL so the check covers DNS, TLS, nginx, the proxy
+      # hop and the app in one assertion - not just "the process is running".
+      - name: Smoke test
+        run: |
+          set -eu
+          for path in / /services /services/cicd; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 2 \
+              "https://devops.theaimax.com$path")
+            echo "  $path -> $code"
+            [ "$code" = "200" ] || { echo "FAILED: $path returned $code"; exit 1; }
+          done
+
+          # An unknown service must 404 rather than serve an indexable page.
+          code=$(curl -s -o /dev/null -w '%{http_code}' \
+            "https://devops.theaimax.com/services/does-not-exist")
+          echo "  /services/does-not-exist -> $code (expected 404)"
+          [ "$code" = "404" ] || { echo "FAILED: expected 404, got $code"; exit 1; }
+
+          echo "Smoke test passed."
+
+      - name: Remove the deploy key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

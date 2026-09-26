@@ -1,0 +1,100 @@
+{
+  "id": "testing",
+  "tagline": "Tests that run on every pull request and stop bad merges before review ends.",
+  "overview": [
+    "A test suite is a liability until it is trusted. We make the fast tests run first on every pull request, fail with an error message that names the broken thing, and finish in minutes rather than in the background of your afternoon. Coverage is measured where it matters, not as a single number across the whole repository.",
+    "Flaky tests get quarantined with an owner and a deadline instead of being muted and forgotten, because one test that fails at random teaches engineers to ignore the whole suite. End-to-end coverage stays thin and deliberate, backed by contract tests between services, so a slow browser suite never becomes the reason a merge waits."
+  ],
+  "problems": [
+    "The test suite takes forty minutes, so nobody waits for it",
+    "Flaky tests get muted, and then the real failures get muted too",
+    "Coverage is reported but no one agrees what number is acceptable",
+    "Bugs reach production that a cheaper test would have caught"
+  ],
+  "includes": [
+    {
+      "icon": "check",
+      "title": "Test pyramid design",
+      "text": "A written split of unit, integration and end-to-end coverage with target counts per layer, so effort goes to the tests that catch the most defects per second."
+    },
+    {
+      "icon": "refresh",
+      "title": "Flaky test quarantine",
+      "text": "Failing-at-random tests are moved to a tracked quarantine lane with an owner and an expiry date, keeping the main suite green and honest."
+    },
+    {
+      "icon": "layers",
+      "title": "Parallel test sharding",
+      "text": "The suite is split across runners by timing data, so the wall-clock time stays close to the slowest shard rather than the sum of all tests."
+    },
+    {
+      "icon": "scale",
+      "title": "Coverage policy",
+      "text": "Thresholds set per package and enforced on changed lines, so a pull request cannot lower coverage in the area it touches without a recorded exception."
+    },
+    {
+      "icon": "database",
+      "title": "Realistic test data",
+      "text": "Seeded, anonymised datasets generated per run, so integration tests exercise real shapes and edge cases without copying production records into a lower environment."
+    },
+    {
+      "icon": "chart",
+      "title": "Failure triage reporting",
+      "text": "Dashboards showing which tests fail most, how long each stage takes and where reruns happen, giving you the evidence to fix the suite rather than tolerate it."
+    }
+  ],
+  "deliverables": [
+    "Test strategy document with layer targets and ownership",
+    "Merge-blocking gate configuration in your CI provider",
+    "Quarantine process and triage dashboard for flaky tests",
+    "Parallelised test jobs with sharding and caching enabled",
+    "Coverage policy file and exception register"
+  ],
+  "stack": ["github", "gitlab", "jenkins", "sonarqube", "docker", "kubernetes", "snyk"],
+  "outcomes": [
+    { "value": "6 min", "label": "Median pull request feedback" },
+    { "value": "3x", "label": "Faster suite wall-clock time" },
+    { "value": "0", "label": "Silently muted tests" }
+  ],
+  "process": [
+    {
+      "title": "Measure the current suite",
+      "text": "We time each stage, count the failures, and identify which tests fail most often and which take longest, before recommending any change."
+    },
+    {
+      "title": "Set the quality policy",
+      "text": "Agree with your team what blocks a merge, what warns, and what gets recorded as an exception, so the gate is a decision rather than an accident."
+    },
+    {
+      "title": "Restructure and parallelise",
+      "text": "Split the suite by speed and purpose, shard it across parallel runners, and add caching where setup dominates the runtime of every job."
+    },
+    {
+      "title": "Tune against real pull requests",
+      "text": "We watch the first fortnight of genuine merges, track false failures, adjust thresholds and quarantine rules, then train your team on the triage routine."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will a stricter gate slow us down?",
+      "a": "The opposite is usually true. A gate that catches a broken change in six minutes costs a rework cycle; the same defect found during release costs a rollback and an incident call. We tune thresholds so the gate blocks genuine problems and warns on the rest."
+    },
+    {
+      "q": "Our coverage number is already high. Is there anything to fix?",
+      "a": "A high number often means a lot of assertions that only check a function returns without throwing. We look at what the coverage protects, add integration tests where it is thin, and would rather lower the headline figure than keep tests that prove nothing."
+    },
+    {
+      "q": "Can you fix flaky tests we wrote years ago?",
+      "a": "Usually, yes, but it is unglamorous work. Some flakes come from shared state or missing waits and are quick to fix; others hide a genuine race condition in application code. Where a test is not worth repairing we retire it and say so."
+    },
+    {
+      "q": "Do we need to run tests in Kubernetes?",
+      "a": "Not by default. Unit and integration tests are faster and cheaper on plain runners. Containerised environments help for end-to-end tests that need real dependencies, and we only add that layer where it earns its cost."
+    }
+  ],
+  "related": ["cicd", "devsecops", "preview-envs"],
+  "seo": {
+    "title": "Automated Testing & Quality Gates — Merge-Blocking CI Checks",
+    "description": "Unit, integration and end-to-end tests that run on every pull request, block bad merges and keep feedback under minutes with parallel sharding."
+  }
+}

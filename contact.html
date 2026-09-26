@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Book a Free DevOps Audit</title>
+<meta name="description" content="Book a free 30-minute DevOps audit. Tell us about your pipeline, infrastructure or reliability problem and we'll come back with an honest recommendation.">
+<meta name="theme-color" content="#1b1b30">
+<link rel="canonical" href="https://example.com/contact.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact — Book a Free DevOps Audit">
+<meta property="og:description" content="A 30-minute call and an honest recommendation, whether or not you hire us.">
+<meta property="og:url" content="https://example.com/contact.html">
+<meta property="og:image" content="https://example.com/assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A developer workspace with a laptop showing a deployment pipeline.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://example.com/assets/img/og-image.jpg">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23B8E9E6'/><text y='68' x='50' text-anchor='middle' font-size='52' font-family='sans-serif' font-weight='bold' fill='%23131527'>%E2%9A%99</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body data-page="contact">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="announcement" data-announcement></div>
+<header class="header" data-header></header>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="container">
+      <p class="breadcrumb"><a href="index.html">Home</a><span>/</span>Contact</p>
+      <p class="eyebrow">Get in touch</p>
+      <h1 class="display" style="font-size: clamp(2rem, 1.4rem + 3vw, 3.4rem)">
+        Tell us what's <span class="gradient-text">breaking</span>
+      </h1>
+      <p class="lead" style="margin-top: 1.25rem">
+        Fill in the form and we'll reply within one business day — usually with a
+        couple of sharp questions and a proposed time to talk.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container contact-grid">
+
+      <!-- ------------------------------------------------------------ FORM -->
+      <div class="card">
+        <h2 class="h3" style="margin-bottom: 1.5rem">Request a free audit</h2>
+
+        <form data-contact-form novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-name">Name <span class="req">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" required>
+            </div>
+            <div class="field">
+              <label for="f-email">Work email <span class="req">*</span></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="f-company">Company</label>
+              <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Company Inc.">
+            </div>
+            <div class="field">
+              <label for="f-size">Team size</label>
+              <select id="f-size" name="team_size">
+                <option value="">Select…</option>
+                <option>1–10 engineers</option>
+                <option>11–50 engineers</option>
+                <option>51–200 engineers</option>
+                <option>200+ engineers</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-topic">What do you need help with? <span class="req">*</span></label>
+            <select id="f-topic" name="topic" required data-topic-options>
+              <option value="">Select a topic…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="f-message">Tell us a bit more <span class="req">*</span></label>
+            <textarea id="f-message" name="message" rows="6" required
+              placeholder="Current setup, what's painful, and what a good outcome looks like…"></textarea>
+          </div>
+
+          <!-- Spam trap: hidden from humans, tempting to bots. -->
+          <div class="visually-hidden" aria-hidden="true">
+            <label for="f-website">Website</label>
+            <input id="f-website" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button class="btn btn--primary btn--lg btn--block" type="submit">Send request</button>
+
+          <p class="form-status" data-form-status hidden role="status" aria-live="polite"></p>
+          <p class="form-note">
+            We reply to every enquiry personally. No newsletters, no drip campaigns,
+            and we never share your details.
+          </p>
+        </form>
+      </div>
+
+      <!-- --------------------------------------------------------- DETAILS -->
+      <div>
+        <h2 class="h3" style="margin-bottom: 1.25rem">Other ways to reach us</h2>
+
+        <div class="contact-list">
+          <div class="contact-item">
+            <span class="contact-item__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </span>
+            <div>
+              <h3>Email</h3>
+              <a data-email href="#"></a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <span class="contact-item__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1.1 1A16 16 0 0 1 4 5.1 1 1 0 0 1 5 4Z"/></svg>
+            </span>
+            <div>
+              <h3>Phone</h3>
+              <a data-phone href="#"></a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <span class="contact-item__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </span>
+            <div>
+              <h3>Based</h3>
+              <span data-location></span>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <span class="contact-item__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <div>
+              <h3>Availability</h3>
+              <span data-hours></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top: 1.5rem">
+          <strong>On-call emergency?</strong> Mention it in the subject line and we'll
+          escalate immediately — existing clients get priority routing.
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem">
+          <h3 class="h3" style="font-size: 1rem; margin-bottom: 0.85rem">What happens next</h3>
+          <ul class="checklist">
+            <li>We reply within one business day</li>
+            <li>30-minute call to understand your setup</li>
+            <li>Written recommendation and fixed-fee quote</li>
+            <li>No obligation to proceed</li>
+          </ul>
+        </div>
+
+        <div class="photo-panel" style="margin-top: 1.5rem">
+          <img src="assets/img/contact-desk.jpg"
+               alt="A laptop, notebook and coffee mug on a desk, ready for a working session."
+               width="1500" height="950" loading="lazy" decoding="async">
+          <div class="photo-panel__caption">
+            The first call is a working session, not a sales pitch — bring a real problem.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================== FAQ -->
+  <section class="section section--alt section--edge" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2 class="h2">Before you get in touch</h2>
+      </div>
+      <div class="faq-list" data-faqs></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" data-footer></footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/tech.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

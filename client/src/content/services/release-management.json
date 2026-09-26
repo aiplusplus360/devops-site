@@ -1,0 +1,100 @@
+{
+  "id": "release-management",
+  "tagline": "Releases that ship on a schedule, with records an auditor can follow.",
+  "overview": [
+    "Compliance asks a simple question: what changed, who approved it, and where is the evidence. Most teams answer it badly, by reconstructing a timeline from chat history the week before an audit. We automate the record so it is produced by the release process itself rather than assembled afterwards.",
+    "Versioning, changelog generation and release notes come from the commits and merged pull requests you already write. Approvals attach to the same change record, with separation between the person who built the change and the person who signed it off, which is exactly what most control frameworks want to see."
+  ],
+  "problems": [
+    "Audit evidence is rebuilt by hand from Slack and email",
+    "Nobody can explain why version 4.2 exists or what it contains",
+    "The compliance team blocks releases because the paperwork is late",
+    "Two people shipped changes nobody approved, and the trail is silent"
+  ],
+  "includes": [
+    {
+      "icon": "clipboard",
+      "title": "Automated changelogs",
+      "text": "Release notes generated from conventional commits and pull request titles, grouped by change type, then reviewed by a human before publication."
+    },
+    {
+      "icon": "check",
+      "title": "Change approval workflow",
+      "text": "Approvals routed to the right reviewer with separation of duties enforced, so the person who wrote a change cannot also be the one who blesses it."
+    },
+    {
+      "icon": "book",
+      "title": "Semantic versioning policy",
+      "text": "A written rule for major, minor and patch increments, applied automatically to tags and package manifests, so the version number means something predictable."
+    },
+    {
+      "icon": "route",
+      "title": "Audit trail export",
+      "text": "Every release records the ticket, the approver, the commit range and the deployment timestamp, exportable as evidence for SOC 2, ISO 27001 or a customer security review."
+    },
+    {
+      "icon": "bell",
+      "title": "Freeze window controls",
+      "text": "Planned change freezes for peak trading or audit periods, enforced by policy rather than by asking everyone to remember the date."
+    },
+    {
+      "icon": "chart",
+      "title": "Delivery reporting",
+      "text": "Lead time, change failure rate and release frequency reported per team, turning the numbers compliance asks for into something engineering can improve."
+    }
+  ],
+  "deliverables": [
+    "Versioning policy applied to every released package",
+    "Automated changelog and release notes pipeline",
+    "Change approval matrix with named roles, not individuals",
+    "Exportable audit history covering every release and environment",
+    "Change freeze calendar wired into the release process"
+  ],
+  "stack": ["github", "gitlab", "jenkins", "argocd", "flux", "kubernetes"],
+  "outcomes": [
+    { "value": "1 click", "label": "Release record export" },
+    { "value": "4 min", "label": "Median approval turnaround" },
+    { "value": "0", "label": "Unapproved production changes" }
+  ],
+  "process": [
+    {
+      "title": "Map the change path",
+      "text": "We trace a change from ticket to production and record every approval, handoff and manual note currently required to prove it happened."
+    },
+    {
+      "title": "Define the control points",
+      "text": "Working with compliance and engineering, we decide which changes need approval, who may approve, and what evidence each stage must leave behind."
+    },
+    {
+      "title": "Automate the records",
+      "text": "Versioning, changelog generation and approval capture are wired into the pipeline, so the evidence is a by-product of shipping rather than extra work."
+    },
+    {
+      "title": "Rehearse the audit",
+      "text": "We pick a real release and walk it through end to end, producing the evidence pack an auditor would request, then fix whatever is missing."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will this add approval steps to every change?",
+      "a": "Only where your control framework requires them. Low-risk changes to a service in a non-production environment can pass automatically, while payments code or production data migrations carry a named approver. The matrix is written down so nobody argues case by case."
+    },
+    {
+      "q": "Does this work with our existing ticketing system?",
+      "a": "Yes. We link releases to whatever tracking tool you already use, whether that is Jira, GitHub Issues or something homegrown. The pipeline reads the ticket reference from the branch or pull request, so engineers keep working the way they already do."
+    },
+    {
+      "q": "How long until we pass an audit?",
+      "a": "The evidence trail is usually usable within a release or two, but passing an audit depends on the controls themselves, not just the reporting. We can tell you which gaps remain, and we will not claim readiness for a framework we have not seen you meet."
+    },
+    {
+      "q": "Can we keep deploying several times a day?",
+      "a": "Yes, that is the point. Frequent small releases are easier to approve and easier to reverse than a monthly bundle. The control is in the record and the gate, not in the frequency, so nothing here requires you to slow down."
+    }
+  ],
+  "related": ["cicd", "gitops", "compliance"],
+  "seo": {
+    "title": "Release Management & Change Control — Audit-Ready Releases",
+    "description": "Predictable, traceable releases with automated changelogs, approval workflows and a who-shipped-what audit trail your compliance team can export."
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "id": "config-management",
+  "tagline": "Servers configured from code, so rebuilding a machine is boring and identical.",
+  "overview": [
+    "Configuration management earns its keep on the unglamorous machines: the appliance nobody can rebuild, the bastion with three years of hand edits, the batch server that only one person can patch. We describe those hosts as roles and playbooks, apply them repeatedly, and prove the result matches the baseline rather than assuming it does.",
+    "The work is mostly about ordering and hardening. Roles are layered so a shared baseline runs first, then service-specific configuration on top, and every task is written to be safe to run twice. Reports show which hosts have drifted, which are missing patches, and which have quietly diverged from the hardened image you thought they were built from."
+  ],
+  "problems": [
+    "Only one person knows how the billing server was actually set up",
+    "Rebuilding a failed host takes two days of guesswork and old tickets",
+    "Security baselines are documented but nobody can prove they are applied",
+    "Patch status is a spreadsheet updated by hand every quarter"
+  ],
+  "includes": [
+    {
+      "icon": "sliders",
+      "title": "Role and profile design",
+      "text": "A layered structure with a common baseline, per-role configuration and per-environment overrides, so a web server and a database host share hardening without sharing everything else."
+    },
+    {
+      "icon": "check",
+      "title": "Idempotent playbooks",
+      "text": "Every task written to be safe on the second run, tested against a clean host and an already-configured one, because that is where most hand-written automation quietly breaks."
+    },
+    {
+      "icon": "shield",
+      "title": "Hardened baselines",
+      "text": "CIS-aligned settings for SSH, sudo, kernel parameters, audit rules and file permissions, with every deviation recorded as an explicit exception rather than quietly left in place."
+    },
+    {
+      "icon": "patch",
+      "title": "Patching workflow",
+      "text": "Scheduled runs that apply security updates, drain workloads first where needed, and report what changed on each host so a failed reboot is visible immediately."
+    },
+    {
+      "icon": "chart",
+      "title": "Drift and compliance reports",
+      "text": "Nightly checks comparing each host against its expected state, with a short report per environment listing changes, missing packages and exceptions that need renewing."
+    },
+    {
+      "icon": "refresh",
+      "title": "Legacy host migration",
+      "text": "Hand-built machines gradually replaced by images and roles built in code, with the old configuration read as source material rather than thrown away."
+    }
+  ],
+  "deliverables": [
+    "Versioned role and playbook repository with tests",
+    "Documented hardened baseline with exception register",
+    "Patch schedule wired into your change process",
+    "Drift and compliance report delivered per environment",
+    "Runbook for rebuilding any managed host from scratch"
+  ],
+  "stack": ["ansible", "terraform", "vault", "prometheus", "aws", "azure", "python"],
+  "outcomes": [
+    { "value": "1 role", "label": "Rebuild any host" },
+    { "value": "0", "label": "Hand-edited production hosts" },
+    { "value": "100%", "label": "Hosts reporting compliance daily" }
+  ],
+  "process": [
+    {
+      "title": "Inventory the hosts",
+      "text": "We list every server, appliance and bastion, note who uses it and what state it is in, then pick the ones where automation pays back fastest."
+    },
+    {
+      "title": "Write the base role",
+      "text": "A common baseline covering users, SSH, packages, logging and time sync lands first, because everything else builds on top of it and inherits its assumptions."
+    },
+    {
+      "title": "Convert services in order",
+      "text": "Hosts move to managed configuration a group at a time, each tested in staging and applied through the same review process as any other change."
+    },
+    {
+      "title": "Prove and report",
+      "text": "Once a host is managed we verify it, add it to the nightly compliance check, and hand your team the runbook for rebuilding it without our help."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ansible, Chef or Puppet?",
+      "a": "Ansible suits most estates because it needs no agent and is readable by people who are not full-time automation engineers. Chef and Puppet still make sense where you already run them at scale. We are happy to keep what you have."
+    },
+    {
+      "q": "Our servers are snowflakes. Is it too late?",
+      "a": "No, but you cannot automate something you have not understood. We start by capturing current state as documentation, then rebuild one representative host from code and compare the two before touching the rest."
+    },
+    {
+      "q": "Does configuration management still matter with containers?",
+      "a": "Yes, for everything outside the container. Container hosts, build agents, databases, network appliances and the hardening of the node itself all still need managed configuration. If your whole estate is Kubernetes, you likely need less of it, not none."
+    },
+    {
+      "q": "How do you avoid breaking production with a bad run?",
+      "a": "Changes go through a staging host first and reach production one group at a time. Every role is safe to re-run, and we keep a documented rollback for the tasks that cannot simply be reversed, such as package upgrades."
+    }
+  ],
+  "related": ["iac", "patching", "compliance"],
+  "seo": {
+    "title": "Configuration Management — Ansible Roles & Baselining",
+    "description": "Servers and appliances configured from code with idempotent playbooks, hardened baselines, scheduled patching and nightly compliance drift reports."
+  }
+}

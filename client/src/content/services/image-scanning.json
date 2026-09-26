@@ -1,0 +1,100 @@
+{
+  "id": "image-scanning",
+  "tagline": "Stop vulnerable container images at the registry, before a cluster can pull them.",
+  "overview": [
+    "Container images carry everything you did not write: base layers, package managers, language runtimes and transitive dependencies. We scan at build time, fail the build on findings your policy calls blocking, and generate a software bill of materials so you can answer questions about an image months after it shipped.",
+    "The registry matters as much as the scanner. We wire admission control so an image that fails policy never becomes pullable by production nodes, and we sign and attest images so a deployment can prove which pipeline built it from which commit. Builds stay reproducible, so a given commit, base and dependency set always produces the same digest."
+  ],
+  "problems": [
+    "Every image is rebuilt from latest, so the base changes unannounced",
+    "Critical CVEs are discovered weeks after the image reached production",
+    "Nobody can list the packages inside an image running in production",
+    "Scanning exists but nothing stops a developer pushing anyway"
+  ],
+  "includes": [
+    {
+      "icon": "search",
+      "title": "Build-time image scanning",
+      "text": "Trivy, Grype or Snyk runs on every image build, comparing OS packages and language dependencies against vulnerability feeds and reporting by severity."
+    },
+    {
+      "icon": "clipboard",
+      "title": "SBOM generation",
+      "text": "A signed software bill of materials in CycloneDX or SPDX attached to each build, so an advisory next month can be answered with a query rather than a rebuild."
+    },
+    {
+      "icon": "badge",
+      "title": "Image signing and provenance",
+      "text": "Cosign signatures and build provenance tied to the commit and pipeline, verified at deploy time so an unsigned image cannot be scheduled at all."
+    },
+    {
+      "icon": "cube",
+      "title": "Registry admission control",
+      "text": "Cluster policies that check signature, scan result and registry before a pod starts, turning your container standard into something the platform enforces."
+    },
+    {
+      "icon": "refresh",
+      "title": "Base image maintenance",
+      "text": "Minimal base images with a rebuild cadence, so you pick up patched OS layers on a schedule instead of discovering them through an incident."
+    },
+    {
+      "icon": "bell",
+      "title": "Exception handling",
+      "text": "A documented path for accepting a risk with an owner, an expiry date and a ticket, so exceptions are visible rather than permanent quiet suppressions."
+    }
+  ],
+  "deliverables": [
+    "Scanning stages configured in the image build pipeline",
+    "Signed SBOMs produced and stored for every release",
+    "Admission policies that reject unsigned or failing images",
+    "Base image catalogue with a documented rebuild cadence",
+    "Exception register with owners and expiry dates"
+  ],
+  "stack": ["docker", "kubernetes", "trivy", "snyk", "github", "gitlab", "helm", "openshift"],
+  "outcomes": [
+    { "value": "100%", "label": "Images with a signed SBOM" },
+    { "value": "0", "label": "Unsigned images admitted" },
+    { "value": "2 min", "label": "Added build time per image" }
+  ],
+  "process": [
+    {
+      "title": "Inventory images and registries",
+      "text": "We map where images are built, which registries hold them and who can push, because admission control is only as strong as the paths into the registry."
+    },
+    {
+      "title": "Agree blocking thresholds",
+      "text": "Together we decide which severities stop a build, which raise a ticket and which are recorded only, since a threshold nobody agrees with gets disabled in a week."
+    },
+    {
+      "title": "Wire scanning and signing",
+      "text": "Build stages, signing keys and SBOM publishing are implemented as reviewed pull requests, starting with your noisiest image so the first week produces real data."
+    },
+    {
+      "title": "Enforce at the cluster",
+      "text": "Admission policies go into audit mode first so you can see what would have been blocked, then into enforce mode once the exceptions are cleared."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will blocking images break our deployments?",
+      "a": "It will catch deployments that would have gone out anyway, which is the point, but we reduce the shock by running admission policies in audit mode first and clearing exceptions before enforcement. Teams usually start with critical severities only."
+    },
+    {
+      "q": "Doesn't scanning the base image just move the problem?",
+      "a": "Partly, yes. Updating a base image exposes new package versions and occasionally new advisories, so the rebuild itself has to be routine. That is why the cadence and the exception process matter more than any single scan result."
+    },
+    {
+      "q": "Do we have to sign every image?",
+      "a": "For images that reach a shared or production registry, we would say yes, because signature verification is what makes admission control meaningful. Internal scratch images during development can stay unsigned if they cannot be pulled by a cluster."
+    },
+    {
+      "q": "How does this differ from a general security pipeline?",
+      "a": "A general pipeline covers source code, secrets and runtime behaviour. This work goes deep on the container layer: base images, package inventories, signatures and the registry gate, which is where a lot of production risk actually sits."
+    }
+  ],
+  "related": ["devsecops", "patching", "kubernetes"],
+  "seo": {
+    "title": "Container & Image Scanning — Block Vulnerable Images",
+    "description": "Trivy and Grype scanning in the build, signed SBOMs and provenance, and registry admission policies that stop critical CVEs reaching your clusters."
+  }
+}

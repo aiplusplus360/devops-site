@@ -1,0 +1,100 @@
+{
+  "id": "dns-tls",
+  "tagline": "Certificates that renew themselves and DNS living in version control beside your stack.",
+  "overview": [
+    "An expired certificate is one of the few outages that is entirely self-inflicted and entirely avoidable. We automate issuance and renewal through ACME clients, cloud certificate services or a mesh's built-in controller, with the renewal path tested rather than assumed. Monitoring checks not just expiry dates but chain validity, hostname coverage and the ciphers a client will actually negotiate.",
+    "The DNS half is about making records reviewable. Zones move into Terraform or a provider's infrastructure-as-code tooling, changes go through a pull request, and a low TTL is used where a cutover is planned. We also document delegation, split-horizon views and the internal names that break when a VPC is rebuilt."
+  ],
+  "problems": [
+    "A certificate expires on a Sunday and the site goes down",
+    "DNS records were edited in a console and nobody knows why",
+    "Wildcard certificates mask the one hostname that actually broke",
+    "Migration to a new provider means rebuilding zones from memory"
+  ],
+  "includes": [
+    {
+      "icon": "cert",
+      "title": "Automated issuance",
+      "text": "Certificates requested, validated and installed by automation using ACME, cloud certificate managers or cert-manager, with no manual CSR handling anywhere in the flow."
+    },
+    {
+      "icon": "refresh",
+      "title": "Renewal and rotation",
+      "text": "Renewals scheduled well before expiry with alerting on failure, and rotation rehearsed so a renewal that breaks does so in a test rather than in production."
+    },
+    {
+      "icon": "globe",
+      "title": "DNS as code",
+      "text": "Zones and records managed in Terraform or a provider pipeline, reviewed like any other change, with environment-specific values kept in variables rather than typed by hand."
+    },
+    {
+      "icon": "eye",
+      "title": "Expiry monitoring",
+      "text": "Checks from outside your network that watch expiry, chain completeness and hostname match for every public endpoint, with alerts routed to someone who can act."
+    },
+    {
+      "icon": "network",
+      "title": "Cutover planning",
+      "text": "Low TTLs staged ahead of a migration, records duplicated and verified before delegation moves, and a rollback path that does not depend on waiting out a long cache."
+    },
+    {
+      "icon": "shield",
+      "title": "TLS hardening",
+      "text": "Modern protocol versions and cipher suites, HSTS where it is appropriate, and internal certificates issued from a private authority so service traffic is encrypted too."
+    }
+  ],
+  "deliverables": [
+    "Certificate inventory with owners and expiry dates",
+    "Automated certificate issuance and renewal configuration",
+    "DNS zones and records defined in version control",
+    "External expiry and chain monitoring checks",
+    "Provider migration cutover and rollback plan"
+  ],
+  "stack": ["cloudflare", "aws", "kubernetes", "terraform", "nginx", "vault", "azure"],
+  "outcomes": [
+    { "value": "0", "label": "Manual certificate renewals" },
+    { "value": "30 days", "label": "Renewal lead time" },
+    { "value": "2 min", "label": "Typical propagation check" }
+  ],
+  "process": [
+    {
+      "title": "Inventory what exists",
+      "text": "Every certificate, zone and record we can find, with its owner, expiry and where it is managed, including the ones nobody remembers creating."
+    },
+    {
+      "title": "Choose the automation route",
+      "text": "ACM, Let's Encrypt, cert-manager or a commercial authority, selected on where your endpoints live and how much control you need over validation."
+    },
+    {
+      "title": "Move zones into code",
+      "text": "Records are imported, differences resolved and the zone applied from a pipeline, after which console edits are disabled or at least loudly detected."
+    },
+    {
+      "title": "Verify and hand over",
+      "text": "We test renewal end to end, confirm monitoring fires when it should, and leave a runbook covering issuance, rotation and emergency replacement."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can you automate certificates for internal services too?",
+      "a": "Yes. An internal certificate authority or a mesh's built-in issuance covers service-to-service traffic, and short-lived certificates are practical when renewal is automatic. The harder part is usually trust distribution to clients outside your control."
+    },
+    {
+      "q": "Is Let's Encrypt suitable for a commercial product?",
+      "a": "For most public web endpoints, yes. Rate limits and the sixty-day lifetime are manageable with automation. Some enterprises prefer a commercial authority for warranty, support or longer lifetimes, and we will say when that is worth the cost."
+    },
+    {
+      "q": "What happens if a renewal fails silently?",
+      "a": "That is the failure mode worth engineering against. Monitoring checks the certificate from outside the network, alerts on approaching expiry and on validation errors, and routes to a named team. A renewal that fails twice should never reach the third attempt unremarked."
+    },
+    {
+      "q": "Will moving DNS into code slow down emergency changes?",
+      "a": "It changes the process rather than removing it. Emergency changes still go through the same pipeline, usually in minutes. The gain is that the change is recorded, reviewable and reversible, which matters far more during an incident than the few extra seconds."
+    }
+  ],
+  "related": ["networking", "kubernetes", "multi-cloud"],
+  "seo": {
+    "title": "DNS, TLS & Certificate Automation — No More Expiry Outages",
+    "description": "Automated certificate issuance and renewal with external expiry monitoring, plus all DNS zones managed as code through reviewed pull requests."
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "id": "policy-as-code",
+  "tagline": "Your infrastructure rules enforced before deployment, by code rather than by review.",
+  "overview": [
+    "Written standards decay. Someone leaves, a new service ships with a public bucket, and the wiki page that forbade it never gets read again. We turn the rules that matter into policies evaluated automatically, so a change that breaks them fails before it reaches an account or a cluster.",
+    "Open Policy Agent gives us one language for cloud plans, Kubernetes manifests and pipeline configuration, with Kyverno covering the cluster-side cases. Policies live in a repository, get unit tested like any other code, and are reviewed when they change. We start with a small set you can defend and grow it as the exceptions are worked through."
+  ],
+  "problems": [
+    "The security standard exists in a document nobody opens",
+    "Every environment is configured slightly differently for no good reason",
+    "Someone tags a resource wrongly and the cost report is useless",
+    "Reviewers approve plans they cannot reasonably check by eye"
+  ],
+  "includes": [
+    {
+      "icon": "scale",
+      "title": "Policy library and testing",
+      "text": "Rego and Kyverno rules written as versioned code with unit tests, so a policy change is reviewed, explained and proven before it starts rejecting anything."
+    },
+    {
+      "icon": "terminal",
+      "title": "Pre-merge plan checks",
+      "text": "Terraform and Pulumi plans evaluated in the pull request, with the offending resource named in a comment rather than discovered at apply time."
+    },
+    {
+      "icon": "cube",
+      "title": "Cluster guardrails",
+      "text": "Kyverno policies that reject privileged containers, missing resource limits or unpinned images, with the option to warn first while teams catch up."
+    },
+    {
+      "icon": "gears",
+      "title": "Cost and tagging rules",
+      "text": "Required tags, allowed regions, instance size ceilings and budget thresholds, so cost control is enforced at the point of change rather than argued over later."
+    },
+    {
+      "icon": "bell",
+      "title": "Warn before you block",
+      "text": "New policies run in warn mode against existing infrastructure first, producing a report of what would fail, so nobody is surprised by an enforcement switch."
+    },
+    {
+      "icon": "book",
+      "title": "Exception workflow",
+      "text": "A documented way to request an exemption with a reason and an expiry date, so the policy set stays credible instead of growing blanket ignores."
+    }
+  ],
+  "deliverables": [
+    "Policy repository with tests and CI validation",
+    "Pre-merge checks wired into infrastructure pull requests",
+    "Cluster admission policies in audit then enforce mode",
+    "Warning reports showing what would currently fail",
+    "Register of approved exemptions with expiry dates"
+  ],
+  "stack": ["terraform", "kubernetes", "github", "gitlab", "argocd", "aws", "azure", "gcp"],
+  "outcomes": [
+    { "value": "100%", "label": "Plans checked before apply" },
+    { "value": "0", "label": "Unreviewed policy changes" },
+    { "value": "2 min", "label": "Added to plan review" }
+  ],
+  "process": [
+    {
+      "title": "Harvest the real rules",
+      "text": "We read your standards, your past incidents and the exceptions people already make, then list the rules that are both enforceable and worth enforcing."
+    },
+    {
+      "title": "Write and test policies",
+      "text": "Each rule becomes code with examples of what passes and what fails, reviewed by the teams who will have to live with it."
+    },
+    {
+      "title": "Warn, then enforce",
+      "text": "Policies run in a reporting mode against live infrastructure until the failure list is small enough to fix, then the switch is flipped deliberately."
+    },
+    {
+      "title": "Keep the set honest",
+      "text": "We review exceptions monthly with their owners, retire rules that no longer earn their place, and add new ones only when the gap is real."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will policy checks block our engineers constantly?",
+      "a": "At first they can, which is why every policy starts in warn mode and produces a report instead of an error. We work through the failures with the owning teams, and enforcement begins only when the remaining exceptions are deliberate."
+    },
+    {
+      "q": "Do we need Open Policy Agent if we use Kubernetes?",
+      "a": "Not necessarily. Kyverno alone covers many cluster policies and is easier to adopt. OPA earns its place when you want the same policy language across Terraform plans, CI pipelines and clusters, which is common once a second cloud or team appears."
+    },
+    {
+      "q": "How do you avoid policy drift over time?",
+      "a": "Policies are versioned code in a repository with owners, so changes show up in review like any other change. We add a monthly session to retire rules that have stopped mattering, because a stale policy set is the fastest way to get everything ignored."
+    },
+    {
+      "q": "Can policies cover things other than infrastructure?",
+      "a": "Yes, within reason. The same engine can check pipeline configuration, container manifests and deployment settings. It cannot judge an architectural decision or whether a design is sensible, so keep the rules mechanical and leave judgement to review."
+    }
+  ],
+  "related": ["iac", "devsecops", "compliance"],
+  "seo": {
+    "title": "Policy as Code — OPA & Kyverno Guardrails for Cloud",
+    "description": "Guardrails as code with Open Policy Agent and Kyverno, enforced in pull requests and at admission so bad infrastructure never reaches an account."
+  }
+}

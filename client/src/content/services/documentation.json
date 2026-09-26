@@ -1,0 +1,100 @@
+{
+  "id": "documentation",
+  "tagline": "Diagrams, decision records and runbooks that turn a 3 a.m. page into a checklist.",
+  "overview": [
+    "Documentation fails when it drifts. A diagram is drawn during a design review, the service gains three dependencies, and six months later the picture is a polite fiction. We rebuild the core set from what is actually running: the cloud APIs, the cluster, the pipeline definitions and the alert rules. Then we put it somewhere your team will maintain it, next to the code.",
+    "The runbooks matter most. Every alert that can wake someone up gets a page-long procedure: what the alert means, how to confirm it, the commands to run, and the point at which to stop and escalate. We test them during business hours by following them literally, because a runbook nobody has executed is a document, not a control."
+  ],
+  "problems": [
+    "The architecture diagram is at least two years out of date",
+    "Alerts fire with no runbook and no clear owner",
+    "Onboarding a new engineer takes a full month",
+    "Design decisions get re-litigated because nobody recorded them"
+  ],
+  "includes": [
+    {
+      "icon": "sitemap",
+      "title": "Architecture diagrams",
+      "text": "Context, container and dependency diagrams generated from live infrastructure where possible, then reviewed with the engineers who own each service so errors get corrected early."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Operational runbooks",
+      "text": "One runbook per alert, covering symptoms, confirmation steps, remediation commands, rollback and the escalation trigger, stored beside the code that produces the alert."
+    },
+    {
+      "icon": "book",
+      "title": "Decision records",
+      "text": "Short architecture decision records capturing the options considered, the choice made and the consequences accepted, so a question from two years ago has an answer."
+    },
+    {
+      "icon": "compass",
+      "title": "Onboarding paths",
+      "text": "A first-week guide for each role: accounts to request, repositories to read, a small first task and the people to ask about each system."
+    },
+    {
+      "icon": "branch",
+      "title": "Documentation as code",
+      "text": "Everything lives in Markdown in your repositories, reviewed in pull requests and published by the same pipeline that ships the service it describes."
+    },
+    {
+      "icon": "check",
+      "title": "Freshness checks",
+      "text": "Scheduled checks that flag runbooks untouched after a related service change and diagrams that no longer match the infrastructure they claim to show."
+    }
+  ],
+  "deliverables": [
+    "Architecture diagram set for your main services",
+    "A runbook for every alert that pages",
+    "Architecture decision record template and backlog",
+    "Onboarding guide for each engineering role",
+    "Documentation repository wired into your pipeline"
+  ],
+  "stack": ["kubernetes", "terraform", "github", "gitlab", "grafana", "prometheus"],
+  "outcomes": [
+    { "value": "1 page", "label": "Typical runbook length" },
+    { "value": "1:1", "label": "Runbooks to paging alerts" },
+    { "value": "1 week", "label": "New joiner ramp-up target" }
+  ],
+  "process": [
+    {
+      "title": "Inventory what exists",
+      "text": "We collect the diagrams, wikis, runbooks and tribal knowledge that exist today, then compare them against the systems and alerts that are actually live."
+    },
+    {
+      "title": "Write the core set",
+      "text": "Architecture diagrams, alert runbooks and decision records are drafted with your engineers, not for them, so the content is accurate and someone already owns it."
+    },
+    {
+      "title": "Test every runbook",
+      "text": "We execute each procedure in a non-production environment, correct the steps that do not work, and add the rollback and escalation detail that was missing."
+    },
+    {
+      "title": "Wire in the cadence",
+      "text": "Documentation lands in your repositories with a review checklist, a stale-content check and an owner named against every page so drift is visible."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Our engineers will not maintain documentation. Why would this be different?",
+      "a": "Because it lives in the repositories they already work in, changes with the code in the same pull request, and is checked automatically when it goes stale. If a page needs a separate tool and a separate login, it will rot; ours does not."
+    },
+    {
+      "q": "Can you document a system that nobody fully understands?",
+      "a": "That is a common starting point and part of the work. We read the code, the infrastructure and the logs, interview whoever has been closest to it, and mark our uncertainty explicitly rather than guessing. Gaps get listed as questions for the team to confirm."
+    },
+    {
+      "q": "Who owns the documentation when you leave?",
+      "a": "Your team does, from day one. Everything sits in your repositories under your accounts, with named owners per area and a review cadence. We are not the only people who can edit it, and that is deliberate."
+    },
+    {
+      "q": "How do you keep diagrams from going stale?",
+      "a": "Where a diagram can be generated from infrastructure, we generate it and review the output on a schedule. Where it cannot, the diagram is tied to a service owner and checked in the same review as the next change to that service."
+    }
+  ],
+  "related": ["advisory", "training", "observability"],
+  "seo": {
+    "title": "Technical Documentation & Runbooks — Diagrams and ADRs",
+    "description": "Architecture diagrams, per-alert runbooks, decision records and onboarding guides that sit beside your code and get reviewed in the same pull request."
+  }
+}

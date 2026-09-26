@@ -1,0 +1,100 @@
+{
+  "id": "database-devops",
+  "tagline": "Schema changes reviewed and shipped through the pipeline, with a rollback path that has been tested.",
+  "overview": [
+    "Database changes are the part of delivery that most teams still run by hand, usually late at night, usually with someone watching a terminal. We bring migrations into the same pipeline as application code: versioned, reviewed, ordered, and applied by automation that records what ran and when. The result is that a schema change is a normal pull request rather than an event.",
+    "Zero-downtime is a design constraint, not a tool. We use expand-contract patterns so old and new code can run against the same schema during a rollout: add the column, backfill in batches, dual-write where needed, then remove the old field once nothing reads it. Long locks are found and avoided before they take a production table offline."
+  ],
+  "problems": [
+    "Migrations run by hand at midnight with no dry run",
+    "A deploy locks a large table and the site stops responding",
+    "Nobody knows whether the migration on staging matches production",
+    "Rollback means restoring a backup and losing an hour of data"
+  ],
+  "includes": [
+    {
+      "icon": "database",
+      "title": "Versioned migrations",
+      "text": "Schema changes committed alongside the code that needs them, reviewed in pull requests, and applied in order by a tool that records each run against the environment."
+    },
+    {
+      "icon": "refresh",
+      "title": "Zero-downtime changes",
+      "text": "Expand-contract sequencing for column and table changes, batched backfills and online index builds, so a release does not require a maintenance window or an apology."
+    },
+    {
+      "icon": "check",
+      "title": "Pre-merge validation",
+      "text": "Migration scripts run against a disposable copy of production-shaped data in the pipeline, where a long lock or a destructive statement fails the build rather than the business."
+    },
+    {
+      "icon": "gauge",
+      "title": "Replication and failover",
+      "text": "Primary and replica topology designed for the read load you actually have, with failover rehearsed, health checks that understand database lag, and a documented promotion procedure."
+    },
+    {
+      "icon": "trend",
+      "title": "Read scaling",
+      "text": "Read replicas, connection pooling and query review used to take pressure off the primary, which is usually cheaper and less disruptive than a larger instance."
+    },
+    {
+      "icon": "shield",
+      "title": "Backup and recovery",
+      "text": "Point-in-time recovery, restore rehearsals and a defined recovery point objective, because a migration plan without a tested restore is only half a plan."
+    }
+  ],
+  "deliverables": [
+    "Migration framework wired into the deploy pipeline",
+    "Expand-contract plan for each schema change",
+    "Lock and performance review of migration scripts",
+    "Replication topology and tested failover runbook",
+    "Restore rehearsal results and recovery targets"
+  ],
+  "stack": ["postgresql", "mongodb", "terraform", "kubernetes", "redis", "gitlab", "aws"],
+  "outcomes": [
+    { "value": "0", "label": "Manual migrations at midnight" },
+    { "value": "1 PR", "label": "Review per schema change" },
+    { "value": "30 sec", "label": "Read replica lag target" }
+  ],
+  "process": [
+    {
+      "title": "Review the schema and history",
+      "text": "We look at current migration tools, how changes reach production and which past changes caused incidents, before recommending anything new."
+    },
+    {
+      "title": "Choose the migration tool",
+      "text": "Flyway, Liquibase, Alembic, Rails migrations or your framework's own tooling, picked for how it handles ordering, locking and rollback in your stack."
+    },
+    {
+      "title": "Make changes safe",
+      "text": "Each migration is reviewed for lock duration and reversibility, tested against realistic data volumes, and split into steps that can run while the application is live."
+    },
+    {
+      "title": "Rehearse failover and restore",
+      "text": "We promote a replica, restore a point-in-time backup and time both, so the recovery targets in your documentation are ones you have actually measured."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can we adopt this without downtime on a large database?",
+      "a": "Yes, but the change has to be sequenced rather than applied in one step. Expand-contract, batched backfills and online index builds add elapsed time, often days for very large tables, while keeping the application available throughout."
+    },
+    {
+      "q": "Do schema changes still need a change advisory board?",
+      "a": "That is a policy question rather than a technical one. A reviewed pull request, a tested migration and recorded evidence often satisfy the same requirement more cheaply. Where a formal approval is genuinely needed, the pipeline can pause for it."
+    },
+    {
+      "q": "What about our ORM's automatic migrations?",
+      "a": "They are convenient and fine for development, but auto-generated migrations often produce locks or destructive statements that surprise you in production. We usually keep the ORM and add review, lock checks and a staged rollout around the changes it generates."
+    },
+    {
+      "q": "How do you handle data migrations, not just schema?",
+      "a": "Backfills are written as resumable jobs that run in small batches with throttling, so they can pause under load and restart without repeating work. We monitor replica lag while they run and stop them automatically if it climbs."
+    }
+  ],
+  "related": ["dr", "iac", "kubernetes"],
+  "seo": {
+    "title": "Database DevOps & Data Migrations — Safe Schema Changes",
+    "description": "Versioned migrations reviewed and shipped through the pipeline, with expand-contract changes, lock checks and rehearsed failover and restore."
+  }
+}

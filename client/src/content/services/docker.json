@@ -1,0 +1,100 @@
+{
+  "id": "docker",
+  "tagline": "Container images built fast, kept small and shipped without known vulnerabilities.",
+  "overview": [
+    "Docker problems are usually build problems in disguise. We rewrite Dockerfiles around multi-stage builds and layer ordering so a change to application code reuses the expensive dependency layers instead of rebuilding the world every time. Builds move to a shared cache and a repeatable base image, which keeps laptops and CI producing the same thing.",
+    "The other half is what ends up in the image. We strip build toolchains and package managers from the runtime layer, run as a non-root user, pin digests where supply-chain risk matters, and produce a software bill of materials for each release. Images that were once a gigabyte routinely come down by more than half, which speeds up every pull and narrows the patching surface."
+  ],
+  "problems": [
+    "A one-line change triggers a fifteen-minute image rebuild",
+    "Images carry compilers, package managers and root users into production",
+    "It works on a laptop and fails in the pipeline",
+    "Nobody can say what packages are inside a running image"
+  ],
+  "includes": [
+    {
+      "icon": "box",
+      "title": "Dockerfile redesign",
+      "text": "Layer ordering, multi-stage targets and cache mounts arranged so the slow steps sit at the bottom and rebuild only when their inputs change."
+    },
+    {
+      "icon": "search",
+      "title": "Image slimming",
+      "text": "Runtime layers built from distroless or Alpine bases with build tooling removed, dropping image size and the number of packages you have to patch later."
+    },
+    {
+      "icon": "shield",
+      "title": "Hardened runtime defaults",
+      "text": "Non-root users, read-only root filesystems and dropped Linux capabilities, with a documented exception path when a workload genuinely needs to run as root."
+    },
+    {
+      "icon": "layers",
+      "title": "Registry and tagging",
+      "text": "A tag convention that maps every image back to a commit, immutable digests for production, and retention rules so the registry does not fill with untagged layers."
+    },
+    {
+      "icon": "terminal",
+      "title": "Local development parity",
+      "text": "Compose files and dev containers that mirror the deployed image closely enough that environment differences stop being the first suspect in every bug report."
+    },
+    {
+      "icon": "check",
+      "title": "Build verification",
+      "text": "Scans for base-image CVEs, secrets and licence issues wired into the build, so a bad image is caught before it reaches a registry production can pull from."
+    }
+  ],
+  "deliverables": [
+    "Rewritten Dockerfiles with documented layer strategy",
+    "Shared cache configuration for local and CI builds",
+    "Image size and vulnerability baseline report",
+    "Tagging, retention and registry policy document",
+    "Local compose setup matching the deployed image"
+  ],
+  "stack": ["docker", "kubernetes", "github", "trivy", "snyk", "nodejs", "python"],
+  "outcomes": [
+    { "value": "60%", "label": "Typical image size cut" },
+    { "value": "2 min", "label": "Warm rebuild time" },
+    { "value": "0", "label": "Root containers shipped" }
+  ],
+  "process": [
+    {
+      "title": "Audit the build images",
+      "text": "We time a cold and a warm build, trace where the layers come from, and check what the runtime image actually contains before changing anything."
+    },
+    {
+      "title": "Rebuild for caching",
+      "text": "Dockerfiles are restructured so dependency layers change rarely and code layers change often, with cache mounts for package managers that support them."
+    },
+    {
+      "title": "Harden the runtime",
+      "text": "We switch to minimal bases, remove build tooling, add a non-root user and fix whatever breaks, which is usually a file permission or a missing shell."
+    },
+    {
+      "title": "Wire it into the pipeline",
+      "text": "Scans, digests and retention run on every build, and we hand over the Dockerfile conventions so new services start from a good image."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will slimming images break our application?",
+      "a": "Occasionally, yes — normally when something relied on a shell, a package manager or a library that was present by accident. We stage the change, run the test suite against the new image and add anything genuinely required rather than abandoning the approach."
+    },
+    {
+      "q": "Do we need to move off our current base image?",
+      "a": "Not always. If a maintained base already gives you a small runtime and timely security updates, the gains from switching are modest. The bigger wins usually come from layer ordering, cache use and what you copy into the final stage."
+    },
+    {
+      "q": "How does this relate to our Kubernetes setup?",
+      "a": "Better images make the cluster easier to run: faster pulls, smaller nodes, fewer CVEs to patch and less chance of a container needing privileged access. The two pieces of work reinforce each other, but the image changes stand alone if you are not on Kubernetes yet."
+    },
+    {
+      "q": "Can you work with our existing Dockerfiles?",
+      "a": "Yes, and that is the usual starting point. Most Dockerfiles have a sound shape and two or three expensive mistakes. We keep the structure, fix the ordering and caching, and rewrite only the stages that are clearly working against you."
+    }
+  ],
+  "related": ["kubernetes", "image-scanning", "cicd"],
+  "seo": {
+    "title": "Docker & Containerization — Fast, Small, Secure Images",
+    "description": "Rebuilt Dockerfiles with multi-stage caching, slimmer runtime images and build-time scanning, so containers are fast to pull and easier to patch."
+  }
+}

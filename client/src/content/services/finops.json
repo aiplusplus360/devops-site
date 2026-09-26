@@ -1,0 +1,100 @@
+{
+  "id": "finops",
+  "tagline": "Find the spend nobody can justify, tag it, and keep it out of next quarter's bill.",
+  "overview": [
+    "A cloud bill grows quietly. A team spins up an oversized instance for a demo, a snapshot job runs against an old bucket, and a savings plan expires unnoticed. We pull cost and usage data apart by service, account, team and environment, then put it in front of the people who can change it. Most estates we review have a fifth to a third of spend nobody can defend.",
+    "Fixing the bill is the easy part. Keeping it fixed needs the cost data to live where engineers already work: allocation tags that reflect real ownership, budget alerts that fire before month end, and a review cadence that catches drift. We wire that into your pipeline and cloud accounts so a new resource is tagged and attributable from its first hour."
+  ],
+  "problems": [
+    "The bill is up again and nobody can explain why",
+    "Every team insists its own workloads are already efficient",
+    "Savings plans and reserved capacity renew unattended",
+    "Cost surprises arrive at month end, too late to act"
+  ],
+  "includes": [
+    {
+      "icon": "gears",
+      "title": "Spend visibility",
+      "text": "Cost and usage data broken down by account, service, team and environment, with the untagged remainder called out rather than hidden in an overhead line."
+    },
+    {
+      "icon": "scale",
+      "title": "Tagging and chargeback",
+      "text": "A tag policy that maps resources to owning teams, enforced at creation time by policy as code, plus monthly chargeback reports finance can reconcile."
+    },
+    {
+      "icon": "trend",
+      "title": "Rightsizing and commitments",
+      "text": "Instance and database rightsizing from real utilisation percentiles, matched to savings plans, reserved capacity and spot where the workload tolerates interruption."
+    },
+    {
+      "icon": "bell",
+      "title": "Anomaly alerts",
+      "text": "Budget thresholds and spend anomaly detection that page a named owner when a service drifts, so a runaway job is caught in hours instead of at invoice time."
+    },
+    {
+      "icon": "gears",
+      "title": "Guardrails by default",
+      "text": "Policy checks that block untagged resources, oversized instance classes and out-of-region deployments before they are created, rather than flagging them weeks later."
+    },
+    {
+      "icon": "chart",
+      "title": "Unit economics",
+      "text": "Cost per customer, per transaction or per build tracked over time, so you can tell whether the platform is getting cheaper or just bigger."
+    }
+  ],
+  "deliverables": [
+    "Cost allocation model mapped to teams and services",
+    "Tagging policy enforced as code in your cloud accounts",
+    "Rightsizing and commitment plan with monthly saving estimate",
+    "Budget alerts and anomaly detection wired to named owners",
+    "Monthly spend report template for finance and engineering"
+  ],
+  "stack": ["aws", "azure", "gcp", "terraform", "grafana", "datadog", "prometheus"],
+  "outcomes": [
+    { "value": "30%", "label": "Typical addressable spend" },
+    { "value": "2 weeks", "label": "To first saving shipped" },
+    { "value": "0", "label": "Untagged production resources" }
+  ],
+  "process": [
+    {
+      "title": "Baseline the current spend",
+      "text": "We export cost and usage data, reconcile it against the tagging you already have, and agree which share of the bill is actually addressable."
+    },
+    {
+      "title": "Agree the savings targets",
+      "text": "Together we pick the changes worth doing first, costed with effort and payback, so nobody is chasing a five-figure saving that takes a year to land."
+    },
+    {
+      "title": "Implement and enforce",
+      "text": "Rightsizing, commitment purchases and tag policy roll out through pull requests, with the guardrails landing last so nothing breaks silently."
+    },
+    {
+      "title": "Report and iterate",
+      "text": "Monthly, we review actuals against target, flag anything that has drifted back, and retire guardrails that are generating more work than value."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will this break anything in production?",
+      "a": "Rightsizing and commitment changes are proposed as reviewable pull requests and applied to non-production first. Nothing is resized or purchased without a rollback path, and we avoid changes that would reduce headroom on services close to their peak."
+    },
+    {
+      "q": "How much of our bill can you actually cut?",
+      "a": "It depends on how much is untagged, oversized or idle, which we only know after looking at the data. Teams we work with typically find a fifth to a third of addressable spend; the rest is committed, contracted or genuinely needed. We will not quote a percentage before the assessment."
+    },
+    {
+      "q": "Do we need to adopt a specific FinOps tool?",
+      "a": "No. We can work with the native cost tools in AWS, Azure or Google Cloud, and only recommend a third-party platform when your estate is large enough that the native reporting genuinely is not enough."
+    },
+    {
+      "q": "Who owns the cost decisions afterwards?",
+      "a": "Your teams do. We leave you the allocation model, the tag policy and the review cadence, and we deliberately do not become the person who approves every instance size. The cadence is the control; a consultant in the loop is not."
+    }
+  ],
+  "related": ["kubernetes", "advisory", "iac"],
+  "seo": {
+    "title": "Cloud Cost Optimisation (FinOps) — Cut Waste, Keep It Gone",
+    "description": "Find the untagged, oversized and idle resources in your cloud bill, then keep the savings with allocation tags, budgets, commitments and guardrails."
+  }
+}

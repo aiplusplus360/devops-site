@@ -1,0 +1,100 @@
+{
+  "id": "serverless",
+  "tagline": "Event-driven services that scale to zero, stay affordable, and do not melt under cold starts.",
+  "overview": [
+    "Serverless pays off when the workload is spiky, event-driven and mostly idle. We look at your actual traffic shape first, because a steady high-throughput service is usually cheaper and simpler on containers. Where functions fit, we design around small handlers, explicit timeouts and idempotent processing, since retries are a normal part of the contract, not an error.",
+    "Cold starts, concurrency limits and the cost of a chatty queue are the things that go wrong in practice, so they get measured rather than assumed. We tune memory and runtime, move unavoidable work out of the request path, and set concurrency ceilings that protect the database sitting behind the function."
+  ],
+  "problems": [
+    "The monthly bill is fine until one batch job runs wild",
+    "Cold starts add two seconds to the request users notice most",
+    "Nobody can trace a failed event through five queues and a retry",
+    "Local development does not resemble the deployed function at all"
+  ],
+  "includes": [
+    {
+      "icon": "zap",
+      "title": "Event and trigger design",
+      "text": "Queues, topics, schedules and streams chosen per workload, with dead-letter handling and replay defined before the first function is deployed rather than after the first lost message."
+    },
+    {
+      "icon": "gauge",
+      "title": "Cold-start tuning",
+      "text": "Runtime and memory measured against real payloads, with provisioned concurrency reserved for the handful of paths where the first request latency actually matters to users."
+    },
+    {
+      "icon": "trend",
+      "title": "Concurrency and limits",
+      "text": "Reserved and burst concurrency set per function so one noisy tenant cannot exhaust the account, and downstream databases are protected by a deliberate ceiling rather than good intentions."
+    },
+    {
+      "icon": "route",
+      "title": "Step and workflow orchestration",
+      "text": "Multi-step processes expressed as state machines with visible history, so a stuck order can be inspected and retried without reading logs across four separate services."
+    },
+    {
+      "icon": "chart",
+      "title": "Cost and usage controls",
+      "text": "Budgets, alarms and per-function cost reporting, plus a review of the log volume that quietly becomes the largest line on many serverless invoices."
+    },
+    {
+      "icon": "terminal",
+      "title": "Local development parity",
+      "text": "A local runtime that matches the deployed environment, seeded events for testing, and a deploy path a single engineer can run without waiting on a shared environment."
+    }
+  ],
+  "deliverables": [
+    "Function and event topology documentation with diagrams",
+    "Infrastructure code for functions, queues and permissions",
+    "Concurrency and timeout settings for each endpoint",
+    "Observability setup with trace correlation across services",
+    "Cost report broken down by function and trigger"
+  ],
+  "stack": ["aws", "azure", "gcp", "nodejs", "python", "golang", "opentelemetry", "postgresql"],
+  "outcomes": [
+    { "value": "0", "label": "Idle compute charges" },
+    { "value": "300 ms", "label": "Typical warm response" },
+    { "value": "1 trigger", "label": "Per business event" }
+  ],
+  "process": [
+    {
+      "title": "Profile the traffic",
+      "text": "We chart request volume, burstiness and tolerance for latency, then say plainly whether functions will save money or add a moving part for nothing."
+    },
+    {
+      "title": "Model the event flow",
+      "text": "Every trigger, queue and failure path drawn on one page before implementation, which is where most of the value in a serverless design is actually created."
+    },
+    {
+      "title": "Build and load test",
+      "text": "Handlers are written small and deployed early, then pushed with realistic traffic to expose throttling, connection limits and the cold starts that only appear under load."
+    },
+    {
+      "title": "Instrument and hand over",
+      "text": "Tracing, structured logs and cost alarms go in before launch, and your team gets the deployment runbook plus a short guide on adding the next function."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is serverless cheaper than containers?",
+      "a": "Sometimes. For spiky traffic that is idle most of the day, usually yes. For steady, high-throughput workloads, containers on reserved capacity often cost less and are easier to reason about. The traffic profile decides, not the marketing."
+    },
+    {
+      "q": "Do cold starts make this unusable for user-facing APIs?",
+      "a": "Not if you measure them. Many endpoints warm in well under a second once memory and runtime are tuned. For the few paths where the tail latency matters, provisioned concurrency costs a little and removes the problem entirely."
+    },
+    {
+      "q": "How do we test event-driven code locally?",
+      "a": "With a local runtime that mirrors the deployed one and a set of recorded or synthetic events kept in the repository. It is never identical to the cloud, so we also run integration tests in a disposable account against the real services."
+    },
+    {
+      "q": "What about vendor lock-in?",
+      "a": "It is real, and pretending otherwise is unhelpful. Keep business logic in plain handlers with thin adapters around the provider's triggers and queues, so moving is a contained piece of work rather than a rewrite."
+    }
+  ],
+  "related": ["kubernetes", "observability", "cloud-migration"],
+  "seo": {
+    "title": "Serverless Architecture — Lambda, Functions and Event Design",
+    "description": "Event-driven workloads that scale to zero and stay affordable, with cold-start tuning, concurrency limits and cost controls built into the design."
+  }
+}

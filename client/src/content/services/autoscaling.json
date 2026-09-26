@@ -1,0 +1,100 @@
+{
+  "id": "autoscaling",
+  "tagline": "Capacity that follows real demand, sized from traffic data rather than a guess.",
+  "overview": [
+    "Two failure modes cost money in opposite directions. Running flat out with no headroom means the next traffic spike becomes an outage; running everything at three times peak means paying for servers that idle most of the year. We size capacity from your actual traffic history and then let it move with demand.",
+    "Autoscaling is a control problem, not a switch. Node pools, container replicas and queue consumers all react on different timescales, and a scaler that reacts faster than the application can start will simply thrash. We tune thresholds, cooldowns and warm capacity together, and leave alerts that tell you when scaling is not keeping up."
+  ],
+  "problems": [
+    "We over-provision all year to survive one peak",
+    "Capacity planning is done in a spreadsheet nobody trusts",
+    "Scaling reacts too late, after users have already suffered",
+    "No idea which service consumes most of the headroom"
+  ],
+  "includes": [
+    {
+      "icon": "trend",
+      "title": "Scaling policies",
+      "text": "Horizontal pod, node pool and server group policies tuned to your workload, with sensible cooldowns so the system settles instead of oscillating."
+    },
+    {
+      "icon": "zap",
+      "title": "Event-driven scaling",
+      "text": "KEDA and queue-length triggers scale workers on backlog rather than CPU, which suits batch, consumer and asynchronous jobs far better than a processor threshold."
+    },
+    {
+      "icon": "chart",
+      "title": "Traffic-based sizing",
+      "text": "We model capacity from historical request rates, including your true daily and seasonal peaks, so the baseline is defensible rather than a number someone liked."
+    },
+    {
+      "icon": "gears",
+      "title": "Scheduled and predictive scaling",
+      "text": "Where demand is predictable — a morning login surge, a nightly batch window — we pre-warm capacity on a schedule so scaling never has to race the traffic."
+    },
+    {
+      "icon": "terminal",
+      "title": "Cost and capacity reports",
+      "text": "Per-service utilisation and headroom reported together, which shows where money is being spent on capacity that is never used."
+    },
+    {
+      "icon": "gauge",
+      "title": "Load testing links",
+      "text": "Scaling policies are validated against the load tests in your environment, so behaviour under a spike is observed before it happens for real."
+    }
+  ],
+  "deliverables": [
+    "Capacity model built from historical traffic data",
+    "Scaling policy configuration for every workload tier",
+    "Kubernetes HPA and node pool definitions in Git",
+    "Headroom and utilisation report per service",
+    "Documented cooldown and warm-up settings per tier"
+  ],
+  "stack": ["kubernetes", "aws", "azure", "terraform", "prometheus", "grafana", "datadog"],
+  "outcomes": [
+    { "value": "40%", "label": "Typical reduction in idle spend" },
+    { "value": "1 policy", "label": "Configured per workload tier" },
+    { "value": "2x", "label": "Peak demand absorbed" }
+  ],
+  "process": [
+    {
+      "title": "Collect the real numbers",
+      "text": "We pull request rates, queue depths and resource usage over the last year to find the genuine peaks rather than the remembered ones."
+    },
+    {
+      "title": "Model required capacity",
+      "text": "From that data we build a per-service model of steady state and peak, including the headroom needed for a failed node or zone."
+    },
+    {
+      "title": "Implement scaling policies",
+      "text": "Policies are written as code, tested against a synthetic spike in a non-production environment, then rolled out with conservative limits first."
+    },
+    {
+      "title": "Watch and adjust",
+      "text": "We review scaling events after a month, remove the policies that never trigger, and tune the ones that fire constantly without adding capacity."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will autoscaling make our bill unpredictable?",
+      "a": "Some variability is the point, but we cap it. You set maximum replica counts and node pool sizes, and we add budget alerts so a runaway scaler is noticed the same day rather than at the end of the month."
+    },
+    {
+      "q": "Our database is the bottleneck, not the app. Does this help?",
+      "a": "Only partly. Scaling stateless application tiers is straightforward; stateful tiers need connection pooling, read replicas and query tuning, and scaling the app harder will just overload the database faster. We will say so if that is the real constraint."
+    },
+    {
+      "q": "How do you pick thresholds without guessing?",
+      "a": "From measurements. We hold the load tests steady at known request rates and watch where latency and saturation start to climb, then set thresholds below that knee rather than at an arbitrary percentage."
+    },
+    {
+      "q": "Why do we still fall over at peak if we already autoscale?",
+      "a": "That usually means something upstream is fixed: a connection limit, a single-writer database, or a warm-up time longer than the burst. Scaling the tier in front of it just moves the queue somewhere else."
+    }
+  ],
+  "related": ["load-testing", "kubernetes", "finops"],
+  "seo": {
+    "title": "Autoscaling & Capacity Planning — Sizing From Real Data",
+    "description": "Traffic-based capacity models and scaling policies that follow your demand, cut idle spend and keep headroom for the peaks you genuinely see."
+  }
+}

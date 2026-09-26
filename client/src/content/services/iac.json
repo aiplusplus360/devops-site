@@ -1,0 +1,100 @@
+{
+  "id": "iac",
+  "tagline": "Your cloud estate written as code, reviewed in pull requests, rebuildable from an empty account.",
+  "overview": [
+    "Most infrastructure problems are state problems. Two environments drift apart because someone made a console change nobody recorded, and the module that was supposed to describe both of them quietly stopped being true. We start by mapping what actually exists, import it where it can be imported, and get the state files somewhere your team can trust.",
+    "Module layout matters more than tool choice. We split the estate along the lines your team already reasons about — accounts, networks, shared services — then put policy checks on the pull request so a plan that opens port 22 to the world fails review instead of reaching production."
+  ],
+  "problems": [
+    "Only one engineer understands the Terraform repository and where state lives",
+    "A console change in March breaks the next apply in June",
+    "Nobody reviews infrastructure changes the way they review application code",
+    "Rebuilding a production account is a multi-week archaeology project"
+  ],
+  "includes": [
+    {
+      "icon": "terminal",
+      "title": "Remote state and locking",
+      "text": "State stored in a versioned remote backend with locking enabled, so two applies never race each other and a lost laptop does not mean a lost estate."
+    },
+    {
+      "icon": "layers",
+      "title": "Composable module library",
+      "text": "Modules cut along the boundaries your teams actually own, with documented inputs and outputs, so a new environment is a small configuration file rather than a fresh pile of copy-paste."
+    },
+    {
+      "icon": "search",
+      "title": "Drift detection",
+      "text": "Scheduled plans compared against real infrastructure, so an out-of-band change is reported the day it happens instead of surfacing halfway through an unrelated deployment three months later."
+    },
+    {
+      "icon": "scale",
+      "title": "Policy-checked pull requests",
+      "text": "Open Policy Agent or Sentinel rules run against every plan: naming conventions, required tags, allowed regions and blocked public buckets, all enforced before a human approves the change."
+    },
+    {
+      "icon": "branch",
+      "title": "Import and migration",
+      "text": "We bring existing resources under management in reviewed batches, starting with the ones nobody dares touch, and document the manual steps that remain so they are visible rather than folklore."
+    },
+    {
+      "icon": "book",
+      "title": "Runbook and conventions",
+      "text": "A short written standard covering naming, module versioning, plan review and state recovery, plus the commands your team needs during an incident."
+    }
+  ],
+  "deliverables": [
+    "Managed code repositories with reviewed module and environment definitions",
+    "Remote state backends configured with locking and access controls",
+    "Policy suite enforced on every infrastructure pull request",
+    "Drift detection schedule with alerting to your team's channel",
+    "Import inventory listing every resource still outside the codebase"
+  ],
+  "stack": ["terraform", "pulumi", "aws", "azure", "gcp", "github", "vault"],
+  "outcomes": [
+    { "value": "0", "label": "Manual console changes" },
+    { "value": "90%", "label": "Estate under code management" },
+    { "value": "1 PR", "label": "Gate for every change" }
+  ],
+  "process": [
+    {
+      "title": "Discover what exists",
+      "text": "We inventory every account, read-only, and compare it against whatever code and diagrams you already have. The gap between those two is the real starting point."
+    },
+    {
+      "title": "Design module boundaries",
+      "text": "A short design session with your engineers decides how the estate gets split and who owns each module, because a layout nobody understands gets abandoned within a quarter."
+    },
+    {
+      "title": "Convert in reviewable batches",
+      "text": "Resources move under management a batch at a time, each as its own pull request, so the estate stays healthy throughout and nothing depends on one enormous cutover weekend."
+    },
+    {
+      "title": "Hand over with guardrails",
+      "text": "We walk your team through plan review, state recovery and adding a module, then stay available for the first few real changes they ship without us."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do we need to rewrite everything into Terraform?",
+      "a": "No. Rewriting a working estate is rarely worth the risk. We import what is safe to import, leave the rest alone, and only convert a component when there is a clear reason such as frequent change or an upcoming rebuild."
+    },
+    {
+      "q": "What if we have already drifted badly from our code?",
+      "a": "That is the normal state, not an exception. We reconcile drift in reviewed batches, deciding case by case whether the console change should be codified or reverted. Nothing is applied to production until you have reviewed that decision."
+    },
+    {
+      "q": "Terraform, OpenTofu or Pulumi?",
+      "a": "Whichever your team will maintain. Terraform has the widest module ecosystem and hiring pool, OpenTofu matters if licence terms are a concern, and Pulumi suits teams who prefer general-purpose languages. We will recommend one, but the honest answer is that the layout matters more."
+    },
+    {
+      "q": "Can you work alongside our existing platform team?",
+      "a": "Yes, and that is usually the better arrangement. Your engineers review every change and own the modules once they land. We would rather work ourselves out of a job than leave a codebase only we understand."
+    }
+  ],
+  "related": ["cloud-migration", "policy-as-code", "gitops"],
+  "seo": {
+    "title": "Infrastructure as Code — Terraform, Pulumi & Policy Checks",
+    "description": "Your cloud estate described in version control, with reviewed module layouts, drift detection and policy checks on every infrastructure pull request."
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "id": "dr",
+  "tagline": "Recovery procedures that have been tested, with RTO and RPO written down.",
+  "overview": [
+    "Every organisation has backups. Far fewer have restored one recently enough to know they still work, and almost none can say how long a full recovery would take. We design the failover and backup arrangements, then rehearse the restore until the numbers in the plan match the numbers you observe.",
+    "Work starts with a conversation about acceptable loss: how much data can you afford to lose, and how long can a critical service be down before it becomes a business problem. Those two answers set the target and the budget, and they decide whether you need warm standby in a second region or simply a faster restore from object storage."
+  ],
+  "problems": [
+    "Nobody knows if the backups actually restore",
+    "Recovery time is a guess written in a wiki",
+    "A whole region failing would take the platform down",
+    "Database failover has never been tested under load"
+  ],
+  "includes": [
+    {
+      "icon": "database",
+      "title": "Backup strategy",
+      "text": "Automated snapshots and logical dumps to a separate account or region, with encryption, immutability and a schedule matched to your tolerance for loss."
+    },
+    {
+      "icon": "network",
+      "title": "High availability design",
+      "text": "Multi-AZ and multi-region topology for the components that cannot stop, including load balancers, queues and the database layer that holds state."
+    },
+    {
+      "icon": "refresh",
+      "title": "Restore rehearsals",
+      "text": "We restore into an isolated environment on a schedule, time the whole exercise, and record the result against the recovery objective it is meant to prove."
+    },
+    {
+      "icon": "route",
+      "title": "Failover runbooks",
+      "text": "Step-by-step procedures for promoting a replica or shifting traffic, written for someone tired at four in the morning rather than for an architect."
+    },
+    {
+      "icon": "gauge",
+      "title": "RTO and RPO targets",
+      "text": "Agreed recovery time and recovery point objectives per service, graded by importance so a reporting tool is not held to the same standard as checkout."
+    },
+    {
+      "icon": "clipboard",
+      "title": "Recovery evidence pack",
+      "text": "Dated records of every rehearsal, including what failed and how long each stage took, which doubles as the evidence auditors ask for."
+    }
+  ],
+  "deliverables": [
+    "Recovery plan with RTO and RPO per service",
+    "Automated backup configuration under version control",
+    "Tested failover runbook for the database tier",
+    "Rehearsal report with timings and failure notes",
+    "Immutability and access policy for backup data"
+  ],
+  "stack": ["aws", "azure", "postgresql", "mongodb", "kubernetes", "terraform", "redis"],
+  "outcomes": [
+    { "value": "4 hours", "label": "Typical recovery time objective" },
+    { "value": "15 min", "label": "Typical recovery point objective" },
+    { "value": "quarterly", "label": "Restore rehearsal schedule" }
+  ],
+  "process": [
+    {
+      "title": "Agree the loss tolerance",
+      "text": "We sit down with the service owners and decide, per system, how much data loss and downtime is genuinely acceptable before the business is harmed."
+    },
+    {
+      "title": "Design the recovery path",
+      "text": "We choose between multi-region active-active, warm standby and restore-from-backup based on cost, complexity and the objectives we just agreed."
+    },
+    {
+      "title": "Implement and automate",
+      "text": "Backups, replication and the failover steps become code wherever the platform allows, so recovery does not depend on one person remembering a sequence."
+    },
+    {
+      "title": "Rehearse and report",
+      "text": "We run the first restore with your team watching, time each stage, and leave a written report with the gaps and the fixes for next quarter."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Our backups run fine. Why rehearse restores?",
+      "a": "Because a backup job reporting success only proves the copy was written, not that it can be read back and returned to service. Restores fail for boring reasons — missing keys, wrong permissions, schema drift — and rehearsals find those before a real outage does."
+    },
+    {
+      "q": "Do we need a second region?",
+      "a": "Often not, and it is the most expensive answer. We size the requirement from the agreed objectives: many services are fine with multi-AZ and fast restore, and only a handful justify the cost of continuous replication elsewhere."
+    },
+    {
+      "q": "How do you avoid backups being deleted by an attacker?",
+      "a": "Immutable and versioned storage in a separate account, with credentials the production estate cannot reach. We also alert on unusual deletion activity, because the fastest recovery path is one that nobody has tampered with."
+    },
+    {
+      "q": "How often should we test recovery?",
+      "a": "Quarterly is a reasonable default for critical systems, and annually for the long tail. If a rehearsal fails, the next one moves sooner. The schedule matters less than actually doing it and writing down the result."
+    }
+  ],
+  "related": ["database-devops", "kubernetes", "observability"],
+  "seo": {
+    "title": "Backup, HA & Disaster Recovery — Tested RTO and RPO",
+    "description": "Backup, replication and failover design with rehearsed restores, so recovery time and recovery point objectives are proved rather than assumed."
+  }
+}

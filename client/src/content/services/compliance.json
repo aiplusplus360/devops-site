@@ -1,0 +1,100 @@
+{
+  "id": "compliance",
+  "tagline": "Audit evidence collected continuously by your pipeline, not gathered in a panic each quarter.",
+  "overview": [
+    "Teams preparing for SOC 2, ISO 27001, HIPAA or PCI DSS usually lose weeks to evidence gathering: screenshots of settings, exported logs, tickets pasted into a spreadsheet. Most of that evidence already exists in the systems you run. Our work is to capture it automatically and keep it organised.",
+    "We map the controls a framework expects onto what your platform already records, then build the collection, retention and reporting around that. Where a control has no automated source, we say so honestly and either script the check or document the manual procedure that a person must follow and sign."
+  ],
+  "problems": [
+    "Audit preparation eats a month of engineering time every year",
+    "Nobody can prove who approved a production change last quarter",
+    "Evidence lives in screenshots, inboxes and one person's memory",
+    "Every framework request restarts the same scramble from scratch"
+  ],
+  "includes": [
+    {
+      "icon": "clipboard",
+      "title": "Control mapping",
+      "text": "Each framework requirement is mapped to the system that satisfies it and the evidence it produces, with the gaps listed plainly rather than glossed over."
+    },
+    {
+      "icon": "pipeline",
+      "title": "Pipeline-generated evidence",
+      "text": "Build records, approvals, test results and deployment history captured automatically as changes move, so the audit trail is a by-product of normal work."
+    },
+    {
+      "icon": "check",
+      "title": "Change and approval trails",
+      "text": "Who raised a change, who reviewed it, what was tested and when it reached production, recorded in a form that survives staff turnover and reorganisation."
+    },
+    {
+      "icon": "sitemap",
+      "title": "Segregation of duties",
+      "text": "Controls that show the person who wrote a change is not the only person who approved and deployed it, with break-glass use logged separately and reviewed."
+    },
+    {
+      "icon": "database",
+      "title": "Evidence retention",
+      "text": "Storage with defined retention periods and access control, so records are available when the auditor asks and not quietly deleted by a lifecycle rule."
+    },
+    {
+      "icon": "chart",
+      "title": "Readiness dashboard",
+      "text": "A live view of which controls have current evidence and which have expired or drifted, so the answer to what is missing is available before the request arrives."
+    }
+  ],
+  "deliverables": [
+    "Control matrix mapped to systems and evidence sources",
+    "Automated evidence collection jobs in the pipeline",
+    "Retention and access policy for audit records",
+    "Gap list with owners and remediation dates",
+    "Dry-run evidence pack for a sample control set"
+  ],
+  "stack": ["github", "gitlab", "terraform", "aws", "azure", "vault", "kubernetes", "elastic"],
+  "outcomes": [
+    { "value": "2 weeks", "label": "Typical evidence gathering" },
+    { "value": "0", "label": "Controls without an owner" },
+    { "value": "Daily", "label": "Evidence refresh cadence" }
+  ],
+  "process": [
+    {
+      "title": "Scope the framework",
+      "text": "We agree which controls are in scope, which systems produce the evidence, and which parts of the framework your team will handle without automation."
+    },
+    {
+      "title": "Map controls to sources",
+      "text": "Each requirement gets a source system, a collection method and a named owner, written into a matrix that becomes the working document for the project."
+    },
+    {
+      "title": "Automate what you can",
+      "text": "Collection jobs and queries are built for the controls that lend themselves to it, starting with change management and access, which cover a lot of ground."
+    },
+    {
+      "title": "Rehearse the evidence request",
+      "text": "We run a dry pass where you ask for a set of controls as an auditor would, then time how long the answer takes and fix the gaps."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Will this get us through the audit?",
+      "a": "We cannot promise that, and you should be wary of anyone who does. An auditor assesses the whole control environment, including things well outside your delivery pipeline. What this work does is make the evidence side far less painful and far more reliable."
+    },
+    {
+      "q": "Which frameworks do you cover?",
+      "a": "Most often SOC 2, ISO 27001, HIPAA and PCI DSS, because those are the ones our clients face, but the approach is framework-agnostic. If the requirements can be expressed as checkable controls with evidence, we can map them."
+    },
+    {
+      "q": "Do you provide the audit opinion?",
+      "a": "No. We are not an auditor and we do not certify anything. We prepare your systems and evidence so an independent auditor can do their job, and we will sit in on evidence requests if that helps, but the assessment is theirs to make."
+    },
+    {
+      "q": "How much of this is really automatable?",
+      "a": "Change management, access reviews, vulnerability handling and configuration drift are largely automatable, and they are usually the heaviest evidence requests. Governance areas such as policy approval and training records are not, so we leave those as documented manual procedures with a clear owner."
+    }
+  ],
+  "related": ["release-management", "iam", "policy-as-code"],
+  "seo": {
+    "title": "Compliance Readiness — Continuous Audit Evidence from CI/CD",
+    "description": "Continuous evidence collection for SOC 2, ISO 27001, HIPAA and PCI DSS readiness, with control mapping, change audit trails and evidence retention."
+  }
+}

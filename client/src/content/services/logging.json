@@ -1,0 +1,100 @@
+{
+  "id": "logging",
+  "tagline": "Every log line searchable in seconds, with retention that does not outspend your compute.",
+  "overview": [
+    "Ask an engineer to find the error behind a failed payment and watch what happens. If the answer is a sequence of SSH sessions and grep across four hosts, you do not have logging, you have log files. We build a pipeline where every service writes structured events to one place, and a search returns results while the user is still describing the problem.",
+    "Cost is the other half of the job. Raw logs are the fastest-growing line on many cloud bills, so we set retention and tiering deliberately: hot storage for the last few days, cold archives for audit windows, and nothing collected simply because it was easy. You keep the search you need without paying to store noise forever."
+  ],
+  "problems": [
+    "Nobody can find anything in the logs",
+    "Each service logs in a different, inconsistent format",
+    "Log storage costs more than the workload it describes",
+    "Debugging means logging into servers one at a time"
+  ],
+  "includes": [
+    {
+      "icon": "eye",
+      "title": "Collection pipelines",
+      "text": "Fluent Bit, Elastic Agent or a cloud-native shipper takes logs off every node and delivers them reliably, with buffering so a brief outage does not lose the evidence."
+    },
+    {
+      "icon": "search",
+      "title": "Structured logging standards",
+      "text": "We agree field names, severity levels and correlation ids, so a query can filter by request or user instead of matching free text and hoping."
+    },
+    {
+      "icon": "sliders",
+      "title": "Retention and tiering",
+      "text": "Hot, warm and cold tiers with lifecycle rules that move old data automatically, keeping recent logs fast to search and older ones cheap to keep."
+    },
+    {
+      "icon": "key",
+      "title": "Access control and redaction",
+      "text": "Pipelines strip personal data and credentials before storage, and queries are scoped by role, so logs do not become an unmanaged copy of your database."
+    },
+    {
+      "icon": "chart",
+      "title": "Log-based metrics",
+      "text": "Counts of errors, warnings and specific events are extracted at ingest and charted over time, which turns a wall of text into a trend you can watch."
+    },
+    {
+      "icon": "book",
+      "title": "Query cookbook",
+      "text": "A set of saved searches for the questions that come up during incidents — who saw this error, when did it start, and which release introduced it."
+    }
+  ],
+  "deliverables": [
+    "Ingestion pipeline configuration held in version control",
+    "Written logging standard with field and severity conventions",
+    "Retention and lifecycle policy per data tier",
+    "Saved searches for the top recurring questions",
+    "Cost baseline and savings estimate for log storage"
+  ],
+  "stack": ["elastic", "grafana", "aws", "kubernetes", "opentelemetry", "datadog"],
+  "outcomes": [
+    { "value": "seconds", "label": "Typical log search time" },
+    { "value": "40%", "label": "Typical log storage saving" },
+    { "value": "1 query", "label": "Find a request across services" }
+  ],
+  "process": [
+    {
+      "title": "Audit current log sources",
+      "text": "We count how much is being produced, where it lands, and what it costs per month. Most teams find a handful of services responsible for the majority."
+    },
+    {
+      "title": "Define the schema",
+      "text": "Field names, levels and correlation identifiers are agreed and documented, so application teams have one format to follow instead of inventing their own."
+    },
+    {
+      "title": "Stand up the pipeline",
+      "text": "Collectors, parsing rules and storage are deployed as code, tested against real traffic in staging before they touch production volumes."
+    },
+    {
+      "title": "Cut volume and hand over",
+      "text": "We drop the debug-level noise, tighten retention, show your team the saved searches, and leave the cost dashboard in place to catch drift."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do we have to move off our existing log platform?",
+      "a": "No. We will happily improve a Splunk or Datadog estate, and often the biggest win is simply sending less. Migration only makes sense when cost or query limits have become a genuine constraint, and that is a decision we would cost first."
+    },
+    {
+      "q": "How do you stop logs leaking sensitive data?",
+      "a": "Redaction rules run at the collector, before anything is written to storage, and we test them against sample payloads that contain credentials and personal fields. It is not perfect, so we also restrict who can query which index."
+    },
+    {
+      "q": "What about logs from legacy applications?",
+      "a": "Older services that only write plain text are handled by parsing rules in the pipeline, which extract structure without touching the application. Where that proves fragile, a small logging shim in the app is usually a day of work."
+    },
+    {
+      "q": "How long until the search is actually useful?",
+      "a": "Once the pipeline is live, days rather than months, because usefulness comes from the schema and the saved queries. Making every team adopt the standard takes longer and is the part that usually needs persistence."
+    }
+  ],
+  "related": ["observability", "tracing", "support-247"],
+  "seo": {
+    "title": "Centralised Logging — Search, Retention and Access Control",
+    "description": "Centralised logging that makes every log line searchable in seconds, with retention tiers that keep storage costs below your monthly compute bill."
+  }
+}
