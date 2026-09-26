@@ -7,14 +7,18 @@
    this endpoint is written to match it exactly rather than the other way round.
 
    Delivery options, in order of what is configured:
-
-     1. CONTACT_WEBHOOK_URL set  -> the submission is forwarded there as JSON
-                                    (Slack/Zapier/Make/n8n all accept this)
-     2. always                   -> appended to server/data/submissions.jsonl so a
-                                    submission is never lost, even with no config
+   
+     1. SMTP_HOST set           -> the enquiry is emailed (see server/lib/mailer.mjs)
+     2. CONTACT_WEBHOOK_URL set -> the submission is forwarded there as JSON
+                                   (Slack/Zapier/Make/n8n all accept this)
+     3. always                  -> appended to server/data/submissions.jsonl so a
+                                   submission is never lost, even with no config
 
    There is no database and no required configuration: with nothing set, the
    form still works and everything is captured on disk.
+
+   A failure in (1) or (2) never fails the request. The record is already on
+   disk by then, so the enquiry is safe; the outcome is just reported back.
    ========================================================================== */
 import fs from "node:fs";
 import fsp from "node:fs/promises";
@@ -22,6 +26,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
 import multer from "multer";
+import { sendEnquiry } from "../lib/mailer.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -174,12 +179,17 @@ export function createContactRouter() {
       }
 
       const { forwarded, status } = await forwardToWebhook(record);
+      const mail = await sendEnquiry(record);
 
       res.status(200).json({
         ok: true,
         stored: true,
+        emailed: mail.sent,
         forwarded,
         ...(status ? { webhookStatus: status } : {}),
+        // Surfaced rather than swallowed: if email is misconfigured we want the
+        // visitor's submission to still succeed but the operator to find out.
+        ...(mail.error ? { emailError: mail.error } : {}),
       });
     });
   });

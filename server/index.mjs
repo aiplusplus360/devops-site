@@ -25,6 +25,7 @@ import { makeTemplateLoader, renderRequest } from "./lib/render.mjs";
 import { headTags } from "./lib/meta.mjs";
 import { createContactRouter, ensureDataDir, submissionsFile } from "./api/contact.mjs";
 import { createContentRouter } from "./api/content.mjs";
+import { mailerSummary } from "./lib/mailer.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(here, "..");
@@ -206,6 +207,7 @@ const server = app.listen(PORT, HOST, () => {
   console.log(`  Services       ${ssr.SERVICES.length - missing.length}/${ssr.SERVICES.length} pages published`);
   if (missing.length) console.log(`  Missing copy   ${missing.join(", ")}`);
   console.log(`  Submissions    ${submissionsFile}`);
+  console.log(`  Email          ${mailerSummary()}`);
   console.log(
     `  Webhook        ${process.env.CONTACT_WEBHOOK_URL ? "configured" : "not configured (writing to file only)"}`
   );

@@ -17,9 +17,9 @@
 export const SITE = {
   /* ---------------------------------------------------------------- BRAND -- */
   brand: {
-    name: "Your Company",            // e.g. "Northwind DevOps"
-    monogram: "YC",                  // 1-2 letters shown in the logo mark
-    legalName: "Your Company LLC",   // shown in the footer copyright
+    name: "TerraTemporal",
+    monogram: "TT",                  // 1-2 letters shown in the logo mark
+    legalName: "TerraTemporal",      // shown in the footer copyright
     tagline: "DevOps & Cloud Engineering",
     // Shown as <title> on pages that don't set their own.
     defaultTitle: "DevOps & Cloud Engineering Services",

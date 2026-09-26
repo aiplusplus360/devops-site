@@ -37,11 +37,20 @@ Environment=PORT=4310
 # which replaces that directory wholesale, can never remove them.
 Environment=SUBMISSIONS_DIR=/var/www/devops.theaimax.com/data
 
-# Optional: set this to a Slack / Zapier / Make / n8n webhook URL to have each
-# contact-form submission forwarded there as JSON. Uncomment and fill in, then
-# `systemctl daemon-reload && systemctl restart devops-theaimax`.
-# Submissions are always written to disk whether or not this is set.
-#Environment=CONTACT_WEBHOOK_URL=
+# Optional settings, and the one place credentials live. Root-only (mode 600),
+# outside the repo, and not overwritten by a deploy.
+#
+#   SMTP_HOST=smtp.example.com
+#   SMTP_PORT=587
+#   SMTP_USER=info@theaimax.com
+#   SMTP_PASS=...
+#   CONTACT_FROM=info@theaimax.com
+#   CONTACT_TO=info@theaimax.com
+#   CONTACT_WEBHOOK_URL=https://hooks.slack.com/...
+#
+# The leading `-` means a missing file is not an error, so the service still
+# starts on a machine where email has not been set up yet.
+EnvironmentFile=-/etc/devops-theaimax.env
 
 ExecStart=/usr/bin/node server/index.mjs
 

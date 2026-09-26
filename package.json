@@ -13,12 +13,14 @@
     "check:content": "node deploy/check-content.js",
     "check:render": "node deploy/check-render.js",
     "check:routes": "node deploy/check-routes.mjs",
-    "check": "npm run content:check && npm run check:content && npm run check:render && npm run check:routes"
+    "check": "npm run content:check && npm run check:content && npm run check:render && npm run check:routes",
+    "check:email": "node server/scripts/check-email.mjs"
   },
   "dependencies": {
     "compression": "^1.7.5",
     "express": "^4.21.2",
     "multer": "^2.4.0",
+    "nodemailer": "^10.0.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2"
