@@ -1,5 +1,22 @@
 # Image credits
 
+## Brand assets — first-party artwork
+
+`logo.png`, `favicon-32.png` and `favicon-180.png` are the project's own brand
+artwork, not stock photography, so they are not covered by the licence below.
+
+| File | Dimensions | Notes |
+|---|---|---|
+| `logo.png` | 192×120 | Header and footer logo. Trimmed to the artwork's bounding box and downscaled from the supplied source; keep the 1.60:1 ratio, since the header sizes it by height alone (`.brand__logo`). |
+| `favicon-180.png` | 180×180 | Apple touch icon. The mark is composited onto white rather than left transparent so it stays legible on both light and dark browser tab bars. |
+| `favicon-32.png` | 32×32 | Browser tab icon, downscaled from the 180px version. |
+
+To change the logo, replace those three files and leave `SITE.brand.logo` in
+`assets/js/config.js` as it is. Setting that value to `""` falls back to the
+`TT` monogram tile (`.brand__mark`).
+
+## Photography
+
 Every photo in this folder is a real photograph, free for commercial use under
 the [Unsplash License](https://unsplash.com/license) (attribution not required,
 but given here as a courtesy).

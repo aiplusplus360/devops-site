@@ -29,9 +29,20 @@ export default function Footer() {
       <div className="container footer__grid">
         <div className="footer__col footer__col--brand">
           <AppLink className="brand brand--footer" to="/">
-            <span className="brand__mark" aria-hidden="true">
-              <span>{b.monogram}</span>
-            </span>
+            {b.logo ? (
+              <img
+                className="brand__logo"
+                src={b.logo}
+                alt=""
+                width="192"
+                height="120"
+                decoding="async"
+              />
+            ) : (
+              <span className="brand__mark" aria-hidden="true">
+                <span>{b.monogram}</span>
+              </span>
+            )}
             <span className="brand__text">
               <span className="brand__name">{b.name}</span>
             </span>

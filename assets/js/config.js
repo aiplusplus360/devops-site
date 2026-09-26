@@ -12,8 +12,12 @@ window.SITE = {
   /* ---------------------------------------------------------------- BRAND -- */
   brand: {
     name: "TerraTemporal",
-    monogram: "TT",                  // 1-2 letters shown in the logo mark
+    monogram: "TT",                  // used only if `logo` below is empty
     legalName: "TerraTemporal",      // shown in the footer copyright
+    // Full logo for the header and footer, replacing the monogram tile.
+    // The artwork is 1.60:1 with a transparent background, so it is sized by
+    // height and the width follows. Set to "" to fall back to the monogram.
+    logo: "/img/logo.png",
     tagline: "DevOps & Cloud Engineering",
     // Shown as <title> on pages that don't set their own.
     defaultTitle: "DevOps & Cloud Engineering Services",

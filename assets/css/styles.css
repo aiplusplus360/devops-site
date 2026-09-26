@@ -402,6 +402,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 .brand__name { font-weight: 750; font-size: 1.02rem; letter-spacing: -0.02em; }
 .brand__tagline { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.02em; }
 
+/* Full logo, used in place of the monogram tile when SITE.brand.logo is set.
+   The artwork is 1.60:1 on a transparent background, so it is constrained by
+   height and the width follows. `width: auto` has to be explicit: the intrinsic
+   192x120 attributes on the <img> would otherwise fix the width and the logo
+   would scale on only one axis. */
+.brand__logo { display: block; height: 2.2rem; width: auto; flex: 0 0 auto; }
+
 .nav { display: flex; align-items: center; gap: 1.5rem; }
 .nav__list { display: flex; align-items: center; gap: 0.35rem; }
 .nav__link {

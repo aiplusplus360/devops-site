@@ -20,9 +20,23 @@ export default function Header() {
     <header className="header" data-header="">
       <div className="container header__inner">
         <AppLink className="brand" to="/" aria-label={`${b.name} home`}>
-          <span className="brand__mark" aria-hidden="true">
-            <span>{b.monogram}</span>
-          </span>
+          {/* The full logo when one is configured, otherwise the monogram tile.
+              Intrinsic width/height are set so the browser reserves the right
+              space before the image loads and the header does not jump. */}
+          {b.logo ? (
+            <img
+              className="brand__logo"
+              src={b.logo}
+              alt=""
+              width="192"
+              height="120"
+              decoding="async"
+            />
+          ) : (
+            <span className="brand__mark" aria-hidden="true">
+              <span>{b.monogram}</span>
+            </span>
+          )}
           <span className="brand__text">
             <span className="brand__name">{b.name}</span>
             <span className="brand__tagline">{b.tagline}</span>
