@@ -403,10 +403,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 .brand__tagline { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.02em; }
 
 /* Full logo, used in place of the monogram tile when SITE.brand.logo is set.
-   The artwork is 1.60:1 on a transparent background, so it is constrained by
-   height and the width follows. `width: auto` has to be explicit: the intrinsic
-   192x120 attributes on the <img> would otherwise fix the width and the logo
-   would scale on only one axis. */
+   The artwork is 1.6:1 on a transparent background, so it is constrained by
+   height and the width follows.
+
+   The height here is the approved display size. The width/height attributes on
+   the <img> MUST agree with it: the attributes are the fallback used when this
+   stylesheet has not loaded or is stale, and the source file is far larger than
+   the display size - so a mismatch renders the logo at source size and bursts
+   it out of the header. `width: auto` also has to be explicit, or the
+   attributes would fix the width and the logo would scale on one axis only. */
 .brand__logo { display: block; height: 2.2rem; width: auto; flex: 0 0 auto; }
 
 .nav { display: flex; align-items: center; gap: 1.5rem; }

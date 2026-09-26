@@ -7,7 +7,7 @@ artwork, not stock photography, so they are not covered by the licence below.
 
 | File | Dimensions | Notes |
 |---|---|---|
-| `logo.png` | 192×120 | Header and footer logo. Trimmed to the artwork's bounding box and downscaled from the supplied source; keep the 1.60:1 ratio, since the header sizes it by height alone (`.brand__logo`). |
+| `logo.png` | 168×105 | Header and footer logo, displayed at 56×35 (exactly 3× for retina). Trimmed to the artwork's bounding box from the supplied source. Keep the 1.6:1 ratio, and keep the `width`/`height` attributes on the `<img>` in step with the `height` in `.brand__logo` — a mismatch makes the logo render at source size and burst out of the header. |
 | `favicon-180.png` | 180×180 | Apple touch icon. The mark is composited onto white rather than left transparent so it stays legible on both light and dark browser tab bars. |
 | `favicon-32.png` | 32×32 | Browser tab icon, downscaled from the 180px version. |
 

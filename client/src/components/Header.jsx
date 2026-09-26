@@ -21,15 +21,19 @@ export default function Header() {
       <div className="container header__inner">
         <AppLink className="brand" to="/" aria-label={`${b.name} home`}>
           {/* The full logo when one is configured, otherwise the monogram tile.
-              Intrinsic width/height are set so the browser reserves the right
-              space before the image loads and the header does not jump. */}
+              These width/height values are the DISPLAY size, not the source
+              file's - they must match `height` in .brand__logo. They are the
+              fallback used before the stylesheet applies, so setting the source
+              dimensions here would render the logo at full size in the header
+              until the CSS arrives. Keeping them correct also reserves the right
+              space up front, so nothing shifts as the image loads. */}
           {b.logo ? (
             <img
               className="brand__logo"
               src={b.logo}
               alt=""
-              width="192"
-              height="120"
+              width="56"
+              height="35"
               decoding="async"
             />
           ) : (

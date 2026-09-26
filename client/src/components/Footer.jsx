@@ -34,8 +34,9 @@ export default function Footer() {
                 className="brand__logo"
                 src={b.logo}
                 alt=""
-                width="192"
-                height="120"
+                width="56"
+                height="35"
+                loading="lazy"
                 decoding="async"
               />
             ) : (
