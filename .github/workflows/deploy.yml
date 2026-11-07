@@ -1,7 +1,8 @@
 # =============================================================================
 # Build and deploy to the VPS
 # =============================================================================
-# Runs on every push to main, and on demand from the Actions tab.
+# Runs on demand from the Actions tab. It needs the VPS secrets to exist, so it
+# is deliberately not wired to push: continuous validation lives in ci.yml.
 #
 # The shape is deliberately "build once, ship the built artifact":
 #
@@ -28,9 +29,11 @@
 
 name: Deploy
 
+# Deployment is manual: it needs VPS_SSH_KEY, VPS_HOST, VPS_USER and
+# VPS_HOST_KEY to exist as repository secrets. Running it on every push made
+# fresh clones and forks show a red build purely for missing credentials.
+# Continuous validation lives in ci.yml; this job ships.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 # A second push while a deploy is running should supersede the first, not race

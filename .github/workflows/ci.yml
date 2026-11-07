@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Builds both bundles: the client for the browser and the SSR entry the
+      # server renders with. A failure here means the site cannot boot.
+      - name: Build
+        run: npm run build
+
+      - name: Content model checks
+        run: npm run content:check
+
+      - name: Coherence checks
+        run: npm run check:content
+
+      - name: Render checks
+        run: npm run check:render
+
+      - name: Route checks
+        run: npm run check:routes
