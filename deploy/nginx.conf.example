@@ -5,7 +5,7 @@
 #
 #   1. Copy the site into place:
 #        mkdir -p /var/www/devops-site
-#        rsync -av --delete /path/to/E:/Devops/ /var/www/devops-site/ \
+#        rsync -av --delete /path/to/devops/ /var/www/devops-site/ \
 #          --exclude 'Color pallete' --exclude 'serve.js' --exclude 'deploy'
 #        chown -R www-data:www-data /var/www/devops-site
 #

@@ -1,320 +1,197 @@
-# DevOps Marketing Website
+# DevOps Site
 
-A fast, dependency-free marketing site for a DevOps / cloud engineering services
-business. Plain HTML, CSS and JavaScript — no build step, no framework, no
-`npm install` required.
+**A server-rendered marketing site for a cloud-engineering practice — 44 routes, 40 service pages generated from JSON content, an Express contact API, and a build-once/ship-the-artifact CI/CD pipeline.**
+
+[![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vite.dev)
+[![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)](https://expressjs.com)
+[![Node](https://img.shields.io/badge/Node-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/deploy.yml)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+[Live site](https://devops.theaimax.com) · [Architecture](#architecture) · [Quick start](#quick-start)
+
+![DevOps Site](assets/img/og-image.jpg)
+
+---
+
+## What it is
+
+A production marketing site for a DevOps / cloud-engineering business. It is not a static page — it renders React on the server, hydrates on the client, and exposes a real API for the contact form.
+
+The interesting constraint was **content scale without code churn**: 40 service pages that each need unique copy, metadata, anchors and SEO. Adding a service is a JSON file, not a component. The server and the client share one route table, so the server can never disagree with the browser about which URLs exist or which status code a URL should return.
+
+### What is actually built
+
+- **44 renderable routes** — home, services index, 40 service detail pages, about, contact, plus a catch-all that returns a real `404` status.
+- **SSR + hydration** — the same `entry-server` / `entry-client` bundle pair, no framework, no Next.js.
+- **JSON content model** — one file per service under `client/src/content/services/`, validated at build time.
+- **Contact API** — multipart form, honeypot spam trap, IP rate limiting, SMTP delivery via Nodemailer, optional webhook, and a JSONL fallback store so a submission is never silently lost.
+- **SEO done properly** — canonical URLs, Open Graph and Twitter tags, JSON-LD structured data, a sitemap generated from the live route table, and legacy `.html` URLs 301-redirected to their new paths.
+- **No-JS resilience** — because the page is server-rendered, the content is readable before any JavaScript executes.
+- **CI/CD with a real gate** — four content/render check suites must pass before anything is deployed, and the deploy ends with an HTTP smoke test against the public URL.
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Build
+        A[client/src/content/services/*.json] --> B[Vite build]
+        C[React routes] --> B
+        B --> D[dist/client]
+        B --> E[dist/server/entry-server.mjs]
+    end
+
+    subgraph Runtime
+        F[nginx] -->|127.0.0.1:3000| G[Express]
+        G --> H{/api/*}
+        H -->|contact| I[multer → validate → SMTP / webhook / JSONL]
+        H -->|content| E
+        G --> J{/sitemap.xml /robots.txt}
+        J --> K[generated from the route table]
+        G --> L{static}
+        L --> D
+        G --> M[catch-all]
+        M --> N[renderRequest → HTML + status]
+        N --> E
+    end
+```
+
+Three things are worth calling out because they are easy to get wrong:
+
+1. **`trust proxy` is scoped to `loopback`, not `true`.** With `true`, Express believes the `X-Forwarded-For` header from anyone, and a client can forge their address straight past the rate limiter. The reverse proxy runs on the same host, so only loopback needs to be trusted.
+2. **HTML is served `no-cache`; hashed assets are `immutable`.** Cached HTML would point at asset hashes that no longer exist after a deploy. The stylesheet and images keep their original filenames, so they revalidate hourly instead.
+3. **The sitemap is generated from the route table**, not hand-maintained — it cannot drift from the pages that actually exist.
 
 ---
 
 ## Quick start
 
-**Option 1 — just open it.** Double-click `index.html`. Everything works.
-
-**Option 2 — run a local server** (recommended, matches production more closely):
-
-```powershell
-cd E:\Devops
-node serve.js
+```bash
+git clone https://github.com/aiplusplus360/devops-site.git
+cd devops-site
+npm ci
+npm run dev          # http://localhost:3000
 ```
 
-Then open <http://localhost:5173>.
-
----
-
-## Where to edit things
-
-You almost never need to touch the HTML. Content lives in two files:
-
-| File | What's in it |
-| --- | --- |
-| `assets/js/config.js` | Company name, logo letters, contact details, social links, nav menu, the **free offer**, headline stats, announcement bar |
-| `assets/js/data.js` | Services, process steps, testimonials, FAQ, engagement plans, icon set |
-| `assets/js/tech.js` | The technology logos (AWS, Azure, Kubernetes, …) with their brand colours |
-| `assets/img/` | Photography and the social preview image — see `CREDITS.md` in there |
-
-### Replace the stock photos with your own
-
-The site ships with real, freely-licensed photography, but **your own photos
-will always convert better** — visitors can spot someone else's desk instantly.
-
-Drop your files into `assets/img/` using the same filenames and nothing else
-needs changing. Full list of files and dimensions is in
-[`assets/img/CREDITS.md`](assets/img/CREDITS.md).
-
-Where each photo is used:
-
-| Photo | Placement |
-|---|---|
-| `hero-desk.jpg` | Homepage hero backdrop (washed to ~11:1 contrast behind the headline) |
-| `band-workspace.jpg` | Homepage full-width photo band |
-| `band-code.jpg` | Services page photo band |
-| `services-hero.jpg` | Services page header |
-| `band-desk.jpg` | About page header |
-| `about-workspace.jpg`, `about-desk.jpg` | About page "In practice" figures |
-| `contact-desk.jpg` | Contact page panel |
-| `og-image.jpg` | Social sharing preview (1200×630) |
-
-To use different filenames, edit the `--photo-*` tokens at the top of
-`assets/css/styles.css` and the `src` attributes in the HTML.
-
-> **Two rules worth keeping.** Don't put stock photos of strangers in
-> testimonials, and don't use photos of identifiable people without a model
-> release. The design deliberately uses initials for testimonials instead.
-
-### Change your company name and contact details
-
-Open `assets/js/config.js` and edit the `brand` and `contact` blocks. Every
-header, footer, button and email link on every page updates automatically.
-
-```js
-brand: {
-  name: "Northwind DevOps",
-  monogram: "ND",
-  legalName: "Northwind DevOps Ltd",
-  ...
-}
-```
-
-### Edit or disable the free offer
-
-The offer banner is the lead magnet, defined in `config.js`. To remove it from
-every page, set `enabled: false`:
-
-```js
-offer: {
-  enabled: true,
-  badge: "100% free · worth $1,500",
-  title: "The 2-Hour Pipeline Rescue",
-  intro: "...",
-  deliverables: [
-    { icon: "pulse", title: "Live bottleneck hunt", text: "..." },
-    // 2–4 items works best
-  ],
-  scarcity: "Only 5 free slots each month",
-  guarantee: "...",
-  ctaLabel: "Claim a free slot",
-  ctaHref: "contact.html?service=advisory",
-  fine: "No credit card. No obligation.",
-}
-```
-
-`icon` accepts any key from the `ICONS` map in `data.js`.
-
-> **Keep the promises truthful.** Whatever you put in `guarantee` and `fine`,
-> make sure you can genuinely honour it — a broken guarantee costs more trust
-> than having none.
-
-### Add a technology logo
-
-Add an entry to `TECHNOLOGIES` in `assets/js/tech.js`:
-
-```js
-{
-  id: "aws",
-  name: "AWS",                              // label under the tile
-  group: "Cloud Platforms",                 // see TECH_GROUP_ORDER
-  color: "#FF9900",                         // brand hex -> mark + hover tint
-  featured: true,                           // also show on the homepage
-  svg: '<path d="..." fill="currentColor"/>',   // 24x24 viewBox
-}
-```
-
-Or point at a real logo file instead of drawing one:
-
-```js
-{ id: "aws", name: "AWS", group: "Cloud Platforms", color: "#FF9900",
-  file: "assets/logos/aws.svg" }
-```
-
-> ⚠️ **About the logos.** The marks shipped in `tech.js` are hand-authored,
-> simplified vector representations — **not** the official vendor files.
-> AWS, Microsoft and Google in particular publish strict brand guidelines and
-> generally restrict logo use to approved partner badges. Before using this
-> commercially, download the official assets from each vendor's brand page and
-> swap them in via the `file:` field above.
-
-### Add or remove a service
-
-Copy a block inside `SERVICES` in `assets/js/data.js`:
-
-```js
-{
-  id: "observability",          // used for anchor links + contact-form prefill
-  icon: "chart",                // key from the ICONS map in the same file
-  category: "Reliability",      // shown as the small pill on the card
-  name: "Monitoring & Observability",
-  summary: "One-line pitch shown in bold under the title.",
-  bullets: ["First proof point", "Second", "Third"],
-  featured: true,               // true = also shown on the homepage
-}
-```
-
-Set `featured: false` to keep a service on the services page but off the homepage.
-
-### Hide a whole section
-
-- **Testimonials** — set `TESTIMONIALS` to `[]` and the section disappears.
-- **Stats strip** — set `stats: []` in `config.js` and the strip disappears.
-- **Announcement bar** — set `announcement.show` to `false`.
-
----
-
-## Wiring up the contact form
-
-Out of the box the form has **no backend** — it validates, then opens the
-visitor's email client with everything pre-filled. Nothing to configure.
-
-For a proper inbox submission, sign up for a free form endpoint
-([Formspree](https://formspree.io), [Basin](https://usebasin.com), or Netlify
-Forms) and paste the URL into `config.js`:
-
-```js
-contact: {
-  form: {
-    endpoint: "https://formspree.io/f/xxxxxxxx",
-    fallbackEmail: "hello@example.com",
-  },
-}
-```
-
-Spam protection is already included via a hidden honeypot field (`_gotcha`).
-
----
-
-## Deploying to your VPS
-
-The site is 100% static, so you just need a web server pointed at the folder.
-Ready-made configs are in `deploy/`:
-
-| File | For |
-| --- | --- |
-| `deploy/nginx.conf.example` | nginx (Ubuntu/Debian, most VPS providers) |
-| `deploy/htaccess.example` | Apache / cPanel / shared hosting |
-
-### nginx in short
+For a production-shaped run:
 
 ```bash
-# 1. Upload the site (exclude the dev-only files)
-rsync -av --delete /path/to/Devops/ /var/www/devops-site/ \
-  --exclude 'Color pallete' --exclude 'serve.js' --exclude 'deploy' \
-  --exclude 'README.md'
-
-chown -R www-data:www-data /var/www/devops-site
-
-# 2. Enable the server block
-cp deploy/nginx.conf.example /etc/nginx/sites-available/devops-site
-ln -s /etc/nginx/sites-available/devops-site /etc/nginx/sites-enabled/
-rm -f /etc/nginx/sites-enabled/default
-
-# 3. Edit the domain in it, then test and reload
-nano /etc/nginx/sites-available/devops-site
-nginx -t && systemctl reload nginx
-
-# 4. Free HTTPS (also handles the http→https redirect)
-apt install certbot python3-certbot-nginx
-certbot --nginx -d yourdomain.com -d www.yourdomain.com
+npm run build        # builds the client bundle and the SSR bundle
+npm start            # Express on :3000, serving dist/client + SSR
 ```
 
-The nginx config already handles: clean 404s, gzip, security headers, immutable
-caching for `/assets/`, and `no-cache` for HTML so edits go live immediately.
-
-### On cPanel
-
-Upload everything into `public_html/`, then rename `deploy/htaccess.example`
-to `.htaccess` (turn on "Show Hidden Files" in File Manager first).
-
-### Other hosts
-
-Cloudflare Pages, Netlify, Vercel and GitHub Pages all work too — build command
-blank, output directory = root.
-
-### Before you go live
-
-- [ ] Replace `https://example.com` in every page's `<link rel="canonical">`,
-      `og:url`, `sitemap.xml` and `robots.txt` with your real domain.
-- [ ] Replace `Your Company` / `Your Company LLC` in `config.js`.
-- [ ] Update the email, phone and social URLs in `config.js`.
-- [ ] Update the `ProfessionalService` JSON-LD block in `index.html` (name, url).
-- [ ] Do **not** upload `serve.js`, `README.md`, `deploy/` or `Color pallete/`.
-- [ ] Point your host's 404 handler at `404.html`.
+No environment variables are required to browse the site. The contact form falls back to writing submissions to disk when SMTP is not configured.
 
 ---
 
-## Content integrity checks
+## Configuration
 
-Two throwaway Node scripts live in `deploy/`. Run them after editing
-`data.js` — they catch typos that would otherwise fail silently in the browser.
+Copy `.env.example` to `.env` and fill in what you need. Everything is optional except `PORT` in production.
 
-```powershell
-cd deploy
-node check-content.js   # every service has a valid icon, unique id, real category
-node check-render.js    # all 40 services render, section slugs are unique, HTML hooks exist
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `3000` | Port Express listens on |
+| `HOST` | `0.0.0.0` | Bind address — set `127.0.0.1` in production so the app is only reachable through nginx |
+| `SMTP_HOST` | — | SMTP server hostname; omit to disable email delivery |
+| `SMTP_PORT` | `587` | SMTP port |
+| `SMTP_SECURE` | `false` | `true` for implicit TLS (port 465) |
+| `SMTP_USER` | — | SMTP username |
+| `SMTP_PASS` | — | SMTP password or app password |
+| `CONTACT_FROM` | — | `From:` address on notification emails |
+| `CONTACT_TO` | — | Inbox that receives submissions |
+| `CONTACT_WEBHOOK_URL` | — | Optional JSON webhook fired on each submission (Slack, Discord, n8n…) |
+| `SUBMISSIONS_DIR` | `server/data` | Where the JSONL fallback store lives — keep it outside the deploy target |
+| `LOG_RENDERS` | — | Set to log `status url "title"` for every render |
+
+---
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with HMR |
+| `npm run build` | Vite client build + SSR build |
+| `npm start` | Production Express server |
+| `npm run check` | Runs all four content/render suites |
+| `npm run content:check` | Every service id has copy, and every copy file is referenced |
+| `npm run check:content` | Content model coherence — icons, categories, unique ids |
+| `npm run check:render` | All 40 services render; section slugs are unique; HTML hooks exist |
+| `npm run check:routes` | All 44 routes render with unique metadata and no legacy links |
+| `npm run check:email` | Verifies SMTP credentials with a real handshake |
+
+The check scripts are deliberately plain Node — no test framework — so they run in ~1s and can sit in front of every deploy.
+
+---
+
+## Adding a service
+
+Drop a JSON file into `client/src/content/services/` and register the id:
+
+```json
+{
+  "id": "observability",
+  "name": "Monitoring & Observability",
+  "category": "Reliability",
+  "summary": "One-line pitch shown in bold under the title.",
+  "bullets": ["First proof point", "Second", "Third"],
+  "featured": true
+}
 ```
 
-Both exit non-zero on failure, so you can wire them into a pre-deploy step.
+The route `/services/observability` exists immediately, appears in the sitemap, and is picked up by the contact form's `?service=` prefill. Run `npm run check` and the guard rails will tell you if anything is missing.
+
+---
+
+## Deployment
+
+`main` is protected by a two-job pipeline ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)):
+
+1. **verify** — `npm ci`, build, then all four content and route suites. A missing service page fails the pipeline here, so broken content never reaches production.
+2. **deploy** — rsync the built artifact to the VPS, install/update the systemd unit and nginx site, reload nginx *only after* `nginx -t` passes, restart the service, then smoke-test the live URL (`/`, `/services`, `/services/cicd`, and a 404 assertion).
+
+The shape is **build once, ship the artifact**: nothing is compiled on the VPS, and the exact artifact that passed the checks is the one that goes live. The SSH host key is pinned in a secret rather than scanned at deploy time, so a MITM cannot silently capture the deploy key.
+
+Required repository secrets: `VPS_SSH_KEY`, `VPS_HOST`, `VPS_USER`, `VPS_HOST_KEY`.
+
+Server-side templates live in [`deploy/vps/`](deploy/vps/), and generic nginx / Apache examples in [`deploy/`](deploy/).
 
 ---
 
 ## Project structure
 
 ```
-E:\Devops
-├── index.html          Homepage — hero, services, process, proof, plans, FAQ
-├── services.html       All 40 services, grouped into 7 categories + tech stack
-├── about.html          How we work, principles, engagement models
-├── contact.html        Contact form + FAQ
-├── 404.html            Not-found page
-├── serve.js            Local preview server (dev only, don't upload)
-├── robots.txt
-├── sitemap.xml
-├── README.md
-├── deploy/             Server configs + content checks (don't upload)
-│   ├── nginx.conf.example
-│   ├── htaccess.example
-│   ├── check-content.js
-│   └── check-render.js
-└── assets
-    ├── css/styles.css  Design system, all styling
-    └── js
-        ├── config.js   ← your brand & contact details
-        ├── data.js     ← your content (40 services, FAQ, plans…)
-        └── main.js     Renders content and wires up interactions
+devops-site
+├── client
+│   ├── index.html                 Vite entry template
+│   └── src
+│       ├── routes.jsx             One route table, shared by client and server
+│       ├── routes/                Home, Services, ServiceDetail, About, Contact, NotFound
+│       ├── components/            Header, Footer, Faq, Plans, Process, Icon, …
+│       └── content/services/*.json   40 service pages, one file each
+├── server
+│   ├── index.mjs                  Express: API → sitemap → static → SSR → errors
+│   ├── api/contact.mjs            multipart, honeypot, rate limit, SMTP, webhook, JSONL
+│   ├── api/content.mjs            JSON content API
+│   └── lib/                       render, meta/head tags, mailer
+├── deploy
+│   ├── vps/                       systemd unit + nginx site for the VPS
+│   ├── check-*.js                 content, render and route check suites
+│   └── nginx.conf.example         Generic nginx config
+├── assets/                        Images and stylesheet, copied into the build
+└── .github/workflows/deploy.yml   Verify → deploy → smoke test
 ```
 
 ---
 
-## Design system notes
+## Notes
 
-Colours were sampled from your brand palette and are defined once at the top of
-`assets/css/styles.css`:
+- **Images are stock photography** and credited in [`assets/img/CREDITS.md`](assets/img/CREDITS.md). Testimonials deliberately use initials rather than photos of real people — no model releases required.
+- **The tech logos are hand-authored simplified marks**, not official vendor assets. Swap in the real ones from each vendor's brand page before commercial use.
+- **No CSP is set in Express on purpose.** The correct policy depends on the fonts, analytics and embeds you add, and a wrong one silently breaks the page. See `deploy/nginx.conf.example` for where to put one.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--navy-900` | `#1B1B30` | Page background |
-| `--navy-700` | `#272743` | Raised surfaces |
-| `--steel-600` | `#2D698D` | Primary brand blue |
-| `--mint-300` | `#B8E9E6` | Accent / highlights |
-| `--ice-100` | `#E3F5F5` | Light tint |
+## License
 
-Change a token and it cascades through the whole site.
-
-## Extras already built in
-
-- 40 services on `services.html`, auto-grouped into 7 categories with a jump nav
-  and per-section counts — all generated from `data.js`
-- Responsive from 320px up, with an animated mobile menu
-- Scroll-reveal animations — opt any element in by adding `class="reveal"`
-- `prefers-reduced-motion` respected throughout
-- Sticky glass header, active-page highlighting
-- SEO: canonical URLs, Open Graph tags, JSON-LD structured data, sitemap, robots
-- Accessible: skip link, focus-visible rings, ARIA on the nav toggle, semantic landmarks
-- Contact form validation, honeypot spam trap, and `?service=` / `?plan=` prefill
-  (service cards and plan buttons deep-link into the form with the topic selected)
-
-### Animating a number
-
-Add `data-count` to any element to count it up on scroll:
-
-```html
-<span data-count="99.95" data-decimals="2" data-suffix="%"></span>
-```
+[MIT](LICENSE)
